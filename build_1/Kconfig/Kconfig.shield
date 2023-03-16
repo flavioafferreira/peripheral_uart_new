@@ -1,0 +1,8 @@
+osource "c:/Nordic/peripheral_uart/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/rpc_host/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/spi_flash/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/flash_shell/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/fs/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/littlefs/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/nvs/boards/shields/*/Kconfig.shield"
+osource "C:/ncs/v2.3.0-rc1/nrf/boards/shields/*/Kconfig.shield"

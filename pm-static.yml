@@ -1,0 +1,11 @@
+partition_0:
+  address: 0x0
+  end_address: 0x2FFF
+  region: external_flash
+  size: 0x3000
+
+partition_1:
+  address: 0x3000
+  end_address: 0x4FFF
+  region: external_flash
+  size: 0x2000
