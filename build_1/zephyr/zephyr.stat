@@ -36,7 +36,7 @@ Section Headers:
   [12] log_const_se[...] PROGBITS        0002cb4c 024c2c 000168 00   A  0   0  4
   [13] log_backend_area  PROGBITS        0002ccb4 024d94 000010 00   A  0   0  4
   [14] settings_han[...] PROGBITS        0002ccc4 024da4 000078 00   A  0   0  4
-  [15] rodata            PROGBITS        0002cd40 024e20 006e50 00   A  0   0 16
+  [15] rodata            PROGBITS        0002cd40 024e20 006e4c 00   A  0   0 16
   [16] .ramfunc          PROGBITS        20008000 02c968 000000 00   W  0   0  1
   [17] datas             PROGBITS        20008000 02bc70 000908 00  WA  0   0  8
   [18] device_states     PROGBITS        20008908 02c578 000018 00  WA  0   0  1
@@ -60,7 +60,7 @@ Section Headers:
   [36] .debug_loc        PROGBITS        00000000 3c2e7e 0d486f 00      0   0  1
   [37] .debug_ranges     PROGBITS        00000000 4976f0 01f2b8 00      0   0  8
   [38] .ARM.attributes   ARM_ATTRIBUTES  00000000 4b69a8 000034 00      0   0  1
-  [39] .last_section     PROGBITS        00034884 02c964 000004 00   A  0   0  1
+  [39] .last_section     PROGBITS        00034880 02c964 000004 00   A  0   0  1
   [40] .symtab           SYMTAB          00000000 4b69dc 019970 10     41 4516  4
   [41] .strtab           STRTAB          00000000 4d034c 00f6c8 00      0   0  1
   [42] .shstrtab         STRTAB          00000000 4dfa14 000236 00      0   0  1
@@ -73,9 +73,9 @@ Key to Flags:
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
   EXIDX          0x0245f8 0x0002c518 0x0002c518 0x00008 0x00008 R   0x4
-  LOAD           0x0000e0 0x00008000 0x00008000 0x2bb90 0x2bb90 RWE 0x10
-  LOAD           0x02bc70 0x20008000 0x00033b90 0x00cf4 0x00cf4 RW  0x8
-  LOAD           0x02c964 0x00034884 0x00034884 0x00004 0x00004 R   0x1
+  LOAD           0x0000e0 0x00008000 0x00008000 0x2bb8c 0x2bb8c RWE 0x10
+  LOAD           0x02bc70 0x20008000 0x00033b8c 0x00cf4 0x00cf4 RW  0x8
+  LOAD           0x02c964 0x00034880 0x00034880 0x00004 0x00004 R   0x1
   LOAD           0x000000 0x20008cf8 0x20008cf8 0x00000 0x2f358 RW  0x8
 
  Section to Segment mapping:

@@ -144,7 +144,7 @@ void print_current_position_cb(uint32_t pos){
     
     int i=0;
     while (i<3){
-      printf("NTC %d TimeStamp=%d Value=%d %fcelsius\n",
+      printf("NTC %d TimeStamp=%d Value=%d %3.1f C\n",
       i,
       C_Buffer[pos].ntc[i].timestamp,
       C_Buffer[pos].ntc[i].value,
