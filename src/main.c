@@ -1061,7 +1061,7 @@ void main(void)
     
 	flag=1;//print ad values once
 
-    ntc_temperature(1000);
+    
 
 	for (;;) {
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);

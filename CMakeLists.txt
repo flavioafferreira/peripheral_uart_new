@@ -27,7 +27,7 @@ target_sources(app PRIVATE includes/Protobuf/pb_common.c )
 target_sources(app PRIVATE includes/Protobuf/pb_decode.c )
 target_sources(app PRIVATE includes/Protobuf/pb_encode.c )
 
-target_sources(app PRIVATE includes/accessories/ntc_table.c )
+
 
 
 # NORDIC SDK APP END

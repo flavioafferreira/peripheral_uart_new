@@ -18,6 +18,6 @@ buf_data send_array_dd_v0(void);
 void feed_circular_buffer(void);
 void print_current_position_cb(uint32_t pos);
 void time_print (void);
-float ntc_temperature(uint16_t conversao);
 
+float ntc_temperature(uint16_t conversao,uint8_t sensor_number);
 

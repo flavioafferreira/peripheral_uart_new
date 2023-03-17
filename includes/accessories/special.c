@@ -7,6 +7,8 @@
 #include <zephyr/kernel.h>
 #include <zephyr/timing/timing.h>
 
+#include <math.h>
+
 //Special Routines
 #include "includes/accessories/special.h"
 
@@ -24,11 +26,6 @@
 
 #include <time.h>
 #include <date_time.h>
-
-#include "includes/accessories/ntc_table.h"
-extern float ntc_table[MAX_INDEX];
-float ntc_temperature(uint16_t conversao);
-
 
 
 //Circular Buffer
@@ -151,7 +148,7 @@ void print_current_position_cb(uint32_t pos){
       i,
       C_Buffer[pos].ntc[i].timestamp,
       C_Buffer[pos].ntc[i].value,
-      ntc_temperature(C_Buffer[pos].ntc[i].value));
+      ntc_temperature(C_Buffer[pos].ntc[i].value,(i+1)));
       i++;
     }
 
@@ -363,53 +360,39 @@ void test_calendar(void){
 }
 
 
-float ntc_temperature(uint16_t conversao){
-
-	//source:  https://blog.eletrogate.com/termistor-ntc-para-controle-de-temperatura/
-	// Parameters
-  //https://pt.planetcalc.com/5992/
-  // https://brasilescola.uol.com.br/matematica/equacao-reduzida-reta.htm
-
-
-	  float adcResolutionUc=16383;
-	  float resistenciaEmSerie=6788;
-	  float voltageUc=3.6;
-
-	  float resistenciaTermistor=0;
-
-	  double Rt = 0;
-  	double Vout = 0;
-  	
-	  int index,index_ntc=0;
-
- 	  resistenciaTermistor = resistenciaEmSerie * (voltageUc /  ((  conversao * voltageUc) /   adcResolutionUc ) - 1)  ;
-	  Vout = resistenciaEmSerie / (resistenciaEmSerie + resistenciaTermistor) *  voltageUc;
-	  Rt = resistenciaEmSerie * Vout / (voltageUc - Vout);
-    Rt = Rt/1000;  //table is in kOhms
-
-    
-
-	  while (index_ntc<=MAX_INDEX){
-		  if (Rt >= (ntc_table[index_ntc])){
-                  
-                  index=index_ntc;
-  				  index_ntc=(MAX_INDEX+1); //to stop search
-		  }
-	  			  index_ntc++;
-	  }
-    
-
-
-    
-    float m1 = (ntc_table[index] - ntc_table[index-1]);
-    float m = 1 / m1;
-    float n = index - m *  ntc_table[index];
-    float result= Rt * m + n;
-
-    if (DEBUG) printf("index=%d m=%f n=%f result=%f\n",index,m,n,result);
-    if (DEBUG) printf("Rt:%fkohms\n",Rt);
-
-	return result;
-
+float BetaTermistor(void) {
+  //USE ONLY ONCE TO CALCULATE BETA
+  float beta;
+  float T1=(-6 + 273.15); // -6 celsius
+  float T2=(56 + 273.15); // 56 celsius
+  float RT1=54200/1000; //54.2k
+  float RT2=2480/1000;  //2.48k
+  beta = (log(RT1 / RT2)) / ((1 / T1) - (1 / T2));  // cálculo de beta.
+  printf("Beta=%f\n",beta);
+  return beta;
+ 
 }
+  
+float ntc_temperature(uint16_t conversao,uint8_t sensor_number){
+  //sources:  https://blog.eletrogate.com/termistor-ntc-para-controle-de-temperatura/
+  //          https://elcereza.com/termistor/
+  float voltageUc = conversao*(ADC_VOLTAGE_REF/(ADC_RESOLUTION-1));
+  //printf("voltageUC=%f\n",voltageUc);
+
+  float resistor=0;
+  switch (sensor_number){
+    case NTC_1: resistor=RESISTOR_SERIE_NTC1;break;
+    case NTC_2: resistor=RESISTOR_SERIE_NTC2;break;
+    case NTC_3: resistor=RESISTOR_SERIE_NTC3;break;
+  }
+
+  float Rt =  (voltageUc*resistor)/(VOLTAGE_ALIM-voltageUc);
+  //printf("Rt=%f\n",Rt);
+  float T = 1 /( 1 / TERMISTOR_KELVIN_25 + log(Rt / TERMISTOR_RES_25) / TERMISTOR_BETA ); 
+  //printf("T=%f\n",T);
+  float Tc = T - 273.15; 
+  //printf("Tc=%f\n",Tc);
+  return Tc;
+}
+
 
