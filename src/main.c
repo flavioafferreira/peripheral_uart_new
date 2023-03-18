@@ -50,6 +50,12 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/printk.h>
 
+//ublox
+//https://github.com/u-blox/ubxlib
+
+
+
+
 #define LOG_MODULE_NAME peripheral_uart
 LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 

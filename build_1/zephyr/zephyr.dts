@@ -20,7 +20,7 @@
 		zephyr,sram = &sram0_ns;
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_ns_partition;
-		nordic,nus-uart = &uart0;
+		nordic,nus-uart = &uart2;
 		nordic,pm-ext-flash = &mx25r64;
 		nordic,nrf-adc = &adc;
 	};
@@ -207,7 +207,11 @@
 				compatible = "nordic,nrf-uarte";
 				reg = < 0xb000 0x1000 >;
 				interrupts = < 0xb 0x1 >;
-				status = "disabled";
+				status = "okay";
+				current-speed = < 0x2580 >;
+				pinctrl-0 = < &uart2_default >;
+				pinctrl-1 = < &uart2_sleep >;
+				pinctrl-names = "default", "sleep";
 			};
 			i2c3: i2c@c000 {
 				compatible = "nordic,nrf-twim";
@@ -242,7 +246,7 @@
 				#address-cells = < 0x1 >;
 				#size-cells = < 0x0 >;
 				io-channels = < &adc 0x0 >, < &adc 0x1 >, < &adc 0x2 >, < &adc 0x3 >, < &adc 0x4 >, < &adc 0x7 >;
-				phandle = < 0xb >;
+				phandle = < 0xd >;
 				channel@0 {
 					reg = < 0x0 >;
 					zephyr,gain = "ADC_GAIN_1_6";
@@ -409,7 +413,7 @@
 				pinctrl-0 = < &pwm0_default >;
 				pinctrl-1 = < &pwm0_sleep >;
 				pinctrl-names = "default", "sleep";
-				phandle = < 0x13 >;
+				phandle = < 0x15 >;
 			};
 			pwm1: pwm@22000 {
 				compatible = "nordic,nrf-pwm";
@@ -454,7 +458,7 @@
 				interrupts = < 0x2a 0x1 >;
 				#mbox-cells = < 0x1 >;
 				status = "okay";
-				phandle = < 0x11 >;
+				phandle = < 0x13 >;
 			};
 			qspi: qspi@2b000 {
 				compatible = "nordic,nrf-qspi";
@@ -611,7 +615,7 @@
 				#gpio-cells = < 0x2 >;
 				status = "okay";
 				port = < 0x0 >;
-				phandle = < 0x12 >;
+				phandle = < 0x14 >;
 			};
 			gpio1: gpio@842800 {
 				compatible = "nordic,nrf-gpio";
@@ -621,7 +625,7 @@
 				ngpios = < 0x10 >;
 				status = "okay";
 				port = < 0x1 >;
-				phandle = < 0x14 >;
+				phandle = < 0x16 >;
 			};
 			ieee802154: ieee802154 {
 				compatible = "nordic,nrf-ieee802154";
@@ -668,26 +672,26 @@
 			};
 		};
 		pwm0_default: pwm0_default {
-			phandle = < 0xc >;
+			phandle = < 0xe >;
 			group1 {
 				psels = < 0x16001c >;
 			};
 		};
 		pwm0_sleep: pwm0_sleep {
-			phandle = < 0xd >;
+			phandle = < 0xf >;
 			group1 {
 				psels = < 0x16001c >;
 				low-power-enable;
 			};
 		};
 		qspi_default: qspi_default {
-			phandle = < 0xe >;
+			phandle = < 0x10 >;
 			group1 {
 				psels = < 0x1d0011 >, < 0x1f000d >, < 0x20000e >, < 0x21000f >, < 0x220010 >, < 0x1e0012 >;
 			};
 		};
 		qspi_sleep: qspi_sleep {
-			phandle = < 0xf >;
+			phandle = < 0x11 >;
 			group1 {
 				psels = < 0x1d0011 >, < 0x1f000d >, < 0x20000e >, < 0x21000f >, < 0x220010 >;
 				low-power-enable;
@@ -725,6 +729,23 @@
 			phandle = < 0xa >;
 			group1 {
 				psels = < 0x4002f >, < 0x6002e >, < 0x5002d >;
+				low-power-enable;
+			};
+		};
+		uart2_default: uart2_default {
+			phandle = < 0xb >;
+			group1 {
+				psels = < 0x28 >;
+			};
+			group2 {
+				psels = < 0x10029 >;
+				bias-pull-up;
+			};
+		};
+		uart2_sleep: uart2_sleep {
+			phandle = < 0xc >;
+			group1 {
+				psels = < 0x28 >, < 0x10029 >;
 				low-power-enable;
 			};
 		};
@@ -842,7 +863,7 @@
 		};
 		sram0_shared: memory@20070000 {
 			reg = < 0x20070000 0x10000 >;
-			phandle = < 0x10 >;
+			phandle = < 0x12 >;
 		};
 	};
 	digital {
