@@ -270,6 +270,9 @@ struct uart_data_t {
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 static K_FIFO_DEFINE(fifo_uart_rx_data);
 
+static K_FIFO_DEFINE(fifo_uart2_tx_data);
+static K_FIFO_DEFINE(fifo_uart2_rx_data);
+
 static const struct bt_data ad[] = {
 	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
 	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
@@ -288,16 +291,20 @@ static const struct device *const async_adapter;
 //UART
 
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
-		ARG_UNUSED(dev);
+    
+	ARG_UNUSED(dev);
 	static size_t aborted_len;
 	struct uart_data_t *buf;
 	static uint8_t *aborted_buf;
 	static bool disable_req;
 	switch (evt->type) {
-	    case UART_TX_DONE:
-		default:
-		break;
-	}
+	    case UART_TX_DONE:break;
+		
+		case UART_RX_RDY:break;
+
+        case UART_RX_BUF_RELEASED:break;
+
+	}	
 
 }
 
@@ -452,8 +459,6 @@ static void uart_2_work_handler(struct k_work *item)
 	uart_rx_enable(uart_2, buf->data, sizeof(buf->data), UART_WAIT_FOR_RX);
 }
 
-
-
 static bool uart_test_async_api(const struct device *dev)
 {
 	const struct uart_driver_api *api =
@@ -558,25 +563,38 @@ static int uart_init(void)
 static int uart_2_init(void)
 {
 
-	struct uart_data_t *rx;
-	struct uart_data_t *tx;
+	struct uart_data_t *rx_uart2;
+	struct uart_data_t *tx_uart2;
 
 	if (!device_is_ready(uart_2)) {
 		return -ENODEV;
 	}
 
-	rx = k_malloc(sizeof(*rx));
-	rx->len = 0;
+	rx_uart2 = k_malloc(sizeof(*rx_uart2));
+	rx_uart2->len = 0;
 	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
 	uart_callback_set(uart_2, uart_cb_2, NULL);
-	tx = k_malloc(sizeof(*tx));
-	tx->len = 0;
-	uart_tx(uart_2, tx->data, tx->len, SYS_FOREVER_MS);
-	uart_rx_enable(uart_2, rx->data, sizeof(rx->data), 50);
+	//tx_uart2 = k_malloc(sizeof(*tx_uart2));
+	//tx_uart2->len = 0;
+	//uart_tx(uart_2, tx_uart2->data, tx_uart2->len, SYS_FOREVER_MS);
+	uart_rx_enable(uart_2, rx_uart2->data, sizeof(rx_uart2->data), 50);
 
     return 0;
 }
 
+void uart2_teste(void){
+   struct uart_data_t *buf;
+   buf = k_malloc(sizeof(*buf));
+
+    buf->data[0] = 0x41;
+	buf->data[1] = 0x42;
+	buf->data[2] = 0x43;
+    buf->len=3;
+
+   uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
+   k_free(buf);
+   //printf("Printed uart2 \n");
+}
 
 
 //BLUETOOTH
@@ -1104,7 +1122,7 @@ void main(void)
 	if (err) {
 		error();
 	}
-
+    
 
 	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED)) {
 		err = bt_conn_auth_cb_register(&conn_auth_callbacks);
@@ -1154,6 +1172,8 @@ void main(void)
 
 
 	for (;;) {
+		uart2_teste();
+		
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
