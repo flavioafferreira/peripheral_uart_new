@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x1024add
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          1725572 (bytes into file)
+  Start of section headers:          1725616 (bytes into file)
   Flags:                             0x5000200, Version5 EABI, soft-float ABI
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -45,16 +45,16 @@ Section Headers:
   [21] .debug_aranges    PROGBITS        00000000 02d9a8 0020c8 00      0   0  8
   [22] .debug_info       PROGBITS        00000000 02fa70 0b28c1 00      0   0  1
   [23] .debug_abbrev     PROGBITS        00000000 0e2331 0127b8 00      0   0  1
-  [24] .debug_line       PROGBITS        00000000 0f4ae9 02a4f4 00      0   0  1
+  [24] .debug_line       PROGBITS        00000000 0f4ae9 02a4f5 00      0   0  1
   [25] .debug_frame      PROGBITS        00000000 11efe0 004fe8 00      0   0  4
   [26] .debug_str        PROGBITS        00000000 123fc8 01748d 01  MS  0   0  1
   [27] .debug_loc        PROGBITS        00000000 13b455 034395 00      0   0  1
   [28] .debug_ranges     PROGBITS        00000000 16f7f0 0080d8 00      0   0  8
   [29] .ARM.attributes   ARM_ATTRIBUTES  00000000 1778c8 000034 00      0   0  1
   [30] .last_section     PROGBITS        0102d87c 02d960 000004 00   A  0   0  1
-  [31] .symtab           SYMTAB          00000000 1778fc 018730 10     32 4280  4
-  [32] .strtab           STRTAB          00000000 19002c 0152e1 00      0   0  1
-  [33] .shstrtab         STRTAB          00000000 1a530d 000176 00      0   0  1
+  [31] .symtab           SYMTAB          00000000 1778fc 018740 10     32 4280  4
+  [32] .strtab           STRTAB          00000000 19003c 0152fd 00      0   0  1
+  [33] .shstrtab         STRTAB          00000000 1a5339 000176 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),

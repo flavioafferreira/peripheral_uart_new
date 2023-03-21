@@ -1235,7 +1235,7 @@ zephyr_udc0: &usbd {
 /{
 
  chosen {
-  nordic,nus-uart = &uart2;
+  nordic,nus-uart = &uart0;
   nordic,pm-ext-flash = &mx25r64;
   nordic,nrf-adc = &adc;
  };
@@ -1247,6 +1247,10 @@ zephyr_udc0: &usbd {
   dg2 = &dig2;
   dg3 = &dig3;
   dg4 = &dig4;
+
+
+
+
  };
 
  digital {
@@ -1284,7 +1288,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 68 "c:/Nordic/peripheral_uart/app.overlay"
+# 72 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1417,10 +1421,11 @@ zephyr_udc0: &usbd {
         };
 
     };
+
 };
 
 &uart2 {
-
+    label="teste123";
  status = "okay";
     current-speed = <9600>;
     pinctrl-0 = <&uart2_default>;

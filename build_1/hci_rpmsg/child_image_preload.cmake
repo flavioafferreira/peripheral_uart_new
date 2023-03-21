@@ -2,6 +2,7 @@
 set(CMAKE_BUILD_TYPE "" CACHE INTERNAL "NCS child image controlled")
 set(CMAKE_VERBOSE_MAKEFILE "FALSE" CACHE INTERNAL "NCS child image controlled")
 set(BOARD_DIR "C:/ncs/v2.3.0-rc1/zephyr/boards/arm/nrf5340dk_nrf5340" CACHE INTERNAL "NCS child image controlled")
+set(ZEPHYR_EXTRA_MODULES "C:/Nordic/peripheral_uart/ubxlib" CACHE INTERNAL "NCS child image controlled")
 set(ZEPHYR_TOOLCHAIN_VARIANT "zephyr" CACHE INTERNAL "NCS child image controlled")
 set(NCS_TOOLCHAIN_VERSION "NONE" CACHE INTERNAL "NCS child image controlled")
 set(PM_DOMAINS "CPUNET" CACHE INTERNAL "NCS child image controlled")

@@ -4,9 +4,16 @@
 # SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
 #
 cmake_minimum_required(VERSION 3.20.0)
+list(APPEND ZEPHYR_EXTRA_MODULES "C:/Nordic/peripheral_uart/ubxlib" )
 
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(NONE)
+
+
+
+##include(ubxlib.cmake)
+
+
 
 ncs_add_partition_manager_config(pm-static.yml)
 # NORDIC SDK APP START
@@ -18,6 +25,8 @@ target_sources(app PRIVATE
 target_sources_ifdef(CONFIG_BT_NUS_UART_ASYNC_ADAPTER app PRIVATE
   src/uart_async_adapter.c
 )
+
+
 
 
 

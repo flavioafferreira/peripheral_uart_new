@@ -531,7 +531,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=164
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=165
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -596,6 +596,8 @@ OVERLAY_CONFIG:INTERNAL=;C:/ncs/v2.3.0-rc1/nrf/subsys/partition_manager/partitio
 PM_DOMAINS:INTERNAL=CPUNET
 //West
 WEST:INTERNAL=C:/ncs/toolchains/v2.3.0-rc1/opt/bin/python.exe;-m;west
+//NCS child image controlled
+ZEPHYR_EXTRA_MODULES:INTERNAL=C:/Nordic/peripheral_uart/ubxlib
 //a configuration file for the runners Python package
 ZEPHYR_RUNNERS_YAML:INTERNAL=C:/Nordic/peripheral_uart/build_1/hci_rpmsg/zephyr/runners.yaml
 ZEPHYR_SDK_INSTALL_DIR:INTERNAL=c:\ncs\toolchains\v2.3.0-rc1\opt\zephyr-sdk

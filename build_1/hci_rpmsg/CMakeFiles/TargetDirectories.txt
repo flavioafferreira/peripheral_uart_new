@@ -984,6 +984,12 @@ C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/zscilib/CMakeFiles/edit_cach
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/zscilib/CMakeFiles/rebuild_cache.dir
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/zscilib/CMakeFiles/list_install_components.dir
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/zscilib/CMakeFiles/install/strip.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/install/local.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/install.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/edit_cache.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/rebuild_cache.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/list_install_components.dir
+C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/ubxlib/CMakeFiles/install/strip.dir
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/nrfxlib/CMakeFiles/install/local.dir
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/nrfxlib/CMakeFiles/install.dir
 C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/nrfxlib/CMakeFiles/edit_cache.dir

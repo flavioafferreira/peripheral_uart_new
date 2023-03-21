@@ -20,7 +20,7 @@
 		zephyr,sram = &sram0_ns;
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_ns_partition;
-		nordic,nus-uart = &uart2;
+		nordic,nus-uart = &uart0;
 		nordic,pm-ext-flash = &mx25r64;
 		nordic,nrf-adc = &adc;
 	};
@@ -208,6 +208,7 @@
 				reg = < 0xb000 0x1000 >;
 				interrupts = < 0xb 0x1 >;
 				status = "okay";
+				label = "teste123";
 				current-speed = < 0x2580 >;
 				pinctrl-0 = < &uart2_default >;
 				pinctrl-1 = < &uart2_sleep >;

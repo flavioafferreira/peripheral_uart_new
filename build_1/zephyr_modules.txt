@@ -35,5 +35,6 @@
 "uoscore-uedhoc":"C:/ncs/v2.3.0-rc1/modules/lib/uoscore-uedhoc":"${ZEPHYR_UOSCORE_UEDHOC_CMAKE_DIR}"
 "zcbor":"C:/ncs/v2.3.0-rc1/modules/lib/zcbor":"${ZEPHYR_ZCBOR_CMAKE_DIR}"
 "zscilib":"C:/ncs/v2.3.0-rc1/modules/lib/zscilib":"C:/ncs/v2.3.0-rc1/modules/lib/zscilib"
+"ubxlib":"C:/Nordic/peripheral_uart/ubxlib":"C:/Nordic/peripheral_uart/ubxlib/port/platform/zephyr"
 "nrfxlib":"C:/ncs/v2.3.0-rc1/nrfxlib":"${ZEPHYR_NRFXLIB_CMAKE_DIR}"
 "connectedhomeip":"C:/ncs/v2.3.0-rc1/modules/lib/matter":"C:/ncs/v2.3.0-rc1/modules/lib/matter/config/nrfconnect/chip-module"

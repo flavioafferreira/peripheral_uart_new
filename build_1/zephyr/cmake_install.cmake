@@ -244,6 +244,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("C:/Nordic/peripheral_uart/build_1/modules/ubxlib/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("C:/Nordic/peripheral_uart/build_1/modules/nrfxlib/cmake_install.cmake")
 endif()
 

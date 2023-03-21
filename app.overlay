@@ -7,7 +7,7 @@
 /{
 	
 	chosen {
-		nordic,nus-uart = &uart2;
+		nordic,nus-uart = &uart0;
 		nordic,pm-ext-flash = &mx25r64;
 		nordic,nrf-adc  = &adc; 
 	};
@@ -19,6 +19,10 @@
 		dg2 = &dig2;
 		dg3 = &dig3;
 		dg4 = &dig4;
+		//uart0 = &uart0;
+		//uart1 = &uart1;
+		//uart2 = &uart2;
+		//uart3 = &uart2;
 	};
 
 	digital {
@@ -197,10 +201,11 @@
         };
 
     };
+
 };
 
 &uart2 {
-
+    label="teste123";
 	status = "okay";
     current-speed = <9600>;
     pinctrl-0 = <&uart2_default>;
@@ -209,3 +214,4 @@
 
 	
 };
+

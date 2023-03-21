@@ -1055,6 +1055,12 @@ C:/Nordic/peripheral_uart/build_1/modules/zscilib/CMakeFiles/edit_cache.dir
 C:/Nordic/peripheral_uart/build_1/modules/zscilib/CMakeFiles/rebuild_cache.dir
 C:/Nordic/peripheral_uart/build_1/modules/zscilib/CMakeFiles/list_install_components.dir
 C:/Nordic/peripheral_uart/build_1/modules/zscilib/CMakeFiles/install/strip.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/install/local.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/install.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/edit_cache.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/rebuild_cache.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/list_install_components.dir
+C:/Nordic/peripheral_uart/build_1/modules/ubxlib/CMakeFiles/install/strip.dir
 C:/Nordic/peripheral_uart/build_1/modules/nrfxlib/CMakeFiles/install/local.dir
 C:/Nordic/peripheral_uart/build_1/modules/nrfxlib/CMakeFiles/install.dir
 C:/Nordic/peripheral_uart/build_1/modules/nrfxlib/CMakeFiles/edit_cache.dir

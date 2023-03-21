@@ -148,6 +148,12 @@ config ZEPHYR_ZSCILIB_MODULE
 	bool
 	default y
 endmenu
+menu "ubxlib (C:/Nordic/peripheral_uart/ubxlib)"
+osource "C:/Nordic/peripheral_uart/ubxlib/port/platform/zephyr/Kconfig"
+config ZEPHYR_UBXLIB_MODULE
+	bool
+	default y
+endmenu
 menu "nrfxlib (C:/ncs/v2.3.0-rc1/nrfxlib)"
 osource "C:/ncs/v2.3.0-rc1/nrfxlib/Kconfig.nrfxlib"
 config ZEPHYR_NRFXLIB_MODULE

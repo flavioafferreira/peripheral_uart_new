@@ -50,9 +50,25 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/printk.h>
 
-//ublox
+//ublox module gnss
 //https://github.com/u-blox/ubxlib
+//https://github.com/u-blox/ubxlib/tree/master/gnss  - examples
+//#define U_CFG_APP_PIN_CELL_TX 41
+//#define U_CFG_APP_PIN_CELL_RX 40
+#define U_CFG_APP_PIN_CELL_TXD 45 // P1.09
+#define U_CFG_APP_PIN_CELL_RXD 44 // P1.08
 
+
+#include "ubxlib.h"
+#include "u_cfg_app_platform_specific.h"
+int gnss_app_start();
+void gnss_read(void);
+
+int32_t latitudeX1e7;
+int32_t longitudeX1e7;
+
+//uGnssTransportHandle_t transportHandle;
+//uDeviceHandle_t gnssHandle = NULL;
 
 
 
@@ -169,6 +185,7 @@ volatile int16_t adc_value[8];
 volatile int16_t digital_value[8];
 
 
+
 struct adc_sequence sequence = {
 	.buffer = &buf_adc,
 	/* buffer size in bytes, not number of samples */
@@ -235,8 +252,14 @@ extern uint32_t C_Buffer_Current_Position;
 static struct bt_conn *current_conn;
 static struct bt_conn *auth_conn;
 
-static const struct device *uart = DEVICE_DT_GET(DT_CHOSEN(nordic_nus_uart));
+//UART PORT DEFINITION ON app.overlay
+	//static const struct device *uart   = DEVICE_DT_GET(DT_CHOSEN(nordic_nus_uart));
+	static const struct device *uart   = DEVICE_DT_GET(DT_NODELABEL(uart0));
+    static const struct device *uart_2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
+
 static struct k_work_delayable uart_work;
+static struct k_work_delayable uart_work_2;
+
 
 struct uart_data_t {
 	void *fifo_reserved;
@@ -264,10 +287,22 @@ static const struct device *const async_adapter;
 
 //UART
 
-static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
-{
-	ARG_UNUSED(dev);
+static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
+		ARG_UNUSED(dev);
+	static size_t aborted_len;
+	struct uart_data_t *buf;
+	static uint8_t *aborted_buf;
+	static bool disable_req;
+	switch (evt->type) {
+	    case UART_TX_DONE:
+		default:
+		break;
+	}
 
+}
+
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data){
+	ARG_UNUSED(dev);
 	static size_t aborted_len;
 	struct uart_data_t *buf;
 	static uint8_t *aborted_buf;
@@ -401,6 +436,24 @@ static void uart_work_handler(struct k_work *item)
 	uart_rx_enable(uart, buf->data, sizeof(buf->data), UART_WAIT_FOR_RX);
 }
 
+static void uart_2_work_handler(struct k_work *item)
+{
+	struct uart_data_t *buf;
+
+	buf = k_malloc(sizeof(*buf));
+	if (buf) {
+		buf->len = 0;
+	} else {
+		LOG_WRN("Not able to allocate UART_2 receive buffer");
+		k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
+		return;
+	}
+
+	uart_rx_enable(uart_2, buf->data, sizeof(buf->data), UART_WAIT_FOR_RX);
+}
+
+
+
 static bool uart_test_async_api(const struct device *dev)
 {
 	const struct uart_driver_api *api =
@@ -501,6 +554,30 @@ static int uart_init(void)
 	return uart_rx_enable(uart, rx->data, sizeof(rx->data), 50);
 
 }
+
+static int uart_2_init(void)
+{
+
+	struct uart_data_t *rx;
+	struct uart_data_t *tx;
+
+	if (!device_is_ready(uart_2)) {
+		return -ENODEV;
+	}
+
+	rx = k_malloc(sizeof(*rx));
+	rx->len = 0;
+	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
+	uart_callback_set(uart_2, uart_cb_2, NULL);
+	tx = k_malloc(sizeof(*tx));
+	tx->len = 0;
+	uart_tx(uart_2, tx->data, tx->len, SYS_FOREVER_MS);
+	uart_rx_enable(uart_2, rx->data, sizeof(rx->data), 50);
+
+    return 0;
+}
+
+
 
 //BLUETOOTH
 
@@ -1010,7 +1087,9 @@ void main(void)
  	configure_all_buttons();
 	configure_digital_inputs();
 	configure_adc();
-    
+     
+
+	 
  
     //flash_dev = device_get_binding(FLASH_DEVICE);
 
@@ -1020,6 +1099,12 @@ void main(void)
 	if (err) {
 		error();
 	}
+
+	err = uart_2_init();
+	if (err) {
+		error();
+	}
+
 
 	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED)) {
 		err = bt_conn_auth_cb_register(&conn_auth_callbacks);
@@ -1067,7 +1152,6 @@ void main(void)
     
 	flag=1;//print ad values once
 
-    
 
 	for (;;) {
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
@@ -1107,6 +1191,7 @@ void shoot_minute_save_thread(void){
         feed_circular_buffer();
 		print_current_position_cb(C_Buffer_Current_Position);
 		printk(" \n");
+		
 		//
          	    
    }
@@ -1207,7 +1292,6 @@ void adc_thread(void){
 		k_sleep(K_MSEC(100));
 	}
 }
-
 
 
 //THREADS START

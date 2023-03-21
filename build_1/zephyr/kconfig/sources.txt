@@ -3,6 +3,7 @@ C:\Nordic\peripheral_uart\build_1\Kconfig\Kconfig.dts
 C:\Nordic\peripheral_uart\build_1\Kconfig\Kconfig.modules
 C:\Nordic\peripheral_uart\build_1\Kconfig\Kconfig.shield
 C:\Nordic\peripheral_uart\build_1\Kconfig\Kconfig.shield.defconfig
+C:\Nordic\peripheral_uart\ubxlib\port\platform\zephyr\Kconfig
 C:\ncs\toolchains\v2.3.0-rc1\opt\zephyr-sdk\cmake\zephyr\Kconfig
 C:\ncs\v2.3.0-rc1\modules\debug\TraceRecorder\config\Kconfig
 C:\ncs\v2.3.0-rc1\modules\debug\TraceRecorder\kernelports\Zephyr\Kconfig
