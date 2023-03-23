@@ -19,6 +19,7 @@
 		dg2 = &dig2;
 		dg3 = &dig3;
 		dg4 = &dig4;
+		external-mx25 = &mx25r64;
 	
 	};
 
@@ -131,7 +132,7 @@
 
 
 
-
+/* 
 &mx25r64 {
 	label ="memoria";
 	
@@ -174,7 +175,7 @@
 	};
 
 };
-
+*/
 
 &pinctrl {
 	uart2_default: uart2_default {

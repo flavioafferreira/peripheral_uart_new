@@ -6,11 +6,15 @@
 cmake_minimum_required(VERSION 3.20.0)
 list(APPEND ZEPHYR_EXTRA_MODULES "C:/Nordic/peripheral_uart/ubxlib" )
 
+set(PM_STATIC_YML_FILE "C:/Nordic/peripheral_uart/pm-static.yml")
+
+
+
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(NONE)
 
-
 ncs_add_partition_manager_config(pm-static.yml)
+
 # NORDIC SDK APP START
 target_sources(app PRIVATE
   src/main.c

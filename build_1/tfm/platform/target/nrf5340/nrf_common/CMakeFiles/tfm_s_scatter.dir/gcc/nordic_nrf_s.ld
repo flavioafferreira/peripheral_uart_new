@@ -244,5 +244,6 @@ SECTIONS
     Image$$ER_TFM_DATA$$Limit = ADDR(.TFM_DATA) + SIZEOF(.TFM_DATA) + SIZEOF(.TFM_BSS);
 .sg_start_dummy : ALIGN(4) { SG_START_DUMMY_UNUSED = .; } > FLASH .gnu.sgstubs (ALIGN((0x4000)) - (0x400) + (. > (ALIGN((0x4000)) - (0x400)) ? (0x4000) : 0)) : { Load$$LR$$LR_VENEER$$Base = ABSOLUTE(.); *(.gnu.sgstubs*) } > FLASH .sg_end_dummy : ALIGN(32) { . = (ALIGN((0x4000))); Load$$LR$$LR_VENEER$$Limit = ABSOLUTE(.); } > FLASH ASSERT ((Load$$LR$$LR_VENEER$$Limit - Load$$LR$$LR_VENEER$$Base) <= (0x400), "Veneer region overflowed")
     Load$$LR$$LR_NS_PARTITION$$Base = ((0x8000));
+    Load$$LR$$LR_NRF_NS_STORAGE_PARTITION$$Base = (0xf8000);
     PROVIDE(__stack = Image$$ARM_LIB_STACK$$ZI$$Limit);
 }

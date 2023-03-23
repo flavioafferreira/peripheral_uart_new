@@ -843,12 +843,12 @@ void flash_test_(void) {
 
 #define FLASH_DEVICE "mx25r6435f@0" 
 
-const struct device *flash_dev = DEVICE_DT_GET(DT_CHOSEN(nordic_pm_ext_flash));
-uint8_t dev_ok = device_is_ready(flash_dev);
+//const struct device *flash_dev = DEVICE_DT_GET(DT_CHOSEN(nordic_pm_ext_flash));
+//uint8_t dev_ok = device_is_ready(flash_dev);
 struct flash_area *my_area;
 
-printf("Dev_OK:%d \n", dev_ok);
-err=flash_area_open(FIXED_PARTITION_ID(external_flash), &my_area);
+//printf("Dev_OK:%d \n", dev_ok);
+//err=flash_area_open(FIXED_PARTITION_ID(external_flash), &my_area);
 printf("Result Open:%d \n", err);
 printf("fa_id:%d device_id:%d size=%lu\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
   

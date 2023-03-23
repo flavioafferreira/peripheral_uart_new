@@ -45,6 +45,7 @@
 		dg2 = &dig2;
 		dg3 = &dig3;
 		dg4 = &dig4;
+		external-mx25 = &mx25r64;
 	};
 	soc {
 		#address-cells = < 0x1 >;
@@ -484,27 +485,6 @@
 					has-dpd;
 					t-enter-dpd = < 0x2710 >;
 					t-exit-dpd = < 0x88b8 >;
-					label = "memoria";
-					partitions {
-						compatible = "fixed-partitions";
-						#address-cells = < 0x1 >;
-						#size-cells = < 0x1 >;
-						partition1_label: partition@0 {
-							reg = < 0x0 0x2fff >;
-						};
-						partition2_label: partition@3000 {
-							reg = < 0x3000 0x2fff >;
-						};
-						partition3_label: partition@40000 {
-							reg = < 0x40000 0x2ffff >;
-						};
-						partition4_label: partition@70000 {
-							reg = < 0x70000 0x2ffff >;
-						};
-						partition5_label: partition@110000 {
-							reg = < 0x110000 0x7fffff >;
-						};
-					};
 				};
 			};
 			nfct: nfct@2d000 {

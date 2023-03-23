@@ -1247,6 +1247,7 @@ zephyr_udc0: &usbd {
   dg2 = &dig2;
   dg3 = &dig3;
   dg4 = &dig4;
+  external-mx25 = &mx25r64;
 
  };
 
@@ -1285,7 +1286,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 69 "c:/Nordic/peripheral_uart/app.overlay"
+# 70 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1347,55 +1348,7 @@ zephyr_udc0: &usbd {
  };
  io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>,<&adc 7>;
 };
-
-
-
-
-
-&mx25r64 {
- label ="memoria";
-
- partitions {
-  compatible = "fixed-partitions";
-  #address-cells = <1>;
-  #size-cells = <1>;
-
-  partition1_label: partition@0 {
-
-  reg = <0x00000000 0x000002FFF>;
-
-  };
-
-  partition2_label: partition@3000 {
-
-  reg = <0x00003000 0x000002FFF>;
-
-  };
-
-  partition3_label: partition@40000 {
-
-  reg = <0x00040000 0x00002FFFF>;
-
-  };
-
-  partition4_label: partition@70000 {
-
-  reg = <0x00070000 0x00002FFFF>;
-
-  };
-
-  partition5_label: partition@110000 {
-
-  reg = <0x00110000 0x0007FFFFF>;
-
-  };
-
-
- };
-
-};
-
-
+# 180 "c:/Nordic/peripheral_uart/app.overlay"
 &pinctrl {
  uart2_default: uart2_default {
         group1 {
