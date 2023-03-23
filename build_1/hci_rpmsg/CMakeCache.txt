@@ -201,7 +201,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=hci_rpmsg
+CMAKE_PROJECT_NAME:STATIC=Zephyr-Kernel
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=3.2.99
@@ -387,12 +387,6 @@ ZephyrBuildConfiguration_DIR:PATH=C:/ncs/v2.3.0-rc1/nrf/share/zephyrbuild-packag
 
 //The directory containing a CMake configuration file for Zephyr.
 Zephyr_DIR:PATH=C:/ncs/v2.3.0-rc1/zephyr/share/zephyr-package/cmake
-
-//Value Computed by CMake
-hci_rpmsg_BINARY_DIR:STATIC=C:/Nordic/peripheral_uart/build_1/hci_rpmsg
-
-//Value Computed by CMake
-hci_rpmsg_SOURCE_DIR:STATIC=C:/ncs/v2.3.0-rc1/zephyr/samples/bluetooth/hci_rpmsg
 
 //Value Computed by CMake
 metal_BINARY_DIR:STATIC=C:/Nordic/peripheral_uart/build_1/hci_rpmsg/modules/libmetal/libmetal

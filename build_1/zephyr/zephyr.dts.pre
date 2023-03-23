@@ -1236,8 +1236,9 @@ zephyr_udc0: &usbd {
 
  chosen {
   nordic,nus-uart = &uart0;
-  nordic,pm-ext-flash = &mx25r64;
+
   nordic,nrf-adc = &adc;
+
  };
 
  aliases {
@@ -1286,7 +1287,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 70 "c:/Nordic/peripheral_uart/app.overlay"
+# 71 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1348,7 +1349,7 @@ zephyr_udc0: &usbd {
  };
  io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>,<&adc 7>;
 };
-# 180 "c:/Nordic/peripheral_uart/app.overlay"
+# 181 "c:/Nordic/peripheral_uart/app.overlay"
 &pinctrl {
  uart2_default: uart2_default {
         group1 {

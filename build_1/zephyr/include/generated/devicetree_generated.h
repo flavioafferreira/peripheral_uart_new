@@ -18566,8 +18566,6 @@
 #define DT_CHOSEN_zephyr_code_partition_EXISTS    1
 #define DT_CHOSEN_nordic_nus_uart                 DT_N_S_soc_S_peripheral_40000000_S_uart_8000
 #define DT_CHOSEN_nordic_nus_uart_EXISTS          1
-#define DT_CHOSEN_nordic_pm_ext_flash             DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0
-#define DT_CHOSEN_nordic_pm_ext_flash_EXISTS      1
 #define DT_CHOSEN_nordic_nrf_adc                  DT_N_S_soc_S_peripheral_40000000_S_adc_e000
 #define DT_CHOSEN_nordic_nrf_adc_EXISTS           1
 

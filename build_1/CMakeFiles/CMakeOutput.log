@@ -32,21 +32,3 @@ Copyright (C) 2022 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-Determining if files stdatomic.h exist passed with the following output:
-Change Dir: C:/Nordic/peripheral_uart/build_1/CMakeFiles/CMakeTmp
-
-Run Build Command(s):C:/ncs/toolchains/v2.3.0-rc1/opt/bin/ninja.exe cmTC_7a3d2 && [1/2] Building C object CMakeFiles/cmTC_7a3d2.dir/HAVE_STDATOMIC_H.c.obj
-[2/2] Linking C executable cmTC_7a3d2
-arm-zephyr-eabi-gcc.exe: warning: CMakeFiles/cmTC_7a3d2.dir/HAVE_STDATOMIC_H.c.obj: linker input file unused because linking not done
-
-
-
-Determining if files fcntl.h exist passed with the following output:
-Change Dir: C:/Nordic/peripheral_uart/build_1/CMakeFiles/CMakeTmp
-
-Run Build Command(s):C:/ncs/toolchains/v2.3.0-rc1/opt/bin/ninja.exe cmTC_75441 && [1/2] Building C object CMakeFiles/cmTC_75441.dir/HAVE_FCNTL_H.c.obj
-[2/2] Linking C executable cmTC_75441
-arm-zephyr-eabi-gcc.exe: warning: CMakeFiles/cmTC_75441.dir/HAVE_FCNTL_H.c.obj: linker input file unused because linking not done
-
-
-

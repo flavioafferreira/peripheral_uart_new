@@ -21,7 +21,6 @@
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_ns_partition;
 		nordic,nus-uart = &uart0;
-		nordic,pm-ext-flash = &mx25r64;
 		nordic,nrf-adc = &adc;
 	};
 	aliases {

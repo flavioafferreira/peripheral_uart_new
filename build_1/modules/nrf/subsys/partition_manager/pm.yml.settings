@@ -1,7 +1,0 @@
-settings_storage:
-  region: external_flash
-  placement:
-    before: [tfm_storage, end]
-    align: {start: 0x4000}
-  inside: [nonsecure_storage]
-  size: 0x2000
