@@ -1,4 +1,5 @@
 settings_storage:
+  region: external_flash
   placement:
     before: [tfm_storage, end]
     align: {start: 0x4000}

@@ -1454,13 +1454,13 @@ END GROUP
 
 .copy.table     0x0000000000000284       0x24
                 0x0000000000000284                __copy_table_start__ = .
-                0x0000000000000284        0x4 LONG 0x55a8 LOADADDR (.TFM_DATA)
+                0x0000000000000284        0x4 LONG 0x5598 LOADADDR (.TFM_DATA)
                 0x0000000000000288        0x4 LONG 0x20002f20 ADDR (.TFM_DATA)
                 0x000000000000028c        0x4 LONG 0xf8 SIZEOF (.TFM_DATA)
-                0x0000000000000290        0x4 LONG 0x55c0 LOADADDR (.TFM_PSA_ROT_LINKER_DATA)
+                0x0000000000000290        0x4 LONG 0x55a0 LOADADDR (.TFM_PSA_ROT_LINKER_DATA)
                 0x0000000000000294        0x4 LONG 0x20001c40 ADDR (.TFM_PSA_ROT_LINKER_DATA)
                 0x0000000000000298        0x4 LONG 0x0 SIZEOF (.TFM_PSA_ROT_LINKER_DATA)
-                0x000000000000029c        0x4 LONG 0x55c0 LOADADDR (.TFM_APP_ROT_LINKER_DATA)
+                0x000000000000029c        0x4 LONG 0x55a0 LOADADDR (.TFM_APP_ROT_LINKER_DATA)
                 0x00000000000002a0        0x4 LONG 0x20001c20 ADDR (.TFM_APP_ROT_LINKER_DATA)
                 0x00000000000002a4        0x4 LONG 0x0 SIZEOF (.TFM_APP_ROT_LINKER_DATA)
                 0x00000000000002a8                __copy_table_end__ = .
@@ -1825,7 +1825,7 @@ END GROUP
                 0x0000000000000fa0                Image$$TFM_APP_ROT_LINKER$$Limit = (ADDR (.TFM_APP_ROT_LINKER) + SIZEOF (.TFM_APP_ROT_LINKER))
                 0x0000000000000fa0                Image$$TFM_APP_CODE_END$$Base = .
 
-.ER_TFM_CODE    0x0000000000000fa0     0x42f8
+.ER_TFM_CODE    0x0000000000000fa0     0x42f0
  *(.text*)
  .text          0x0000000000000fa0       0x88 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
  .text          0x0000000000001028       0x7c c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp/crt0.o
@@ -2222,326 +2222,326 @@ END GROUP
                 0x0000000000003010       0x20 platform/libplatform_s.a(target_cfg.o)
                 0x0000000000003010                sau_and_idau_cfg
  .text.spu_init_cfg
-                0x0000000000003030       0x3c platform/libplatform_s.a(target_cfg.o)
+                0x0000000000003030       0x34 platform/libplatform_s.a(target_cfg.o)
                 0x0000000000003030                spu_init_cfg
  .text.spu_periph_init_cfg
-                0x000000000000306c      0x234 platform/libplatform_s.a(target_cfg.o)
-                0x000000000000306c                spu_periph_init_cfg
+                0x0000000000003064      0x234 platform/libplatform_s.a(target_cfg.o)
+                0x0000000000003064                spu_periph_init_cfg
  .text.tfm_hal_platform_init
-                0x00000000000032a0       0x30 platform/libplatform_s.a(tfm_hal_platform.o)
-                0x00000000000032a0                tfm_hal_platform_init
+                0x0000000000003298       0x30 platform/libplatform_s.a(tfm_hal_platform.o)
+                0x0000000000003298                tfm_hal_platform_init
  .text.tfm_plat_otp_init
-                0x00000000000032d0        0x4 platform/libplatform_s.a(dummy_otp.o)
-                0x00000000000032d0                tfm_plat_otp_init
+                0x00000000000032c8        0x4 platform/libplatform_s.a(dummy_otp.o)
+                0x00000000000032c8                tfm_plat_otp_init
  .text.tfm_plat_provisioning_is_required
-                0x00000000000032d4        0x4 platform/libplatform_s.a(dummy_provisioning.o)
-                0x00000000000032d4                tfm_plat_provisioning_is_required
+                0x00000000000032cc        0x4 platform/libplatform_s.a(dummy_provisioning.o)
+                0x00000000000032cc                tfm_plat_provisioning_is_required
  .text.tfm_plat_provisioning_perform
-                0x00000000000032d8        0x4 platform/libplatform_s.a(dummy_provisioning.o)
-                0x00000000000032d8                tfm_plat_provisioning_perform
+                0x00000000000032d0        0x4 platform/libplatform_s.a(dummy_provisioning.o)
+                0x00000000000032d0                tfm_plat_provisioning_perform
  .text.tfm_plat_provisioning_check_for_dummy_keys
-                0x00000000000032dc        0x2 platform/libplatform_s.a(dummy_provisioning.o)
-                0x00000000000032dc                tfm_plat_provisioning_check_for_dummy_keys
- *fill*         0x00000000000032de        0x2 
+                0x00000000000032d4        0x2 platform/libplatform_s.a(dummy_provisioning.o)
+                0x00000000000032d4                tfm_plat_provisioning_check_for_dummy_keys
+ *fill*         0x00000000000032d6        0x2 
  .text.tfm_platform_hal_system_reset
-                0x00000000000032e0       0x24 platform/libplatform_s.a(tfm_platform_system.o)
-                0x00000000000032e0                tfm_platform_hal_system_reset
+                0x00000000000032d8       0x24 platform/libplatform_s.a(tfm_platform_system.o)
+                0x00000000000032d8                tfm_platform_hal_system_reset
  .text.tfm_platform_hal_ioctl
-                0x0000000000003304       0x18 platform/libplatform_s.a(tfm_platform_system.o)
-                0x0000000000003304                tfm_platform_hal_ioctl
+                0x00000000000032fc       0x18 platform/libplatform_s.a(tfm_platform_system.o)
+                0x00000000000032fc                tfm_platform_hal_ioctl
  .text.tfm_hal_system_reset
-                0x000000000000331c       0x24 platform/libplatform_s.a(tfm_platform.o)
-                0x000000000000331c                tfm_hal_system_reset
+                0x0000000000003314       0x24 platform/libplatform_s.a(tfm_platform.o)
+                0x0000000000003314                tfm_hal_system_reset
  .text.mpu_armv8m_enable
-                0x0000000000003340       0x34 platform/libplatform_s.a(mpu_armv8m_drv.o)
-                0x0000000000003340                mpu_armv8m_enable
+                0x0000000000003338       0x34 platform/libplatform_s.a(mpu_armv8m_drv.o)
+                0x0000000000003338                mpu_armv8m_enable
  .text.mpu_armv8m_region_enable
-                0x0000000000003374       0x64 platform/libplatform_s.a(mpu_armv8m_drv.o)
-                0x0000000000003374                mpu_armv8m_region_enable
+                0x000000000000336c       0x64 platform/libplatform_s.a(mpu_armv8m_drv.o)
+                0x000000000000336c                mpu_armv8m_region_enable
  .text.mpu_armv8m_region_disable
-                0x00000000000033d8       0x14 platform/libplatform_s.a(mpu_armv8m_drv.o)
-                0x00000000000033d8                mpu_armv8m_region_disable
+                0x00000000000033d0       0x14 platform/libplatform_s.a(mpu_armv8m_drv.o)
+                0x00000000000033d0                mpu_armv8m_region_disable
  .text.mpu_armv8m_clean
-                0x00000000000033ec       0x1e platform/libplatform_s.a(mpu_armv8m_drv.o)
-                0x00000000000033ec                mpu_armv8m_clean
- *fill*         0x000000000000340a        0x2 
+                0x00000000000033e4       0x1e platform/libplatform_s.a(mpu_armv8m_drv.o)
+                0x00000000000033e4                mpu_armv8m_clean
+ *fill*         0x0000000000003402        0x2 
  .text.spu_enable_interrupts
-                0x000000000000340c       0x10 platform/libplatform_s.a(spu.o)
-                0x000000000000340c                spu_enable_interrupts
+                0x0000000000003404       0x10 platform/libplatform_s.a(spu.o)
+                0x0000000000003404                spu_enable_interrupts
  .text.spu_regions_reset_unlocked_secure
-                0x000000000000341c       0x30 platform/libplatform_s.a(spu.o)
-                0x000000000000341c                spu_regions_reset_unlocked_secure
+                0x0000000000003414       0x30 platform/libplatform_s.a(spu.o)
+                0x0000000000003414                spu_regions_reset_unlocked_secure
  .text.spu_regions_flash_config_non_secure
-                0x000000000000344c       0x24 platform/libplatform_s.a(spu.o)
-                0x000000000000344c                spu_regions_flash_config_non_secure
+                0x0000000000003444       0x24 platform/libplatform_s.a(spu.o)
+                0x0000000000003444                spu_regions_flash_config_non_secure
  .text.spu_regions_sram_config_non_secure
-                0x0000000000003470       0x2c platform/libplatform_s.a(spu.o)
-                0x0000000000003470                spu_regions_sram_config_non_secure
+                0x0000000000003468       0x2c platform/libplatform_s.a(spu.o)
+                0x0000000000003468                spu_regions_sram_config_non_secure
  .text.spu_regions_flash_config_non_secure_callable
-                0x000000000000349c       0x30 platform/libplatform_s.a(spu.o)
-                0x000000000000349c                spu_regions_flash_config_non_secure_callable
+                0x0000000000003494       0x30 platform/libplatform_s.a(spu.o)
+                0x0000000000003494                spu_regions_flash_config_non_secure_callable
  .text.spu_regions_flash_get_base_address_in_region
-                0x00000000000034cc        0x4 platform/libplatform_s.a(spu.o)
-                0x00000000000034cc                spu_regions_flash_get_base_address_in_region
+                0x00000000000034c4        0x4 platform/libplatform_s.a(spu.o)
+                0x00000000000034c4                spu_regions_flash_get_base_address_in_region
  .text.spu_regions_flash_get_last_address_in_region
-                0x00000000000034d0        0xa platform/libplatform_s.a(spu.o)
-                0x00000000000034d0                spu_regions_flash_get_last_address_in_region
+                0x00000000000034c8        0xa platform/libplatform_s.a(spu.o)
+                0x00000000000034c8                spu_regions_flash_get_last_address_in_region
  .text.spu_regions_flash_get_start_id
-                0x00000000000034da        0x4 platform/libplatform_s.a(spu.o)
-                0x00000000000034da                spu_regions_flash_get_start_id
+                0x00000000000034d2        0x4 platform/libplatform_s.a(spu.o)
+                0x00000000000034d2                spu_regions_flash_get_start_id
  .text.spu_regions_flash_get_last_id
-                0x00000000000034de        0x4 platform/libplatform_s.a(spu.o)
-                0x00000000000034de                spu_regions_flash_get_last_id
+                0x00000000000034d6        0x4 platform/libplatform_s.a(spu.o)
+                0x00000000000034d6                spu_regions_flash_get_last_id
  .text.spu_regions_flash_get_region_size
-                0x00000000000034e2        0x6 platform/libplatform_s.a(spu.o)
-                0x00000000000034e2                spu_regions_flash_get_region_size
+                0x00000000000034da        0x6 platform/libplatform_s.a(spu.o)
+                0x00000000000034da                spu_regions_flash_get_region_size
  .text.spu_regions_sram_get_base_address_in_region
-                0x00000000000034e8        0xa platform/libplatform_s.a(spu.o)
-                0x00000000000034e8                spu_regions_sram_get_base_address_in_region
- *fill*         0x00000000000034f2        0x2 
+                0x00000000000034e0        0xa platform/libplatform_s.a(spu.o)
+                0x00000000000034e0                spu_regions_sram_get_base_address_in_region
+ *fill*         0x00000000000034ea        0x2 
  .text.spu_regions_sram_get_last_address_in_region
-                0x00000000000034f4        0xc platform/libplatform_s.a(spu.o)
-                0x00000000000034f4                spu_regions_sram_get_last_address_in_region
+                0x00000000000034ec        0xc platform/libplatform_s.a(spu.o)
+                0x00000000000034ec                spu_regions_sram_get_last_address_in_region
  .text.spu_regions_sram_get_start_id
-                0x0000000000003500        0x4 platform/libplatform_s.a(spu.o)
-                0x0000000000003500                spu_regions_sram_get_start_id
+                0x00000000000034f8        0x4 platform/libplatform_s.a(spu.o)
+                0x00000000000034f8                spu_regions_sram_get_start_id
  .text.spu_regions_sram_get_last_id
-                0x0000000000003504        0x4 platform/libplatform_s.a(spu.o)
-                0x0000000000003504                spu_regions_sram_get_last_id
+                0x00000000000034fc        0x4 platform/libplatform_s.a(spu.o)
+                0x00000000000034fc                spu_regions_sram_get_last_id
  .text.spu_regions_sram_get_region_size
-                0x0000000000003508        0x6 platform/libplatform_s.a(spu.o)
-                0x0000000000003508                spu_regions_sram_get_region_size
- *fill*         0x000000000000350e        0x2 
+                0x0000000000003500        0x6 platform/libplatform_s.a(spu.o)
+                0x0000000000003500                spu_regions_sram_get_region_size
+ *fill*         0x0000000000003506        0x2 
  .text.spu_peripheral_config_non_secure
-                0x0000000000003510       0x18 platform/libplatform_s.a(spu.o)
-                0x0000000000003510                spu_peripheral_config_non_secure
+                0x0000000000003508       0x18 platform/libplatform_s.a(spu.o)
+                0x0000000000003508                spu_peripheral_config_non_secure
  .text.tfm_platform_hal_read_service
-                0x0000000000003528       0x5c platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
-                0x0000000000003528                tfm_platform_hal_read_service
+                0x0000000000003520       0x5c platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+                0x0000000000003520                tfm_platform_hal_read_service
  .text.tfm_platform_hal_gpio_service
-                0x0000000000003584       0x7c platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
-                0x0000000000003584                tfm_platform_hal_gpio_service
+                0x000000000000357c       0x7c platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+                0x000000000000357c                tfm_platform_hal_gpio_service
  .text.nrf_cc3xx_platform_init_hmac_drbg
-                0x0000000000003600       0x44 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform.c.obj)
-                0x0000000000003600                nrf_cc3xx_platform_init_hmac_drbg
+                0x00000000000035f8       0x44 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform.c.obj)
+                0x00000000000035f8                nrf_cc3xx_platform_init_hmac_drbg
  .text.nrf_cc3xx_platform_hmac_drbg_init
-                0x0000000000003644       0x64 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_hmac_drbg.c.obj)
-                0x0000000000003644                nrf_cc3xx_platform_hmac_drbg_init
+                0x000000000000363c       0x64 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_hmac_drbg.c.obj)
+                0x000000000000363c                nrf_cc3xx_platform_hmac_drbg_init
  .text.nrf_cc3xx_platform_hmac_drbg_get
-                0x00000000000036a8       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_hmac_drbg.c.obj)
-                0x00000000000036a8                nrf_cc3xx_platform_hmac_drbg_get
+                0x00000000000036a0       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_hmac_drbg.c.obj)
+                0x00000000000036a0                nrf_cc3xx_platform_hmac_drbg_get
  .text.mbedtls_zeroize_internal
-                0x00000000000036f0       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_common.c.obj)
-                0x00000000000036f0                mbedtls_zeroize_internal
+                0x00000000000036e8       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_common.c.obj)
+                0x00000000000036e8                mbedtls_zeroize_internal
  .text.mbedtls_platform_zeroize
-                0x0000000000003704       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_common.c.obj)
-                0x0000000000003704                mbedtls_platform_zeroize
+                0x00000000000036fc       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_common.c.obj)
+                0x00000000000036fc                mbedtls_platform_zeroize
  .text.cc_hmac_sha256_starts.constprop.0
-                0x0000000000003718      0x108 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x0000000000003710      0x108 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
  .text.cc_mbedtls_hmac_drbg_init
-                0x0000000000003820       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
-                0x0000000000003820                cc_mbedtls_hmac_drbg_init
+                0x0000000000003818       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x0000000000003818                cc_mbedtls_hmac_drbg_init
  .text.cc_mbedtls_hmac_drbg_update
-                0x0000000000003848      0x170 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
-                0x0000000000003848                cc_mbedtls_hmac_drbg_update
+                0x0000000000003840      0x170 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x0000000000003840                cc_mbedtls_hmac_drbg_update
  .text.cc_hmac_drbg_reseed_core
-                0x00000000000039b8       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x00000000000039b0       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
  .text.cc_mbedtls_hmac_drbg_seed
-                0x0000000000003a64       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
-                0x0000000000003a64                cc_mbedtls_hmac_drbg_seed
+                0x0000000000003a5c       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x0000000000003a5c                cc_mbedtls_hmac_drbg_seed
  .text.cc_mbedtls_hmac_drbg_random_with_add
-                0x0000000000003ab8      0x144 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
-                0x0000000000003ab8                cc_mbedtls_hmac_drbg_random_with_add
+                0x0000000000003ab0      0x144 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hmac_drbg_alt.c.obj)
+                0x0000000000003ab0                cc_mbedtls_hmac_drbg_random_with_add
  .text.entropy_update
-                0x0000000000003bfc       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
+                0x0000000000003bf4       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
  .text.entropy_gather_internal.part.0
-                0x0000000000003c78       0x88 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
+                0x0000000000003c70       0x88 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
  .text.cc_mbedtls_entropy_init
-                0x0000000000003d00       0x84 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
-                0x0000000000003d00                cc_mbedtls_entropy_init
+                0x0000000000003cf8       0x84 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
+                0x0000000000003cf8                cc_mbedtls_entropy_init
  .text.cc_mbedtls_entropy_func
-                0x0000000000003d84      0x10c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
-                0x0000000000003d84                cc_mbedtls_entropy_func
+                0x0000000000003d7c      0x10c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(entropy.c.obj)
+                0x0000000000003d7c                cc_mbedtls_entropy_func
  .text.RndStartupTest.constprop.0
-                0x0000000000003e90       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
+                0x0000000000003e88       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
  .text.CC_LibInit_HMAC_DRBG
-                0x0000000000003f3c       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
-                0x0000000000003f3c                CC_LibInit_HMAC_DRBG
+                0x0000000000003f34       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
+                0x0000000000003f34                CC_LibInit_HMAC_DRBG
  .text.CC_HalInit
-                0x0000000000003fb8        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
-                0x0000000000003fb8                CC_HalInit
+                0x0000000000003fb0        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
+                0x0000000000003fb0                CC_HalInit
  .text.CC_HalClearInterruptBit
-                0x0000000000003fbc       0x1c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
-                0x0000000000003fbc                CC_HalClearInterruptBit
+                0x0000000000003fb4       0x1c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
+                0x0000000000003fb4                CC_HalClearInterruptBit
  .text.CC_HalMaskInterrupt
-                0x0000000000003fd8        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
-                0x0000000000003fd8                CC_HalMaskInterrupt
+                0x0000000000003fd0        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
+                0x0000000000003fd0                CC_HalMaskInterrupt
  .text.CC_HalWaitInterrupt
-                0x0000000000003fe4        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
-                0x0000000000003fe4                CC_HalWaitInterrupt
+                0x0000000000003fdc        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
+                0x0000000000003fdc                CC_HalWaitInterrupt
  .text.CC_HalWaitInterruptRND
-                0x0000000000003ff0        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
-                0x0000000000003ff0                CC_HalWaitInterruptRND
+                0x0000000000003fe8        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_hal.c.obj)
+                0x0000000000003fe8                CC_HalWaitInterruptRND
  .text.CC_PalInit
-                0x0000000000003ffc       0x5c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal.c.obj)
-                0x0000000000003ffc                CC_PalInit
+                0x0000000000003ff4       0x5c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal.c.obj)
+                0x0000000000003ff4                CC_PalInit
  .text.CC_PalTerminate
-                0x0000000000004058       0x34 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal.c.obj)
-                0x0000000000004058                CC_PalTerminate
+                0x0000000000004050       0x34 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal.c.obj)
+                0x0000000000004050                CC_PalTerminate
  .text.CC_PalDmaInit
-                0x000000000000408c        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_dma.c.obj)
-                0x000000000000408c                CC_PalDmaInit
+                0x0000000000004084        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_dma.c.obj)
+                0x0000000000004084                CC_PalDmaInit
  .text.CC_PalDmaTerminate
-                0x0000000000004090        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_dma.c.obj)
-                0x0000000000004090                CC_PalDmaTerminate
+                0x0000000000004088        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_dma.c.obj)
+                0x0000000000004088                CC_PalDmaTerminate
  .text.CC_PalWaitInterruptRND
-                0x0000000000004094       0x38 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_interrupt_ctrl.c.obj)
-                0x0000000000004094                CC_PalWaitInterruptRND
+                0x000000000000408c       0x38 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_interrupt_ctrl.c.obj)
+                0x000000000000408c                CC_PalWaitInterruptRND
  .text.CC_PalWaitInterrupt
-                0x00000000000040cc       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_interrupt_ctrl.c.obj)
-                0x00000000000040cc                CC_PalWaitInterrupt
+                0x00000000000040c4       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_interrupt_ctrl.c.obj)
+                0x00000000000040c4                CC_PalWaitInterrupt
  .text.CC_PalMemCopyPlat
-                0x00000000000040f4        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mem.c.obj)
-                0x00000000000040f4                CC_PalMemCopyPlat
+                0x00000000000040ec        0x4 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mem.c.obj)
+                0x00000000000040ec                CC_PalMemCopyPlat
  .text.CC_PalMemSetZeroPlat
-                0x00000000000040f8        0x8 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mem.c.obj)
-                0x00000000000040f8                CC_PalMemSetZeroPlat
+                0x00000000000040f0        0x8 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mem.c.obj)
+                0x00000000000040f0                CC_PalMemSetZeroPlat
  .text.CC_PalMutexCreate
-                0x0000000000004100       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
-                0x0000000000004100                CC_PalMutexCreate
+                0x00000000000040f8       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
+                0x00000000000040f8                CC_PalMutexCreate
  .text.CC_PalMutexDestroy
-                0x0000000000004114       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
-                0x0000000000004114                CC_PalMutexDestroy
+                0x000000000000410c       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
+                0x000000000000410c                CC_PalMutexDestroy
  .text.CC_PalMutexLock
-                0x0000000000004128       0x10 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
-                0x0000000000004128                CC_PalMutexLock
+                0x0000000000004120       0x10 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
+                0x0000000000004120                CC_PalMutexLock
  .text.CC_PalMutexUnlock
-                0x0000000000004138       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
-                0x0000000000004138                CC_PalMutexUnlock
+                0x0000000000004130       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_mutex.c.obj)
+                0x0000000000004130                CC_PalMutexUnlock
  .text.CC_PalPowerSaveModeInit
-                0x000000000000414c       0x3c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
-                0x000000000000414c                CC_PalPowerSaveModeInit
+                0x0000000000004144       0x3c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
+                0x0000000000004144                CC_PalPowerSaveModeInit
  .text.CC_PalPowerSaveModeSelect
-                0x0000000000004188       0x84 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
-                0x0000000000004188                CC_PalPowerSaveModeSelect
+                0x0000000000004180       0x84 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
+                0x0000000000004180                CC_PalPowerSaveModeSelect
  .text.mutex_init
-                0x000000000000420c        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
-                0x000000000000420c                mutex_init
+                0x0000000000004204        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
+                0x0000000000004204                mutex_init
  .text.mutex_lock
-                0x0000000000004218        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
-                0x0000000000004218                mutex_lock
+                0x0000000000004210        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
+                0x0000000000004210                mutex_lock
  .text.mutex_unlock
-                0x0000000000004224        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
-                0x0000000000004224                mutex_unlock
+                0x000000000000421c        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(threading_alt.c.obj)
+                0x000000000000421c                mutex_unlock
  .text.nrf_cc3xx_platform_abort
-                0x0000000000004230       0x24 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_abort.c.obj)
+                0x0000000000004228       0x24 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_abort.c.obj)
  .text.CC_PalAbort
-                0x0000000000004254       0x44 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_abort.c.obj)
-                0x0000000000004254                CC_PalAbort
+                0x000000000000424c       0x44 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_abort.c.obj)
+                0x000000000000424c                CC_PalAbort
  .text.mutex_free
-                0x0000000000004298       0x34 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+                0x0000000000004290       0x34 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
  .text.mutex_lock
-                0x00000000000042cc       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+                0x00000000000042c4       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
  .text.mutex_unlock
-                0x0000000000004314       0x38 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+                0x000000000000430c       0x38 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
  .text.mutex_init
-                0x000000000000434c       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+                0x0000000000004344       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
  .text.startTrngHW
-                0x000000000000436c      0x13c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x0000000000004364      0x13c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
  .text.LLF_RND_RepetitionCounterTest.part.0
-                0x00000000000044a8       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x00000000000044a0       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
  .text.LLF_RND_AdaptiveProportionTest
-                0x00000000000044fc       0x8c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
-                0x00000000000044fc                LLF_RND_AdaptiveProportionTest
+                0x00000000000044f4       0x8c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x00000000000044f4                LLF_RND_AdaptiveProportionTest
  .text.getTrngSource
-                0x0000000000004588      0x2ac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x0000000000004580      0x2ac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
  .text.LLF_RND_GetTrngSource
-                0x0000000000004834       0x18 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
-                0x0000000000004834                LLF_RND_GetTrngSource
+                0x000000000000482c       0x18 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x000000000000482c                LLF_RND_GetTrngSource
  .text.LLF_RND_RunTrngStartupTest
-                0x000000000000484c       0x1c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
-                0x000000000000484c                LLF_RND_RunTrngStartupTest
+                0x0000000000004844       0x1c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd_trng90b.c.obj)
+                0x0000000000004844                LLF_RND_RunTrngStartupTest
  .text.mbedtls_hardware_poll
-                0x0000000000004868      0x10c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(trng_api.c.obj)
-                0x0000000000004868                mbedtls_hardware_poll
+                0x0000000000004860      0x10c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(trng_api.c.obj)
+                0x0000000000004860                mbedtls_hardware_poll
  .text.cc_mbedtls_sha256_init
-                0x0000000000004974       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
-                0x0000000000004974                cc_mbedtls_sha256_init
+                0x000000000000496c       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x000000000000496c                cc_mbedtls_sha256_init
  .text.cc_mbedtls_sha256_free
-                0x000000000000499c        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
-                0x000000000000499c                cc_mbedtls_sha256_free
+                0x0000000000004994        0xc C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x0000000000004994                cc_mbedtls_sha256_free
  .text.cc_mbedtls_sha256_starts
-                0x00000000000049a8       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
-                0x00000000000049a8                cc_mbedtls_sha256_starts
+                0x00000000000049a0       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x00000000000049a0                cc_mbedtls_sha256_starts
  .text.cc_mbedtls_sha256_update
-                0x00000000000049d0       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
-                0x00000000000049d0                cc_mbedtls_sha256_update
+                0x00000000000049c8       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x00000000000049c8                cc_mbedtls_sha256_update
  .text.cc_mbedtls_sha256_finish
-                0x0000000000004a24       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
-                0x0000000000004a24                cc_mbedtls_sha256_finish
+                0x0000000000004a1c       0x48 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x0000000000004a1c                cc_mbedtls_sha256_finish
  .text.mbedtls_sha_starts_internal
-                0x0000000000004a6c       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
-                0x0000000000004a6c                mbedtls_sha_starts_internal
+                0x0000000000004a64       0x28 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
+                0x0000000000004a64                mbedtls_sha_starts_internal
  .text.mbedtls_sha_finish_internal
-                0x0000000000004a94       0x5c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
-                0x0000000000004a94                mbedtls_sha_finish_internal
+                0x0000000000004a8c       0x5c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
+                0x0000000000004a8c                mbedtls_sha_finish_internal
  .text.mbedtls_sha_update_internal
-                0x0000000000004af0      0x1f0 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
-                0x0000000000004af0                mbedtls_sha_update_internal
+                0x0000000000004ae8      0x1f0 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(mbedtls_hash_common.c.obj)
+                0x0000000000004ae8                mbedtls_sha_update_internal
  .text.cc_mbedtls_sha256
-                0x0000000000004ce0       0x50 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256.c.obj)
-                0x0000000000004ce0                cc_mbedtls_sha256
+                0x0000000000004cd8       0x50 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256.c.obj)
+                0x0000000000004cd8                cc_mbedtls_sha256
  .text.RNG_PLAT_SetUserRngParameters
-                0x0000000000004d30       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_rng_plat.c.obj)
-                0x0000000000004d30                RNG_PLAT_SetUserRngParameters
+                0x0000000000004d28       0x7c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_rng_plat.c.obj)
+                0x0000000000004d28                RNG_PLAT_SetUserRngParameters
  .text.CC_PalTrngParamGet
-                0x0000000000004dac       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_trng.c.obj)
-                0x0000000000004dac                CC_PalTrngParamGet
+                0x0000000000004da4       0xac C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_trng.c.obj)
+                0x0000000000004da4                CC_PalTrngParamGet
  .text.LLF_RND_WaitRngInterrupt
-                0x0000000000004e58       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
-                0x0000000000004e58                LLF_RND_WaitRngInterrupt
+                0x0000000000004e50       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
+                0x0000000000004e50                LLF_RND_WaitRngInterrupt
  .text.LLF_RND_GetRoscSampleCnt
-                0x0000000000004e78       0x3c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
-                0x0000000000004e78                LLF_RND_GetRoscSampleCnt
+                0x0000000000004e70       0x3c C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
+                0x0000000000004e70                LLF_RND_GetRoscSampleCnt
  .text.LLF_RND_GetFastestRosc
-                0x0000000000004eb4       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
-                0x0000000000004eb4                LLF_RND_GetFastestRosc
+                0x0000000000004eac       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
+                0x0000000000004eac                LLF_RND_GetFastestRosc
  .text.LLF_RND_TurnOffTrng
-                0x0000000000004ed4       0x24 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
-                0x0000000000004ed4                LLF_RND_TurnOffTrng
+                0x0000000000004ecc       0x24 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(llf_rnd.c.obj)
+                0x0000000000004ecc                LLF_RND_TurnOffTrng
  .text.SetDataBuffersInfo
-                0x0000000000004ef8       0x64 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(driver_common.c.obj)
-                0x0000000000004ef8                SetDataBuffersInfo
+                0x0000000000004ef0       0x64 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(driver_common.c.obj)
+                0x0000000000004ef0                SetDataBuffersInfo
  .text.InitHashDrv
-                0x0000000000004f5c       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
-                0x0000000000004f5c                InitHashDrv
+                0x0000000000004f54       0x54 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x0000000000004f54                InitHashDrv
  .text.ProcessHashDrv
-                0x0000000000004fb0      0x210 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
-                0x0000000000004fb0                ProcessHashDrv
+                0x0000000000004fa8      0x210 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x0000000000004fa8                ProcessHashDrv
  .text.FinishHashDrv
-                0x00000000000051c0       0x74 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
-                0x00000000000051c0                FinishHashDrv
+                0x00000000000051b8       0x74 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x00000000000051b8                FinishHashDrv
  .text.CC_PalDataBufferAttrGet
-                0x0000000000005234        0x8 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_buff_attr.c.obj)
-                0x0000000000005234                CC_PalDataBufferAttrGet
+                0x000000000000522c        0x8 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_buff_attr.c.obj)
+                0x000000000000522c                CC_PalDataBufferAttrGet
  .text.mbedtls_free
-                0x000000000000523c        0xc secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
-                0x000000000000523c                mbedtls_free
+                0x0000000000005234        0xc secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
+                0x0000000000005234                mbedtls_free
  .text.mbedtls_platform_set_calloc_free
-                0x0000000000005248       0x14 secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
-                0x0000000000005248                mbedtls_platform_set_calloc_free
- .text._sbrk    0x000000000000525c       0x20 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp\libnosys.a(sbrk.o)
-                0x000000000000525c                _sbrk
- .text._exit    0x000000000000527c        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp\libnosys.a(_exit.o)
-                0x000000000000527c                _exit
+                0x0000000000005240       0x14 secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
+                0x0000000000005240                mbedtls_platform_set_calloc_free
+ .text._sbrk    0x0000000000005254       0x20 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp\libnosys.a(sbrk.o)
+                0x0000000000005254                _sbrk
+ .text._exit    0x0000000000005274        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp\libnosys.a(_exit.o)
+                0x0000000000005274                _exit
  *(.init)
- .init          0x0000000000005280        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crti.o
-                0x0000000000005280                _init
- .init          0x0000000000005284        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtn.o
+ .init          0x0000000000005278        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crti.o
+                0x0000000000005278                _init
+ .init          0x000000000000527c        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtn.o
  *(.fini)
- .fini          0x000000000000528c        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crti.o
-                0x000000000000528c                _fini
- .fini          0x0000000000005290        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtn.o
+ .fini          0x0000000000005284        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crti.o
+                0x0000000000005284                _fini
+ .fini          0x0000000000005288        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtn.o
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -2553,104 +2553,104 @@ END GROUP
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
 
-.glue_7         0x0000000000005298        0x0
- .glue_7        0x0000000000005298        0x0 linker stubs
+.glue_7         0x0000000000005290        0x0
+ .glue_7        0x0000000000005290        0x0 linker stubs
 
-.glue_7t        0x0000000000005298        0x0
- .glue_7t       0x0000000000005298        0x0 linker stubs
+.glue_7t        0x0000000000005290        0x0
+ .glue_7t       0x0000000000005290        0x0 linker stubs
 
-.vfp11_veneer   0x0000000000005298        0x0
- .vfp11_veneer  0x0000000000005298        0x0 linker stubs
+.vfp11_veneer   0x0000000000005290        0x0
+ .vfp11_veneer  0x0000000000005290        0x0 linker stubs
 
-.v4_bx          0x0000000000005298        0x0
- .v4_bx         0x0000000000005298        0x0 linker stubs
+.v4_bx          0x0000000000005290        0x0
+ .v4_bx         0x0000000000005290        0x0 linker stubs
 
-.iplt           0x0000000000005298        0x0
- .iplt          0x0000000000005298        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
+.iplt           0x0000000000005290        0x0
+ .iplt          0x0000000000005290        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
 
 .psa_interface_cross_call
-                0x0000000000005298       0xc8
+                0x0000000000005290       0xc8
  .psa_interface_cross_call
-                0x0000000000005298       0xc8 secure_fw/CMakeFiles/tfm_s.dir/spm/cmsis_psa/psa_interface_cross.o
-                0x00000000000052a0                psa_framework_version_cross
-                0x00000000000052a8                psa_version_cross
-                0x00000000000052b0                tfm_psa_call_pack_cross
-                0x00000000000052b8                psa_wait_cross
-                0x00000000000052c0                psa_get_cross
-                0x00000000000052c8                psa_read_cross
-                0x00000000000052d0                psa_skip_cross
-                0x00000000000052d8                psa_write_cross
-                0x00000000000052e0                psa_reply_cross
-                0x00000000000052e8                psa_notify_cross
-                0x00000000000052f0                psa_clear_cross
-                0x00000000000052f8                psa_panic_cross
-                0x0000000000005300                psa_rot_lifecycle_state_cross
-                0x0000000000005308                psa_connect_cross
-                0x0000000000005310                psa_close_cross
-                0x0000000000005318                psa_set_rhandle_cross
+                0x0000000000005290       0xc8 secure_fw/CMakeFiles/tfm_s.dir/spm/cmsis_psa/psa_interface_cross.o
+                0x0000000000005298                psa_framework_version_cross
+                0x00000000000052a0                psa_version_cross
+                0x00000000000052a8                tfm_psa_call_pack_cross
+                0x00000000000052b0                psa_wait_cross
+                0x00000000000052b8                psa_get_cross
+                0x00000000000052c0                psa_read_cross
+                0x00000000000052c8                psa_skip_cross
+                0x00000000000052d0                psa_write_cross
+                0x00000000000052d8                psa_reply_cross
+                0x00000000000052e0                psa_notify_cross
+                0x00000000000052e8                psa_clear_cross
+                0x00000000000052f0                psa_panic_cross
+                0x00000000000052f8                psa_rot_lifecycle_state_cross
+                0x0000000000005300                psa_connect_cross
+                0x0000000000005308                psa_close_cross
+                0x0000000000005310                psa_set_rhandle_cross
 
-.tfm_rodata     0x0000000000005360      0x240
+.tfm_rodata     0x0000000000005358      0x238
  *(.rodata*)
  .rodata.str1.1
-                0x0000000000005360        0xb secure_fw/CMakeFiles/tfm_s.dir/__/generated/secure_fw/partitions/crypto/auto_generated/load_info_tfm_crypto.o
+                0x0000000000005358        0xb secure_fw/CMakeFiles/tfm_s.dir/__/generated/secure_fw/partitions/crypto/auto_generated/load_info_tfm_crypto.o
  .rodata.str1.1
-                0x000000000000536b       0x4e secure_fw/CMakeFiles/tfm_s.dir/__/generated/secure_fw/partitions/platform/auto_generated/load_info_tfm_platform.o
+                0x0000000000005363       0x4e secure_fw/CMakeFiles/tfm_s.dir/__/generated/secure_fw/partitions/platform/auto_generated/load_info_tfm_platform.o
  .rodata.CSWTCH.5
-                0x00000000000053b9        0x4 platform/libplatform_s.a(system_nrf5340_application.o)
+                0x00000000000053b1        0x4 platform/libplatform_s.a(system_nrf5340_application.o)
  .rodata.CSWTCH.3
-                0x00000000000053bd        0x4 platform/libplatform_s.a(system_nrf5340_application.o)
- *fill*         0x00000000000053c1        0x3 
+                0x00000000000053b5        0x4 platform/libplatform_s.a(system_nrf5340_application.o)
+ *fill*         0x00000000000053b9        0x3 
  .rodata.backend_instance
-                0x00000000000053c4       0x18 secure_fw/spm/libtfm_spm.a(backend_ipc.o)
-                0x00000000000053c4                backend_instance
+                0x00000000000053bc       0x18 secure_fw/spm/libtfm_spm.a(backend_ipc.o)
+                0x00000000000053bc                backend_instance
  .rodata.serv_pool_ea
-                0x00000000000053dc        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
+                0x00000000000053d4        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
  .rodata.part_pool_ea
-                0x00000000000053e0        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
+                0x00000000000053d8        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
  .rodata.ldinf_ea
-                0x00000000000053e4        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
+                0x00000000000053dc        0x4 secure_fw/spm/libtfm_spm.a(static_load.o)
  .rodata.memory_regions
-                0x00000000000053e8       0x1c platform/libplatform_s.a(target_cfg.o)
-                0x00000000000053e8                memory_regions
+                0x00000000000053e0       0x14 platform/libplatform_s.a(target_cfg.o)
+                0x00000000000053e0                memory_regions
  .rodata.ranges
-                0x0000000000005404       0x20 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+                0x00000000000053f4       0x20 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
  .rodata.CSWTCH.10
-                0x0000000000005424       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform.c.obj)
+                0x0000000000005414       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform.c.obj)
  .rodata.RndStartupTest.constprop.0.str1.4
-                0x0000000000005444       0x6f C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
- *fill*         0x00000000000054b3        0x1 
+                0x0000000000005434       0x6f C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_lib.c.obj)
+ *fill*         0x00000000000054a3        0x1 
  .rodata.CC_PalPowerSaveModeInit.str1.4
-                0x00000000000054b4       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
+                0x00000000000054a4       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_pm.c.obj)
  .rodata.mutex_free.str1.4
-                0x00000000000054d4       0x26 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
- *fill*         0x00000000000054fa        0x2 
+                0x00000000000054c4       0x26 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+ *fill*         0x00000000000054ea        0x2 
  .rodata.mutex_init.str1.4
-                0x00000000000054fc       0x23 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
- *fill*         0x000000000000551f        0x1 
+                0x00000000000054ec       0x23 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(nrf_cc3xx_platform_mutex.c.obj)
+ *fill*         0x000000000000550f        0x1 
  .rodata.mbedtls_hardware_poll.str1.4
-                0x0000000000005520       0x16 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(trng_api.c.obj)
+                0x0000000000005510       0x16 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(trng_api.c.obj)
                                          0x6e (size before relaxing)
- *fill*         0x0000000000005536        0x2 
+ *fill*         0x0000000000005526        0x2 
  .rodata.cc_mbedtls_sha256_init.str1.4
-                0x0000000000005538        0xe C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
+                0x0000000000005528        0xe C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(sha256_alt.c.obj)
  .rodata.ProcessHashDrv.str1.4
-                0x0000000000005546       0x6f C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
- *fill*         0x0000000000005546        0x2 
+                0x0000000000005536       0x6f C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+ *fill*         0x0000000000005536        0x2 
  .rodata.HASH_LARVAL_SHA1
-                0x0000000000005548       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x0000000000005538       0x14 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
  .rodata.HASH_LARVAL_SHA224
-                0x000000000000555c       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x000000000000554c       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
  .rodata.HASH_LARVAL_SHA256
-                0x000000000000557c       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
+                0x000000000000556c       0x20 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(hash_driver.c.obj)
  *(.eh_frame*)
- .eh_frame      0x000000000000559c        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
- .eh_frame      0x000000000000559c        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtend.o
+ .eh_frame      0x000000000000558c        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
+ .eh_frame      0x000000000000558c        0x4 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtend.o
 
-.rel.dyn        0x00000000000055a0        0x0
- .rel.iplt      0x00000000000055a0        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
+.rel.dyn        0x0000000000005590        0x0
+ .rel.iplt      0x0000000000005590        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
 
-.ARM.exidx      0x00000000000055a0        0x8
- .ARM.exidx     0x00000000000055a0        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp/crt0.o
+.ARM.exidx      0x0000000000005590        0x8
+ .ARM.exidx     0x0000000000005590        0x8 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main/nofp/crt0.o
                                          0x10 (size before relaxing)
 
 .tfm_secure_data_start
@@ -2689,7 +2689,7 @@ END GROUP
                 0x0000000020001c20                Image$$TFM_APP_RW_STACK_START$$Base = .
 
 .TFM_APP_ROT_LINKER_DATA
-                0x0000000020001c20        0x0 load address 0x00000000000055c0
+                0x0000000020001c20        0x0 load address 0x00000000000055a0
  *tfm_app_rot_partition*:*(.data*)
  *(TFM_*_APP-ROT_ATTR_RW)
                 0x0000000020001c20                . = ALIGN (0x20)
@@ -2712,7 +2712,7 @@ END GROUP
                 0x0000000020001c40                Image$$TFM_PSA_RW_STACK_START$$Base = .
 
 .TFM_PSA_ROT_LINKER_DATA
-                0x0000000020001c40        0x0 load address 0x00000000000055c0
+                0x0000000020001c40        0x0 load address 0x00000000000055a0
  *tfm_psa_rot_partition*:*(.data*)
  *(TFM_*_PSA-ROT_ATTR_RW)
                 0x0000000020001c40                . = ALIGN (0x20)
@@ -2745,7 +2745,7 @@ END GROUP
                 0x0000000020002f20                Image$$TFM_PSA_ROT_LINKER_DATA$$ZI$$Limit = (ADDR (.TFM_PSA_ROT_LINKER_BSS) + SIZEOF (.TFM_PSA_ROT_LINKER_BSS))
                 0x0000000020002f20                Image$$TFM_PSA_RW_STACK_END$$Base = .
 
-.TFM_DATA       0x0000000020002f20       0xf8 load address 0x00000000000055a8
+.TFM_DATA       0x0000000020002f20       0xf8 load address 0x0000000000005598
  *(.data*)
  .data.SystemCoreClock
                 0x0000000020002f20        0x4 platform/libplatform_s.a(system_nrf5340_application.o)
@@ -2836,13 +2836,13 @@ END GROUP
                 0x0000000020003018                Image$$ER_TFM_DATA$$RW$$Limit = (ADDR (.TFM_DATA) + SIZEOF (.TFM_DATA))
 
 .tm_clone_table
-                0x0000000020003018        0x0 load address 0x00000000000056a0
+                0x0000000020003018        0x0 load address 0x0000000000005690
  .tm_clone_table
                 0x0000000020003018        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
  .tm_clone_table
                 0x0000000020003018        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtend.o
 
-.igot.plt       0x0000000020003018        0x0 load address 0x00000000000056a0
+.igot.plt       0x0000000020003018        0x0 load address 0x0000000000005690
  .igot.plt      0x0000000020003018        0x0 c:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.1.0/thumb/v8-m.main/nofp/crtbegin.o
 
 .TFM_BSS        0x0000000020003020     0x1a30
@@ -2968,8 +2968,8 @@ END GROUP
                 0x0000000020004a48                Image$$ER_TFM_DATA$$Limit = ((ADDR (.TFM_DATA) + SIZEOF (.TFM_DATA)) + SIZEOF (.TFM_BSS))
 
 .sg_start_dummy
-                0x00000000000056a0        0x0
-                0x00000000000056a0                SG_START_DUMMY_UNUSED = .
+                0x0000000000005690        0x0
+                0x0000000000005690                SG_START_DUMMY_UNUSED = .
 
 .gnu.sgstubs    0x0000000000007c00       0x40
                 0x0000000000007c00                Load$$LR$$LR_VENEER$$Base = ABSOLUTE (.)
@@ -2988,7 +2988,6 @@ END GROUP
                 0x0000000000008000                Load$$LR$$LR_VENEER$$Limit = ABSOLUTE (.)
                 0x0000000000000001                ASSERT (((Load$$LR$$LR_VENEER$$Limit - Load$$LR$$LR_VENEER$$Base) <= 0x400), Veneer region overflowed)
                 0x0000000000008000                Load$$LR$$LR_NS_PARTITION$$Base = 0x8000
-                0x00000000000fc000                Load$$LR$$LR_NRF_NS_STORAGE_PARTITION$$Base = 0xfc000
                 0x0000000020000c00                PROVIDE (__stack = Image$$ARM_LIB_STACK$$ZI$$Limit)
 OUTPUT(bin\tfm_s.axf elf32-littlearm)
 LOAD linker stubs
@@ -3308,7 +3307,7 @@ LOAD linker stubs
  .comment       0x0000000000000040       0x21 C:/ncs/v2.3.0-rc1/nrfxlib/crypto/nrf_cc312_platform/lib/cortex-m33/soft-float/no-interrupts/libnrf_cc312_platform_0.9.16.a(cc_pal_buff_attr.c.obj)
  .comment       0x0000000000000040       0x21 secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
 
-.debug_info     0x0000000000000000    0x2785d
+.debug_info     0x0000000000000000    0x277e0
  .debug_info    0x0000000000000000      0x249 secure_fw/CMakeFiles/tfm_s.dir/partitions/ns_agent_tz/tfm_psa_api_veneers.o
  .debug_info    0x0000000000000249       0x24 secure_fw/CMakeFiles/tfm_s.dir/__/platform/ext/target/nordic_nrf/common/nrf5340/gcc/startup_nrf5340_s.o
  .debug_info    0x000000000000026d      0x110 secure_fw/CMakeFiles/tfm_s.dir/__/platform/ext/common/faults.o
@@ -3354,24 +3353,24 @@ LOAD linker stubs
  .debug_info    0x000000000001bce5      0x246 secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libcrypto_service_mbedcrypto.a(random_ext.o)
  .debug_info    0x000000000001bf2b      0x68d secure_fw/partitions/platform/libtfm_psa_rot_partition_platform.a(platform_sp.o)
  .debug_info    0x000000000001c5b8       0xa0 secure_fw/partitions/platform/libtfm_psa_rot_partition_platform.a(intermedia_tfm_platform.o)
- .debug_info    0x000000000001c658      0xf04 platform/libplatform_s.a(tfm_hal_isolation.o)
- .debug_info    0x000000000001d55c      0x281 platform/libplatform_s.a(tfm_hal_platform_common.o)
- .debug_info    0x000000000001d7dd      0x529 platform/libplatform_s.a(tfm_hal_nvic.o)
- .debug_info    0x000000000001dd06     0x6002 platform/libplatform_s.a(target_cfg.o)
- .debug_info    0x0000000000023d08      0x4f9 platform/libplatform_s.a(tfm_hal_platform.o)
- .debug_info    0x0000000000024201      0x27c platform/libplatform_s.a(dummy_otp.o)
- .debug_info    0x000000000002447d       0xe8 platform/libplatform_s.a(dummy_provisioning.o)
- .debug_info    0x0000000000024565      0x5f8 platform/libplatform_s.a(tfm_platform_system.o)
- .debug_info    0x0000000000024b5d      0x465 platform/libplatform_s.a(tfm_platform.o)
- .debug_info    0x0000000000024fc2       0xd0 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
- .debug_info    0x0000000000025092      0x57f platform/libplatform_s.a(mpu_armv8m_drv.o)
- .debug_info    0x0000000000025611      0xfd2 platform/libplatform_s.a(spu.o)
- .debug_info    0x00000000000265e3      0x873 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
- .debug_info    0x0000000000026e56      0x1a8 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
- .debug_info    0x0000000000026ffe      0x218 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
- .debug_info    0x0000000000027216      0x36c secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
- .debug_info    0x0000000000027582       0x8e secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
- .debug_info    0x0000000000027610      0x24d secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
+ .debug_info    0x000000000001c658      0xeea platform/libplatform_s.a(tfm_hal_isolation.o)
+ .debug_info    0x000000000001d542      0x267 platform/libplatform_s.a(tfm_hal_platform_common.o)
+ .debug_info    0x000000000001d7a9      0x529 platform/libplatform_s.a(tfm_hal_nvic.o)
+ .debug_info    0x000000000001dcd2     0x5fb9 platform/libplatform_s.a(target_cfg.o)
+ .debug_info    0x0000000000023c8b      0x4f9 platform/libplatform_s.a(tfm_hal_platform.o)
+ .debug_info    0x0000000000024184      0x27c platform/libplatform_s.a(dummy_otp.o)
+ .debug_info    0x0000000000024400       0xe8 platform/libplatform_s.a(dummy_provisioning.o)
+ .debug_info    0x00000000000244e8      0x5f8 platform/libplatform_s.a(tfm_platform_system.o)
+ .debug_info    0x0000000000024ae0      0x465 platform/libplatform_s.a(tfm_platform.o)
+ .debug_info    0x0000000000024f45       0xd0 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
+ .debug_info    0x0000000000025015      0x57f platform/libplatform_s.a(mpu_armv8m_drv.o)
+ .debug_info    0x0000000000025594      0xfd2 platform/libplatform_s.a(spu.o)
+ .debug_info    0x0000000000026566      0x873 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+ .debug_info    0x0000000000026dd9      0x1a8 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
+ .debug_info    0x0000000000026f81      0x218 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
+ .debug_info    0x0000000000027199      0x36c secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
+ .debug_info    0x0000000000027505       0x8e secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
+ .debug_info    0x0000000000027593      0x24d secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
 
 .debug_abbrev   0x0000000000000000     0x72d4
  .debug_abbrev  0x0000000000000000      0x117 secure_fw/CMakeFiles/tfm_s.dir/partitions/ns_agent_tz/tfm_psa_api_veneers.o
@@ -3672,7 +3671,7 @@ LOAD linker stubs
  .debug_ranges  0x0000000000001900       0x38 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
  .debug_ranges  0x0000000000001938       0x30 secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
 
-.debug_line     0x0000000000000000    0x14310
+.debug_line     0x0000000000000000    0x1430f
  .debug_line    0x0000000000000000      0x2a3 secure_fw/CMakeFiles/tfm_s.dir/partitions/ns_agent_tz/tfm_psa_api_veneers.o
  .debug_line    0x00000000000002a3      0x116 secure_fw/CMakeFiles/tfm_s.dir/__/platform/ext/target/nordic_nrf/common/nrf5340/gcc/startup_nrf5340_s.o
  .debug_line    0x00000000000003b9      0x1b3 secure_fw/CMakeFiles/tfm_s.dir/__/platform/ext/common/faults.o
@@ -3721,23 +3720,23 @@ LOAD linker stubs
  .debug_line    0x000000000000fe3c      0x957 platform/libplatform_s.a(tfm_hal_isolation.o)
  .debug_line    0x0000000000010793      0x385 platform/libplatform_s.a(tfm_hal_platform_common.o)
  .debug_line    0x0000000000010b18      0x35c platform/libplatform_s.a(tfm_hal_nvic.o)
- .debug_line    0x0000000000010e74      0x6d3 platform/libplatform_s.a(target_cfg.o)
- .debug_line    0x0000000000011547      0x34b platform/libplatform_s.a(tfm_hal_platform.o)
- .debug_line    0x0000000000011892      0x273 platform/libplatform_s.a(dummy_otp.o)
- .debug_line    0x0000000000011b05      0x105 platform/libplatform_s.a(dummy_provisioning.o)
- .debug_line    0x0000000000011c0a      0x408 platform/libplatform_s.a(tfm_platform_system.o)
- .debug_line    0x0000000000012012      0x254 platform/libplatform_s.a(tfm_platform.o)
- .debug_line    0x0000000000012266      0x160 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
- .debug_line    0x00000000000123c6      0x414 platform/libplatform_s.a(mpu_armv8m_drv.o)
- .debug_line    0x00000000000127da      0x766 platform/libplatform_s.a(spu.o)
- .debug_line    0x0000000000012f40      0x723 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
- .debug_line    0x0000000000013663      0x286 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
- .debug_line    0x00000000000138e9      0x318 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
- .debug_line    0x0000000000013c01      0x390 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
- .debug_line    0x0000000000013f91      0x175 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
- .debug_line    0x0000000000014106      0x20a secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
+ .debug_line    0x0000000000010e74      0x6d2 platform/libplatform_s.a(target_cfg.o)
+ .debug_line    0x0000000000011546      0x34b platform/libplatform_s.a(tfm_hal_platform.o)
+ .debug_line    0x0000000000011891      0x273 platform/libplatform_s.a(dummy_otp.o)
+ .debug_line    0x0000000000011b04      0x105 platform/libplatform_s.a(dummy_provisioning.o)
+ .debug_line    0x0000000000011c09      0x408 platform/libplatform_s.a(tfm_platform_system.o)
+ .debug_line    0x0000000000012011      0x254 platform/libplatform_s.a(tfm_platform.o)
+ .debug_line    0x0000000000012265      0x160 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
+ .debug_line    0x00000000000123c5      0x414 platform/libplatform_s.a(mpu_armv8m_drv.o)
+ .debug_line    0x00000000000127d9      0x766 platform/libplatform_s.a(spu.o)
+ .debug_line    0x0000000000012f3f      0x723 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+ .debug_line    0x0000000000013662      0x286 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
+ .debug_line    0x00000000000138e8      0x318 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
+ .debug_line    0x0000000000013c00      0x390 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
+ .debug_line    0x0000000000013f90      0x175 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
+ .debug_line    0x0000000000014105      0x20a secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
 
-.debug_str      0x0000000000000000     0xb9db
+.debug_str      0x0000000000000000     0xb96a
  .debug_str     0x0000000000000000      0x27c secure_fw/CMakeFiles/tfm_s.dir/partitions/ns_agent_tz/tfm_psa_api_veneers.o
                                         0x2e1 (size before relaxing)
  .debug_str     0x000000000000027c       0x88 secure_fw/CMakeFiles/tfm_s.dir/__/platform/ext/target/nordic_nrf/common/nrf5340/gcc/startup_nrf5340_s.o
@@ -3828,41 +3827,41 @@ LOAD linker stubs
                                         0x4f4 (size before relaxing)
  .debug_str     0x000000000000847d       0x51 secure_fw/partitions/platform/libtfm_psa_rot_partition_platform.a(intermedia_tfm_platform.o)
                                         0x1e6 (size before relaxing)
- .debug_str     0x00000000000084ce      0x89e platform/libplatform_s.a(tfm_hal_isolation.o)
-                                        0xd1b (size before relaxing)
- .debug_str     0x0000000000008d6c      0x10d platform/libplatform_s.a(tfm_hal_platform_common.o)
-                                        0x517 (size before relaxing)
- .debug_str     0x0000000000008e79       0xbb platform/libplatform_s.a(tfm_hal_nvic.o)
+ .debug_str     0x00000000000084ce      0x859 platform/libplatform_s.a(tfm_hal_isolation.o)
+                                        0xcd6 (size before relaxing)
+ .debug_str     0x0000000000008d27      0x10d platform/libplatform_s.a(tfm_hal_platform_common.o)
+                                        0x4d2 (size before relaxing)
+ .debug_str     0x0000000000008e34       0xbb platform/libplatform_s.a(tfm_hal_nvic.o)
                                         0x655 (size before relaxing)
- .debug_str     0x0000000000008f34     0x1a57 platform/libplatform_s.a(target_cfg.o)
-                                       0x2997 (size before relaxing)
- .debug_str     0x000000000000a98b       0xa0 platform/libplatform_s.a(tfm_hal_platform.o)
+ .debug_str     0x0000000000008eef     0x1a2b platform/libplatform_s.a(target_cfg.o)
+                                       0x2926 (size before relaxing)
+ .debug_str     0x000000000000a91a       0xa0 platform/libplatform_s.a(tfm_hal_platform.o)
                                         0x462 (size before relaxing)
- .debug_str     0x000000000000aa2b      0x313 platform/libplatform_s.a(dummy_otp.o)
+ .debug_str     0x000000000000a9ba      0x313 platform/libplatform_s.a(dummy_otp.o)
                                         0x562 (size before relaxing)
- .debug_str     0x000000000000ad3e       0x49 platform/libplatform_s.a(dummy_provisioning.o)
+ .debug_str     0x000000000000accd       0x49 platform/libplatform_s.a(dummy_provisioning.o)
                                         0x2c4 (size before relaxing)
- .debug_str     0x000000000000ad87      0x11a platform/libplatform_s.a(tfm_platform_system.o)
+ .debug_str     0x000000000000ad16      0x11a platform/libplatform_s.a(tfm_platform_system.o)
                                         0x51c (size before relaxing)
- .debug_str     0x000000000000aea1       0x7b platform/libplatform_s.a(tfm_platform.o)
+ .debug_str     0x000000000000ae30       0x7b platform/libplatform_s.a(tfm_platform.o)
                                         0x354 (size before relaxing)
- .debug_str     0x000000000000af1c       0x77 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
+ .debug_str     0x000000000000aeab       0x77 platform/libplatform_s.a(tfm_hal_memory_symbols.o)
                                         0x267 (size before relaxing)
- .debug_str     0x000000000000af93      0x135 platform/libplatform_s.a(mpu_armv8m_drv.o)
+ .debug_str     0x000000000000af22      0x135 platform/libplatform_s.a(mpu_armv8m_drv.o)
                                         0x50d (size before relaxing)
- .debug_str     0x000000000000b0c8      0x3f4 platform/libplatform_s.a(spu.o)
+ .debug_str     0x000000000000b057      0x3f4 platform/libplatform_s.a(spu.o)
                                         0xa0e (size before relaxing)
- .debug_str     0x000000000000b4bc      0x1b6 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
+ .debug_str     0x000000000000b44b      0x1b6 platform/libplatform_s.a(tfm_platform_hal_ioctl.o)
                                         0x6e5 (size before relaxing)
- .debug_str     0x000000000000b672       0x61 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
+ .debug_str     0x000000000000b601       0x61 secure_fw/partitions/lib/sprt/libtfm_sprt.a(crt_memcpy.o)
                                         0x26e (size before relaxing)
- .debug_str     0x000000000000b6d3       0x96 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
+ .debug_str     0x000000000000b662       0x96 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_main.o)
                                         0x2e3 (size before relaxing)
- .debug_str     0x000000000000b769       0x8c secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
+ .debug_str     0x000000000000b6f8       0x8c secure_fw/partitions/lib/sprt/libtfm_sprt.a(sfn_common_thread.o)
                                         0x353 (size before relaxing)
- .debug_str     0x000000000000b7f5       0x78 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
+ .debug_str     0x000000000000b784       0x78 secure_fw/partitions/lib/sprt/libtfm_sprt.a(sprt_partition_metadata_indicator.o)
                                         0x210 (size before relaxing)
- .debug_str     0x000000000000b86d      0x16e secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
+ .debug_str     0x000000000000b7fc      0x16e secure_fw/partitions/crypto/mbedcrypto/nrf_security_src/libmbedcrypto_base.a(platform.o)
                                         0x28e (size before relaxing)
 
 .debug_frame    0x0000000000000000     0x2e68

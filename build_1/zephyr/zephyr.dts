@@ -490,23 +490,18 @@
 						#address-cells = < 0x1 >;
 						#size-cells = < 0x1 >;
 						partition1_label: partition@0 {
-							label = "partition_0";
 							reg = < 0x0 0x2fff >;
 						};
 						partition2_label: partition@3000 {
-							label = "partition_1";
 							reg = < 0x3000 0x2fff >;
 						};
 						partition3_label: partition@40000 {
-							label = "partition_2";
 							reg = < 0x40000 0x2ffff >;
 						};
 						partition4_label: partition@70000 {
-							label = "partition_3";
 							reg = < 0x70000 0x2ffff >;
 						};
 						partition5_label: partition@110000 {
-							label = "partition_4";
 							reg = < 0x110000 0x7fffff >;
 						};
 					};

@@ -1248,9 +1248,6 @@ zephyr_udc0: &usbd {
   dg3 = &dig3;
   dg4 = &dig4;
 
-
-
-
  };
 
  digital {
@@ -1288,7 +1285,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 72 "c:/Nordic/peripheral_uart/app.overlay"
+# 69 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1364,31 +1361,31 @@ zephyr_udc0: &usbd {
   #size-cells = <1>;
 
   partition1_label: partition@0 {
-  label = "partition_0";
+
   reg = <0x00000000 0x000002FFF>;
 
   };
 
   partition2_label: partition@3000 {
-  label = "partition_1";
+
   reg = <0x00003000 0x000002FFF>;
 
   };
 
   partition3_label: partition@40000 {
-  label = "partition_2";
+
   reg = <0x00040000 0x00002FFFF>;
 
   };
 
   partition4_label: partition@70000 {
-  label = "partition_3";
+
   reg = <0x00070000 0x00002FFFF>;
 
   };
 
   partition5_label: partition@110000 {
-  label = "partition_4";
+
   reg = <0x00110000 0x0007FFFFF>;
 
   };

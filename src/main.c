@@ -8,6 +8,8 @@
 /** @file
  *  @brief Nordic UART Bridge Service (NUS) sample
  */
+#define PM_STATIC_YML_FILE 1
+
 #include "uart_async_adapter.h"
 
 //Special Routines
@@ -29,10 +31,12 @@
 #include <zephyr/types.h>
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/uart.h>
-#include <zephyr/drivers/flash.h>
+
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/adc.h>
 #include <zephyr/usb/usb_device.h>
+
+#include <zephyr/drivers/flash.h>
 #include <zephyr/storage/flash_map.h>
 
 #include <zephyr/device.h>
@@ -827,6 +831,9 @@ void button_changed(uint32_t button_state, uint32_t has_changed)
 //FLASH FUNCTIONS
 
 void flash_test_(void) {
+	//usar flash_map
+   //C:\ncs\v2.3.0-rc1\zephyr\tests\subsys\storage\flash_map\src
+
   //C:\ncs\v2.3.0-rc1\zephyr\include\zephyr\devicetree\fixed-partitions.h
    //https://elinux.org/Device_Tree_Usage#How_Addressing_Works
 
@@ -836,21 +843,19 @@ void flash_test_(void) {
 
 #define FLASH_DEVICE "mx25r6435f@0" 
 
-const struct device *flash_dev = device_get_binding(FLASH_DEVICE);
-struct flash_area *my_area_partition;
-my_area_partition = (struct flash_area*)k_malloc(sizeof(struct flash_area));
-my_area_partition->fa_dev=&flash_dev;
-//err=flash_area_open(FIXED_PARITION_ID(external_partition), &my_area_partition);
-//err=flash_area_open(external_partition, &my_area_partition);
-err=flash_area_open(DT_FIXED_PARTITION_ID(DT_NODE_BY_FIXED_PARTITION_LABEL(partition_0)), &my_area_partition);
+const struct device *flash_dev = DEVICE_DT_GET(DT_CHOSEN(nordic_pm_ext_flash));
+uint8_t dev_ok = device_is_ready(flash_dev);
+struct flash_area *my_area;
 
-   printf("Result Open:%d \n", err);
-
-   printf("fa_id %d device_id %d\n", my_area_partition->fa_id,my_area_partition->fa_device_id);
+printf("Dev_OK:%d \n", dev_ok);
+err=flash_area_open(FIXED_PARTITION_ID(external_flash), &my_area);
+printf("Result Open:%d \n", err);
+printf("fa_id:%d device_id:%d size=%lu\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
   
-   err = flash_area_erase(my_area_partition, 0, my_area_partition->fa_size);
-   printf("Result Erase:%d size=%lu \n", err,my_area_partition->fa_size);
+   //err = flash_area_erase(my_area, 0, my_area->fa_size);
+   //printf("Result Erase:%d size=%lu \n", err,my_area->fa_size);
  
+  /*
    uint32_t position_info = 20;
    uint32_t quantity_of_bytes = sizeof(uint32_t);
    uint32_t buf_word = 0U;
@@ -880,7 +885,7 @@ err=flash_area_open(DT_FIXED_PARTITION_ID(DT_NODE_BY_FIXED_PARTITION_LABEL(parti
    err = flash_area_read(my_area_partition, position_info, &buf_word, quantity_of_bytes);
    printf("7  Data read: %x\n", buf_word);
    printf("8  Status Read:%d \n", err);
-
+  */
 
 }
 
@@ -953,12 +958,14 @@ void send_protobuf(void){
 //BUTTONS INTERRUPTS CALL BACK
 
 void button_pressed_1(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+	//SEND MESSAGE 
 	k_sem_give(&send_proto);
 	gpio_pin_set_dt(LED4, ON);
 	printk("Button pressed 1 at %" PRIu32 "\n", k_cycle_get_32());
 }
 
 void button_pressed_2(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+	//SAVE MEMORY
 	k_sem_give(&save_memory);
 	gpio_pin_set_dt(LED3, ON);
 	printk("Button pressed 2 at %" PRIu32 "\n", k_cycle_get_32());

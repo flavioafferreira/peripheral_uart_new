@@ -10,11 +10,6 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(NONE)
 
 
-
-##include(ubxlib.cmake)
-
-
-
 ncs_add_partition_manager_config(pm-static.yml)
 # NORDIC SDK APP START
 target_sources(app PRIVATE
