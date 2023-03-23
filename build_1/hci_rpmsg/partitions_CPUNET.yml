@@ -1,0 +1,23 @@
+app:
+  address: 0x1000000
+  end_address: 0x1040000
+  orig_span: &id001
+  - hci_rpmsg
+  region: flash_primary
+  size: 0x40000
+  span: *id001
+external_flash:
+  address: 0x0
+  end_address: 0x800000
+  region: external_flash
+  size: 0x800000
+hci_rpmsg:
+  address: 0x1000000
+  end_address: 0x1040000
+  region: flash_primary
+  size: 0x40000
+sram_primary:
+  address: 0x21000000
+  end_address: 0x21010000
+  region: sram_primary
+  size: 0x10000

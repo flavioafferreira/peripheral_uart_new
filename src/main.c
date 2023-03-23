@@ -837,6 +837,22 @@ void flash_test_(void) {
   //C:\ncs\v2.3.0-rc1\zephyr\include\zephyr\devicetree\fixed-partitions.h
    //https://elinux.org/Device_Tree_Usage#How_Addressing_Works
 
+/*
+C:\ncs\v2.3.0-rc1\nrf\cmake\partition_manager.cmake
+added this on the partition_manager after 
+dt_chosen(ext_flash_dev PROPERTY nordic,pm-ext-flash)
+
+add_region(
+  NAME external_flash
+  SIZE 0X800000
+  BASE 0
+  PLACEMENT start_to_end
+  DEVICE "DT_ALIAS(external-mx25)"
+  DEFAULT_DRIVER_KCONFIG CONFIG_PM_EXTERNAL_FLASH_HAS_DRIVER
+  )
+*/
+
+
    int err = 0;
    uint32_t size;
 
