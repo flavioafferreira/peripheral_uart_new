@@ -829,15 +829,12 @@ void button_changed(uint32_t button_state, uint32_t has_changed)
 #endif /* CONFIG_BT_NUS_SECURITY_ENABLED */
 
 //FLASH FUNCTIONS
-
-void flash_test_(void) {
-	//usar flash_map
-   //C:\ncs\v2.3.0-rc1\zephyr\tests\subsys\storage\flash_map\src
-
-  //C:\ncs\v2.3.0-rc1\zephyr\include\zephyr\devicetree\fixed-partitions.h
-   //https://elinux.org/Device_Tree_Usage#How_Addressing_Works
-
 /*
+
+  //C:\ncs\v2.3.0-rc1\zephyr\tests\subsys\storage\flash_map\src
+  //C:\ncs\v2.3.0-rc1\zephyr\include\zephyr\devicetree\fixed-partitions.h
+  //https://elinux.org/Device_Tree_Usage#How_Addressing_Works
+
 C:\ncs\v2.3.0-rc1\nrf\cmake\partition_manager.cmake
 added this on the partition_manager after 
 dt_chosen(ext_flash_dev PROPERTY nordic,pm-ext-flash)
@@ -851,24 +848,24 @@ add_region(
   DEFAULT_DRIVER_KCONFIG CONFIG_PM_EXTERNAL_FLASH_HAS_DRIVER
   )
 */
-
+void flash_test_(void) {
 
    int err = 0;
    uint32_t size;
 
 
-//#define FLASH_DEVICE "mx25r6435f@0" 
 
-//const struct device *flash_dev = DEVICE_DT_GET(DT_CHOSEN(nordic_pm_ext_flash));
-//uint8_t dev_ok = device_is_ready(flash_dev);
-//struct flash_area *my_area;
+const struct device *flash_dev = DEVICE_DT_GET(DT_ALIAS(external_mx25));
+
+uint8_t dev_ok = device_is_ready(flash_dev);
+struct flash_area *my_area;
 
 
 
-//printf("Dev_OK:%d \n", dev_ok);
-//err=flash_area_open(FIXED_PARTITION_ID(partition_0), &my_area);
-//printf("Result Open:%d \n", err);
-//printf("fa_id:%d device_id:%d size=%lu\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
+printf("Dev_OK:%d \n", dev_ok);
+err=flash_area_open(FIXED_PARTITION_ID(partition_0), &my_area);
+printf("Result Open:%d \n", err);
+printf("fa_id:%d device_id:%d size=%zu\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
   
    //err = flash_area_erase(my_area, 0, my_area->fa_size);
    //printf("Result Erase:%d size=%lu \n", err,my_area->fa_size);
