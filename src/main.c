@@ -865,13 +865,21 @@ void flash_test_(void) {
     flash_device = device_get_binding("mx25r6435f@0");
     err = flash_read(flash_device, 0, buf, sizeof(buf));
     printf("Result flash_read:%d \n", err);
-    printf("valor:%d/n",buf[0]);
+    printf("valor:%d\n",buf[0]);
 
-   //err=flash_erase(flash_dev, 0,0xf);
- 
-
-  // printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
-  //err=flash_area_open(DT_FIXED_PARTITION_ID( DT_NODELABEL(partition1)), &my_area)
+   /*  
+   static struct flash_area *my_area;
+   //my_area->fa_dev=device_get_binding("mx25r6435f@0");
+   err=flash_area_open(DT_FIXED_PARTITION_ID(DT_NODELABEL(partition1)), &my_area);
+   printf("flash_area_open:%d \n", err);
+   printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
+  
+   uint32_t quantity_of_bytes = sizeof(uint32_t);
+   uint32_t buf_word = 0U;
+   err = flash_area_read(&my_area, 0, &buf_word, quantity_of_bytes);
+   printf("1  Data read: %x\n", buf_word);
+   printf("2  Status Read:%d \n", err);
+   */ 
 
 //fix this printf zu has an error
    //printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
@@ -881,8 +889,7 @@ void flash_test_(void) {
  
   /*
    uint32_t position_info = 20;
-   uint32_t quantity_of_bytes = sizeof(uint32_t);
-   uint32_t buf_word = 0U;
+   ;
 
    err = flash_area_read(my_area_partition, position_info, &buf_word, quantity_of_bytes);
    printf("1  Data read: %x\n", buf_word);

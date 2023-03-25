@@ -1349,7 +1349,54 @@ zephyr_udc0: &usbd {
  };
  io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>,<&adc 7>;
 };
-# 180 "c:/Nordic/peripheral_uart/app.overlay"
+
+
+
+
+
+&mx25r64 {
+
+ partitions {
+  compatible = "fixed-partitions";
+  #address-cells = <1>;
+  #size-cells = <1>;
+
+  partition1: partition@0 {
+  label = "partitionA";
+  reg = <0x00000000 0x000002FFF>;
+
+  };
+
+  partition2:partition@3000 {
+  label = "partitionB";
+  reg = <0x00003000 0x000002FFF>;
+
+  };
+
+  partition3:partition@40000 {
+  label = "partitionC";
+  reg = <0x00040000 0x00002FFFF>;
+
+  };
+
+  partition4:partition@70000 {
+  label = "partitionD";
+  reg = <0x00070000 0x00002FFFF>;
+
+  };
+
+  partition5:partition@110000 {
+  label = "partitionE";
+  reg = <0x00110000 0x0007FFFFF>;
+
+  };
+
+
+ };
+
+};
+
+
 &pinctrl {
  uart2_default: uart2_default {
         group1 {

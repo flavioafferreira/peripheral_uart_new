@@ -132,7 +132,7 @@
 
 
 
-/* 
+ 
 
 &mx25r64 {
 		
@@ -175,7 +175,7 @@
 	};
 
 };
-*/
+
 
 &pinctrl {
 	uart2_default: uart2_default {

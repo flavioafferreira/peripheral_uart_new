@@ -156,6 +156,12 @@
  *   145 /soc/peripheral@40000000/flash-controller@39000/flash@0/partitions/partition@fa000
  *   146 /soc/peripheral@40000000/qspi@2b000
  *   147 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0
+ *   148 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions
+ *   149 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@0
+ *   150 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@3000
+ *   151 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@40000
+ *   152 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@70000
+ *   153 /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@110000
  *
  * Definitions derived from these nodes in dependency order are next,
  * followed by /chosen nodes.
@@ -16797,7 +16803,7 @@
 
 /* Existence and alternate IDs: */
 #define DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_EXISTS 1
-#define DT_N_INST_0_fixed_partitions DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions
+#define DT_N_INST_1_fixed_partitions DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions
 
 /* Macros for properties that are special in the specification: */
 #define DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_REG_NUM 0
@@ -17948,14 +17954,14 @@
 #define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_CHILD_IDX 0
 
 /* Helper macros for child nodes of this node. */
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD(fn) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_SEP(fn, sep) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_VARGS(fn, ...) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY(fn) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions, __VA_ARGS__)
 
 /* Node's dependency ordinal: */
 #define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_ORD 147
@@ -17965,7 +17971,8 @@
 	146, /* /soc/peripheral@40000000/qspi@2b000 */
 
 /* Ordinals for what depends directly on this node: */
-#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_SUPPORTS_ORDS /* nothing */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_SUPPORTS_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
 
 /* Existence and alternate IDs: */
 #define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_EXISTS 1
@@ -18534,6 +18541,687 @@
 #define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_P_sfdp_bfp_EXISTS 1
 
 /*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+ *
+ * Binding (compatible = fixed-partitions):
+ *   $ZEPHYR_BASE\dts\bindings\mtd\fixed-partitions.yaml
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FULL_NAME "partitions"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_CHILD_IDX 0
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_STATUS_OKAY(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, __VA_ARGS__)
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_ORD 148
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_REQUIRES_ORDS \
+	147, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0 */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_SUPPORTS_ORDS \
+	149, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@0 */ \
+	150, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@3000 */ \
+	151, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@40000 */ \
+	152, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@70000 */ \
+	153, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@110000 */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_EXISTS 1
+#define DT_N_INST_0_fixed_partitions DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_REG_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_COMPAT_MATCHES_fixed_partitions 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_PINCTRL_NUM 0
+
+/* (No generic property macros) */
+
+/*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@0
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@0"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FULL_NAME "partition@0"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_CHILD_IDX 0
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_STATUS_OKAY(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_ORD 149
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_REQUIRES_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_SUPPORTS_ORDS /* nothing */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_EXISTS 1
+#define DT_N_NODELABEL_partition1 DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_REG_NUM 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_REG_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_REG_IDX_0_VAL_ADDRESS 0 /* 0x0 */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_REG_IDX_0_VAL_SIZE 12287 /* 0x2fff */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_PINCTRL_NUM 0
+
+/* fixed-partitions identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_PARTITION_ID 7
+
+/* Generic property macros: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label "partitionA"
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_STRING_TOKEN partitionA
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_STRING_UPPER_TOKEN PARTITIONA
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 1) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 2) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 3) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 4) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 5) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 6) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 7) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 8) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 1) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 2) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 3) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 4) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 5) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 6) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 7) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 8) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 1, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 2, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 3, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 4, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 5, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 6, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 7, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 8, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 1, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 2, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 3, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 4, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 5, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 6, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 7, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 8, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_label_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_read_only 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_read_only_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg {0 /* 0x0 */, 12287 /* 0x2fff */}
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_IDX_0 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_IDX_1 12287
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_IDX_1_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0_P_reg_EXISTS 1
+
+/*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@3000
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@3000"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FULL_NAME "partition@3000"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_CHILD_IDX 1
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_STATUS_OKAY(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_ORD 150
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_REQUIRES_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_SUPPORTS_ORDS /* nothing */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_EXISTS 1
+#define DT_N_NODELABEL_partition2 DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_REG_NUM 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_REG_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_REG_IDX_0_VAL_ADDRESS 12288 /* 0x3000 */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_REG_IDX_0_VAL_SIZE 12287 /* 0x2fff */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_PINCTRL_NUM 0
+
+/* fixed-partitions identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_PARTITION_ID 8
+
+/* Generic property macros: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label "partitionB"
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_STRING_TOKEN partitionB
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_STRING_UPPER_TOKEN PARTITIONB
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 1) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 2) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 3) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 4) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 5) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 6) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 7) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 8) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 1) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 2) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 3) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 4) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 5) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 6) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 7) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 8) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 1, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 2, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 3, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 4, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 5, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 6, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 7, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 8, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 1, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 2, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 3, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 4, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 5, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 6, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 7, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 8, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_label_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_read_only 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_read_only_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg {12288 /* 0x3000 */, 12287 /* 0x2fff */}
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_IDX_0 12288
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_IDX_1 12287
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_IDX_1_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000_P_reg_EXISTS 1
+
+/*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@40000
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@40000"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FULL_NAME "partition@40000"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_CHILD_IDX 2
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_STATUS_OKAY(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_ORD 151
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_REQUIRES_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_SUPPORTS_ORDS /* nothing */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_EXISTS 1
+#define DT_N_NODELABEL_partition3 DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_REG_NUM 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_REG_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_REG_IDX_0_VAL_ADDRESS 262144 /* 0x40000 */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_REG_IDX_0_VAL_SIZE 196607 /* 0x2ffff */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_PINCTRL_NUM 0
+
+/* fixed-partitions identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_PARTITION_ID 9
+
+/* Generic property macros: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label "partitionC"
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_STRING_TOKEN partitionC
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_STRING_UPPER_TOKEN PARTITIONC
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 1) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 2) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 3) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 4) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 5) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 6) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 7) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 8) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 1) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 2) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 3) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 4) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 5) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 6) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 7) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 8) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 1, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 2, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 3, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 4, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 5, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 6, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 7, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 8, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 1, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 2, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 3, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 4, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 5, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 6, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 7, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 8, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_label_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_read_only 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_read_only_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg {262144 /* 0x40000 */, 196607 /* 0x2ffff */}
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_IDX_0 262144
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_IDX_1 196607
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_IDX_1_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000_P_reg_EXISTS 1
+
+/*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@70000
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@70000"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FULL_NAME "partition@70000"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_CHILD_IDX 3
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_STATUS_OKAY(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_ORD 152
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_REQUIRES_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_SUPPORTS_ORDS /* nothing */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_EXISTS 1
+#define DT_N_NODELABEL_partition4 DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_REG_NUM 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_REG_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_REG_IDX_0_VAL_ADDRESS 458752 /* 0x70000 */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_REG_IDX_0_VAL_SIZE 196607 /* 0x2ffff */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_PINCTRL_NUM 0
+
+/* fixed-partitions identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_PARTITION_ID 10
+
+/* Generic property macros: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label "partitionD"
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_STRING_TOKEN partitionD
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_STRING_UPPER_TOKEN PARTITIOND
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 1) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 2) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 3) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 4) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 5) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 6) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 7) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 8) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 1) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 2) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 3) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 4) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 5) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 6) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 7) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 8) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 1, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 2, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 3, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 4, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 5, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 6, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 7, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 8, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 1, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 2, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 3, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 4, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 5, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 6, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 7, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 8, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_label_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_read_only 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_read_only_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg {458752 /* 0x70000 */, 196607 /* 0x2ffff */}
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_IDX_0 458752
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_IDX_1 196607
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_IDX_1_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000_P_reg_EXISTS 1
+
+/*
+ * Devicetree node: /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@110000
+ *
+ * Node identifier: DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000
+ *
+ * (Descriptions have moved to the Devicetree Bindings Index
+ * in the documentation.)
+ */
+
+/* Node's full path: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_PATH "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions/partition@110000"
+
+/* Node's name with unit-address: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FULL_NAME "partition@110000"
+
+/* Node parent (/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions) identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_PARENT DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions
+
+/* Node's index in its parent's list of children: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_CHILD_IDX 4
+
+/* Helper macros for child nodes of this node. */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_SEP_VARGS(fn, sep, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_STATUS_OKAY(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_STATUS_OKAY_SEP(fn, sep) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_STATUS_OKAY_VARGS(fn, ...) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_CHILD_STATUS_OKAY_SEP_VARGS(fn, sep, ...) 
+
+/* Node's dependency ordinal: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_ORD 153
+
+/* Ordinals for what this node depends on directly: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_REQUIRES_ORDS \
+	148, /* /soc/peripheral@40000000/qspi@2b000/mx25r6435f@0/partitions */
+
+/* Ordinals for what depends directly on this node: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_SUPPORTS_ORDS /* nothing */
+
+/* Existence and alternate IDs: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_EXISTS 1
+#define DT_N_NODELABEL_partition5 DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000
+
+/* Macros for properties that are special in the specification: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_REG_NUM 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_REG_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_REG_IDX_0_VAL_ADDRESS 1114112 /* 0x110000 */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_REG_IDX_0_VAL_SIZE 8388607 /* 0x7fffff */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_RANGES_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_FOREACH_RANGE(fn) 
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_IRQ_NUM 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_STATUS_okay 1
+
+/* Pin control (pinctrl-<i>, pinctrl-names) properties: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_PINCTRL_NUM 0
+
+/* fixed-partitions identifier: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_PARTITION_ID 11
+
+/* Generic property macros: */
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label "partitionE"
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_STRING_TOKEN partitionE
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_STRING_UPPER_TOKEN PARTITIONE
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 1) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 2) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 3) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 4) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 5) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 6) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 7) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 8) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 1) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 2) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 3) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 4) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 5) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 6) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 7) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 8) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 9)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 1, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 2, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 3, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 4, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 5, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 6, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 7, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 8, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 1, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 2, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 3, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 4, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 5, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 6, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 7, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 8, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, label, 9, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_label_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_read_only 0
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_read_only_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg {1114112 /* 0x110000 */, 8388607 /* 0x7fffff */}
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_IDX_0 1114112
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_IDX_0_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_IDX_1 8388607
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_IDX_1_EXISTS 1
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_FOREACH_PROP_ELEM(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 0) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 0) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 1)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_FOREACH_PROP_ELEM_VARGS(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 0, __VA_ARGS__) \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 0, __VA_ARGS__) DT_DEBRACKET_INTERNAL sep \
+	fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000, reg, 1, __VA_ARGS__)
+#define DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000_P_reg_EXISTS 1
+
+/*
  * Chosen nodes
  */
 #define DT_CHOSEN_zephyr_entropy                  DT_N_S_psa_rng
@@ -18570,8 +19258,18 @@
 #define DT_CHOSEN_nordic_nrf_adc_EXISTS           1
 
 /* Macros for iterating over all nodes and enabled nodes */
-#define DT_FOREACH_HELPER(fn) fn(DT_N) fn(DT_N_S_chosen) fn(DT_N_S_aliases) fn(DT_N_S_soc) fn(DT_N_S_soc_S_interrupt_controller_e000e100) fn(DT_N_S_soc_S_timer_e000e010) fn(DT_N_S_soc_S_memory_20000000) fn(DT_N_S_soc_S_peripheral_40000000) fn(DT_N_S_soc_S_peripheral_40000000_S_dcnf_0) fn(DT_N_S_soc_S_peripheral_40000000_S_oscillator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_clock_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_power_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_reset_controller_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_ctrlap_6000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_a000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_0) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_1) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_2) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_3) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_4) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_7) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_f000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_11000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_14000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_15000) fn(DT_N_S_soc_S_peripheral_40000000_S_dppic_17000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_18000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_19000) fn(DT_N_S_soc_S_peripheral_40000000_S_comparator_1a000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1b000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1c000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1d000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1e000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1f000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_20000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_21000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_22000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_23000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_24000) fn(DT_N_S_soc_S_peripheral_40000000_S_pdm_26000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2s_28000) fn(DT_N_S_soc_S_peripheral_40000000_S_mbox_2a000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0) fn(DT_N_S_soc_S_peripheral_40000000_S_nfct_2d000) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000) fn(DT_N_S_soc_S_peripheral_40000000_S_qdec_33000) fn(DT_N_S_soc_S_peripheral_40000000_S_qdec_34000) fn(DT_N_S_soc_S_peripheral_40000000_S_usbd_36000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_37000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_50000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_80000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_c0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_f0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_fa000) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_vmc_81000) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842500) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842800) fn(DT_N_S_soc_S_peripheral_40000000_S_ieee802154) fn(DT_N_S_soc_S_gpiote_4002f000) fn(DT_N_S_pin_controller) fn(DT_N_S_pin_controller_S_i2c1_default) fn(DT_N_S_pin_controller_S_i2c1_default_S_group1) fn(DT_N_S_pin_controller_S_i2c1_sleep) fn(DT_N_S_pin_controller_S_i2c1_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart0_default) fn(DT_N_S_pin_controller_S_uart0_default_S_group1) fn(DT_N_S_pin_controller_S_uart0_default_S_group2) fn(DT_N_S_pin_controller_S_uart0_sleep) fn(DT_N_S_pin_controller_S_uart0_sleep_S_group1) fn(DT_N_S_pin_controller_S_pwm0_default) fn(DT_N_S_pin_controller_S_pwm0_default_S_group1) fn(DT_N_S_pin_controller_S_pwm0_sleep) fn(DT_N_S_pin_controller_S_pwm0_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_default) fn(DT_N_S_pin_controller_S_qspi_default_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group2) fn(DT_N_S_pin_controller_S_uart1_default) fn(DT_N_S_pin_controller_S_uart1_default_S_group1) fn(DT_N_S_pin_controller_S_uart1_default_S_group2) fn(DT_N_S_pin_controller_S_uart1_sleep) fn(DT_N_S_pin_controller_S_uart1_sleep_S_group1) fn(DT_N_S_pin_controller_S_spi4_default) fn(DT_N_S_pin_controller_S_spi4_default_S_group1) fn(DT_N_S_pin_controller_S_spi4_sleep) fn(DT_N_S_pin_controller_S_spi4_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart2_default) fn(DT_N_S_pin_controller_S_uart2_default_S_group1) fn(DT_N_S_pin_controller_S_uart2_default_S_group2) fn(DT_N_S_pin_controller_S_uart2_sleep) fn(DT_N_S_pin_controller_S_uart2_sleep_S_group1) fn(DT_N_S_entropy_bt_hci) fn(DT_N_S_cpus) fn(DT_N_S_cpus_S_cpu_0) fn(DT_N_S_cpus_S_cpu_0_S_mpu_e000ed90) fn(DT_N_S_ipc) fn(DT_N_S_ipc_S_ipc0) fn(DT_N_S_psa_rng) fn(DT_N_S_leds) fn(DT_N_S_leds_S_led_0) fn(DT_N_S_leds_S_led_1) fn(DT_N_S_leds_S_led_2) fn(DT_N_S_leds_S_led_3) fn(DT_N_S_pwmleds) fn(DT_N_S_pwmleds_S_pwm_led_0) fn(DT_N_S_buttons) fn(DT_N_S_buttons_S_button_0) fn(DT_N_S_buttons_S_button_1) fn(DT_N_S_buttons_S_button_2) fn(DT_N_S_buttons_S_button_3) fn(DT_N_S_connector) fn(DT_N_S_analog_connector) fn(DT_N_S_nrf_gpio_forwarder) fn(DT_N_S_nrf_gpio_forwarder_S_uart) fn(DT_N_S_reserved_memory) fn(DT_N_S_reserved_memory_S_image_20000000) fn(DT_N_S_reserved_memory_S_image_s_20000000) fn(DT_N_S_reserved_memory_S_image_ns_20040000) fn(DT_N_S_reserved_memory_S_memory_20070000) fn(DT_N_S_digital) fn(DT_N_S_digital_S_dig_0) fn(DT_N_S_digital_S_dig_1) fn(DT_N_S_digital_S_dig_2) fn(DT_N_S_digital_S_dig_3) fn(DT_N_S_digital_S_dig_4)
-#define DT_FOREACH_OKAY_HELPER(fn) fn(DT_N) fn(DT_N_S_chosen) fn(DT_N_S_aliases) fn(DT_N_S_soc) fn(DT_N_S_soc_S_interrupt_controller_e000e100) fn(DT_N_S_soc_S_memory_20000000) fn(DT_N_S_soc_S_peripheral_40000000) fn(DT_N_S_soc_S_peripheral_40000000_S_dcnf_0) fn(DT_N_S_soc_S_peripheral_40000000_S_oscillator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_clock_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_power_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_reset_controller_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_ctrlap_6000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_a000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_0) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_1) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_2) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_3) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_4) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_7) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_f000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_11000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_14000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_15000) fn(DT_N_S_soc_S_peripheral_40000000_S_dppic_17000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_18000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1b000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1c000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1d000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1e000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1f000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_20000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_21000) fn(DT_N_S_soc_S_peripheral_40000000_S_mbox_2a000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000) fn(DT_N_S_soc_S_peripheral_40000000_S_usbd_36000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_37000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_50000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_80000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_c0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_f0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_fa000) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_vmc_81000) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842500) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842800) fn(DT_N_S_soc_S_peripheral_40000000_S_ieee802154) fn(DT_N_S_soc_S_gpiote_4002f000) fn(DT_N_S_pin_controller) fn(DT_N_S_pin_controller_S_i2c1_default) fn(DT_N_S_pin_controller_S_i2c1_default_S_group1) fn(DT_N_S_pin_controller_S_i2c1_sleep) fn(DT_N_S_pin_controller_S_i2c1_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart0_default) fn(DT_N_S_pin_controller_S_uart0_default_S_group1) fn(DT_N_S_pin_controller_S_uart0_default_S_group2) fn(DT_N_S_pin_controller_S_uart0_sleep) fn(DT_N_S_pin_controller_S_uart0_sleep_S_group1) fn(DT_N_S_pin_controller_S_pwm0_default) fn(DT_N_S_pin_controller_S_pwm0_default_S_group1) fn(DT_N_S_pin_controller_S_pwm0_sleep) fn(DT_N_S_pin_controller_S_pwm0_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_default) fn(DT_N_S_pin_controller_S_qspi_default_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group2) fn(DT_N_S_pin_controller_S_uart1_default) fn(DT_N_S_pin_controller_S_uart1_default_S_group1) fn(DT_N_S_pin_controller_S_uart1_default_S_group2) fn(DT_N_S_pin_controller_S_uart1_sleep) fn(DT_N_S_pin_controller_S_uart1_sleep_S_group1) fn(DT_N_S_pin_controller_S_spi4_default) fn(DT_N_S_pin_controller_S_spi4_default_S_group1) fn(DT_N_S_pin_controller_S_spi4_sleep) fn(DT_N_S_pin_controller_S_spi4_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart2_default) fn(DT_N_S_pin_controller_S_uart2_default_S_group1) fn(DT_N_S_pin_controller_S_uart2_default_S_group2) fn(DT_N_S_pin_controller_S_uart2_sleep) fn(DT_N_S_pin_controller_S_uart2_sleep_S_group1) fn(DT_N_S_entropy_bt_hci) fn(DT_N_S_cpus) fn(DT_N_S_cpus_S_cpu_0) fn(DT_N_S_cpus_S_cpu_0_S_mpu_e000ed90) fn(DT_N_S_ipc) fn(DT_N_S_ipc_S_ipc0) fn(DT_N_S_psa_rng) fn(DT_N_S_leds) fn(DT_N_S_leds_S_led_0) fn(DT_N_S_leds_S_led_1) fn(DT_N_S_leds_S_led_2) fn(DT_N_S_leds_S_led_3) fn(DT_N_S_pwmleds) fn(DT_N_S_pwmleds_S_pwm_led_0) fn(DT_N_S_buttons) fn(DT_N_S_buttons_S_button_0) fn(DT_N_S_buttons_S_button_1) fn(DT_N_S_buttons_S_button_2) fn(DT_N_S_buttons_S_button_3) fn(DT_N_S_connector) fn(DT_N_S_analog_connector) fn(DT_N_S_nrf_gpio_forwarder) fn(DT_N_S_nrf_gpio_forwarder_S_uart) fn(DT_N_S_reserved_memory) fn(DT_N_S_reserved_memory_S_image_20000000) fn(DT_N_S_reserved_memory_S_image_s_20000000) fn(DT_N_S_reserved_memory_S_image_ns_20040000) fn(DT_N_S_reserved_memory_S_memory_20070000) fn(DT_N_S_digital) fn(DT_N_S_digital_S_dig_0) fn(DT_N_S_digital_S_dig_1) fn(DT_N_S_digital_S_dig_2) fn(DT_N_S_digital_S_dig_3) fn(DT_N_S_digital_S_dig_4)
+#define DT_FOREACH_HELPER(fn) fn(DT_N) fn(DT_N_S_chosen) fn(DT_N_S_aliases) fn(DT_N_S_soc) fn(DT_N_S_soc_S_interrupt_controller_e000e100) fn(DT_N_S_soc_S_timer_e000e010) fn(DT_N_S_soc_S_memory_20000000) fn(DT_N_S_soc_S_peripheral_40000000) fn(DT_N_S_soc_S_peripheral_40000000_S_dcnf_0) fn(DT_N_S_soc_S_peripheral_40000000_S_oscillator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_clock_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_power_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_reset_controller_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_ctrlap_6000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_a000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_c000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_0) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_1) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_2) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_3) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_4) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_7) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_f000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_11000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_14000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_15000) fn(DT_N_S_soc_S_peripheral_40000000_S_dppic_17000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_18000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_19000) fn(DT_N_S_soc_S_peripheral_40000000_S_comparator_1a000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1b000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1c000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1d000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1e000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1f000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_20000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_21000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_22000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_23000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_24000) fn(DT_N_S_soc_S_peripheral_40000000_S_pdm_26000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2s_28000) fn(DT_N_S_soc_S_peripheral_40000000_S_mbox_2a000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000) fn(DT_N_S_soc_S_peripheral_40000000_S_nfct_2d000) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000) fn(DT_N_S_soc_S_peripheral_40000000_S_qdec_33000) fn(DT_N_S_soc_S_peripheral_40000000_S_qdec_34000) fn(DT_N_S_soc_S_peripheral_40000000_S_usbd_36000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_37000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_50000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_80000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_c0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_f0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_fa000) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_vmc_81000) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842500) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842800) fn(DT_N_S_soc_S_peripheral_40000000_S_ieee802154) fn(DT_N_S_soc_S_gpiote_4002f000) fn(DT_N_S_pin_controller) fn(DT_N_S_pin_controller_S_i2c1_default) fn(DT_N_S_pin_controller_S_i2c1_default_S_group1) fn(DT_N_S_pin_controller_S_i2c1_sleep) fn(DT_N_S_pin_controller_S_i2c1_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart0_default) fn(DT_N_S_pin_controller_S_uart0_default_S_group1) fn(DT_N_S_pin_controller_S_uart0_default_S_group2) fn(DT_N_S_pin_controller_S_uart0_sleep) fn(DT_N_S_pin_controller_S_uart0_sleep_S_group1) fn(DT_N_S_pin_controller_S_pwm0_default) fn(DT_N_S_pin_controller_S_pwm0_default_S_group1) fn(DT_N_S_pin_controller_S_pwm0_sleep) fn(DT_N_S_pin_controller_S_pwm0_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_default) fn(DT_N_S_pin_controller_S_qspi_default_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group2) fn(DT_N_S_pin_controller_S_uart1_default) fn(DT_N_S_pin_controller_S_uart1_default_S_group1) fn(DT_N_S_pin_controller_S_uart1_default_S_group2) fn(DT_N_S_pin_controller_S_uart1_sleep) fn(DT_N_S_pin_controller_S_uart1_sleep_S_group1) fn(DT_N_S_pin_controller_S_spi4_default) fn(DT_N_S_pin_controller_S_spi4_default_S_group1) fn(DT_N_S_pin_controller_S_spi4_sleep) fn(DT_N_S_pin_controller_S_spi4_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart2_default) fn(DT_N_S_pin_controller_S_uart2_default_S_group1) fn(DT_N_S_pin_controller_S_uart2_default_S_group2) fn(DT_N_S_pin_controller_S_uart2_sleep) fn(DT_N_S_pin_controller_S_uart2_sleep_S_group1) fn(DT_N_S_entropy_bt_hci) fn(DT_N_S_cpus) fn(DT_N_S_cpus_S_cpu_0) fn(DT_N_S_cpus_S_cpu_0_S_mpu_e000ed90) fn(DT_N_S_ipc) fn(DT_N_S_ipc_S_ipc0) fn(DT_N_S_psa_rng) fn(DT_N_S_leds) fn(DT_N_S_leds_S_led_0) fn(DT_N_S_leds_S_led_1) fn(DT_N_S_leds_S_led_2) fn(DT_N_S_leds_S_led_3) fn(DT_N_S_pwmleds) fn(DT_N_S_pwmleds_S_pwm_led_0) fn(DT_N_S_buttons) fn(DT_N_S_buttons_S_button_0) fn(DT_N_S_buttons_S_button_1) fn(DT_N_S_buttons_S_button_2) fn(DT_N_S_buttons_S_button_3) fn(DT_N_S_connector) fn(DT_N_S_analog_connector) fn(DT_N_S_nrf_gpio_forwarder) fn(DT_N_S_nrf_gpio_forwarder_S_uart) fn(DT_N_S_reserved_memory) fn(DT_N_S_reserved_memory_S_image_20000000) fn(DT_N_S_reserved_memory_S_image_s_20000000) fn(DT_N_S_reserved_memory_S_image_ns_20040000) fn(DT_N_S_reserved_memory_S_memory_20070000) fn(DT_N_S_digital) fn(DT_N_S_digital_S_dig_0) fn(DT_N_S_digital_S_dig_1) fn(DT_N_S_digital_S_dig_2) fn(DT_N_S_digital_S_dig_3) fn(DT_N_S_digital_S_dig_4)
+#define DT_FOREACH_OKAY_HELPER(fn) fn(DT_N) fn(DT_N_S_chosen) fn(DT_N_S_aliases) fn(DT_N_S_soc) fn(DT_N_S_soc_S_interrupt_controller_e000e100) fn(DT_N_S_soc_S_memory_20000000) fn(DT_N_S_soc_S_peripheral_40000000) fn(DT_N_S_soc_S_peripheral_40000000_S_dcnf_0) fn(DT_N_S_soc_S_peripheral_40000000_S_oscillator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_4000) fn(DT_N_S_soc_S_peripheral_40000000_S_clock_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_power_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_reset_controller_5000) fn(DT_N_S_soc_S_peripheral_40000000_S_ctrlap_6000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_8000) fn(DT_N_S_soc_S_peripheral_40000000_S_i2c_9000) fn(DT_N_S_soc_S_peripheral_40000000_S_spi_a000) fn(DT_N_S_soc_S_peripheral_40000000_S_uart_b000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_0) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_1) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_2) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_3) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_4) fn(DT_N_S_soc_S_peripheral_40000000_S_adc_e000_S_channel_7) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_f000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_timer_11000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_14000) fn(DT_N_S_soc_S_peripheral_40000000_S_rtc_15000) fn(DT_N_S_soc_S_peripheral_40000000_S_dppic_17000) fn(DT_N_S_soc_S_peripheral_40000000_S_watchdog_18000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1b000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1c000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1d000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1e000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_1f000) fn(DT_N_S_soc_S_peripheral_40000000_S_egu_20000) fn(DT_N_S_soc_S_peripheral_40000000_S_pwm_21000) fn(DT_N_S_soc_S_peripheral_40000000_S_mbox_2a000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000) fn(DT_N_S_soc_S_peripheral_40000000_S_usbd_36000) fn(DT_N_S_soc_S_peripheral_40000000_S_regulator_37000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_0) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_10000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_50000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_80000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_c0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_f0000) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_fa000) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000) fn(DT_N_S_soc_S_peripheral_40000000_S_vmc_81000) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842500) fn(DT_N_S_soc_S_peripheral_40000000_S_gpio_842800) fn(DT_N_S_soc_S_peripheral_40000000_S_ieee802154) fn(DT_N_S_soc_S_gpiote_4002f000) fn(DT_N_S_pin_controller) fn(DT_N_S_pin_controller_S_i2c1_default) fn(DT_N_S_pin_controller_S_i2c1_default_S_group1) fn(DT_N_S_pin_controller_S_i2c1_sleep) fn(DT_N_S_pin_controller_S_i2c1_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart0_default) fn(DT_N_S_pin_controller_S_uart0_default_S_group1) fn(DT_N_S_pin_controller_S_uart0_default_S_group2) fn(DT_N_S_pin_controller_S_uart0_sleep) fn(DT_N_S_pin_controller_S_uart0_sleep_S_group1) fn(DT_N_S_pin_controller_S_pwm0_default) fn(DT_N_S_pin_controller_S_pwm0_default_S_group1) fn(DT_N_S_pin_controller_S_pwm0_sleep) fn(DT_N_S_pin_controller_S_pwm0_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_default) fn(DT_N_S_pin_controller_S_qspi_default_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group1) fn(DT_N_S_pin_controller_S_qspi_sleep_S_group2) fn(DT_N_S_pin_controller_S_uart1_default) fn(DT_N_S_pin_controller_S_uart1_default_S_group1) fn(DT_N_S_pin_controller_S_uart1_default_S_group2) fn(DT_N_S_pin_controller_S_uart1_sleep) fn(DT_N_S_pin_controller_S_uart1_sleep_S_group1) fn(DT_N_S_pin_controller_S_spi4_default) fn(DT_N_S_pin_controller_S_spi4_default_S_group1) fn(DT_N_S_pin_controller_S_spi4_sleep) fn(DT_N_S_pin_controller_S_spi4_sleep_S_group1) fn(DT_N_S_pin_controller_S_uart2_default) fn(DT_N_S_pin_controller_S_uart2_default_S_group1) fn(DT_N_S_pin_controller_S_uart2_default_S_group2) fn(DT_N_S_pin_controller_S_uart2_sleep) fn(DT_N_S_pin_controller_S_uart2_sleep_S_group1) fn(DT_N_S_entropy_bt_hci) fn(DT_N_S_cpus) fn(DT_N_S_cpus_S_cpu_0) fn(DT_N_S_cpus_S_cpu_0_S_mpu_e000ed90) fn(DT_N_S_ipc) fn(DT_N_S_ipc_S_ipc0) fn(DT_N_S_psa_rng) fn(DT_N_S_leds) fn(DT_N_S_leds_S_led_0) fn(DT_N_S_leds_S_led_1) fn(DT_N_S_leds_S_led_2) fn(DT_N_S_leds_S_led_3) fn(DT_N_S_pwmleds) fn(DT_N_S_pwmleds_S_pwm_led_0) fn(DT_N_S_buttons) fn(DT_N_S_buttons_S_button_0) fn(DT_N_S_buttons_S_button_1) fn(DT_N_S_buttons_S_button_2) fn(DT_N_S_buttons_S_button_3) fn(DT_N_S_connector) fn(DT_N_S_analog_connector) fn(DT_N_S_nrf_gpio_forwarder) fn(DT_N_S_nrf_gpio_forwarder_S_uart) fn(DT_N_S_reserved_memory) fn(DT_N_S_reserved_memory_S_image_20000000) fn(DT_N_S_reserved_memory_S_image_s_20000000) fn(DT_N_S_reserved_memory_S_image_ns_20040000) fn(DT_N_S_reserved_memory_S_memory_20070000) fn(DT_N_S_digital) fn(DT_N_S_digital_S_dig_0) fn(DT_N_S_digital_S_dig_1) fn(DT_N_S_digital_S_dig_2) fn(DT_N_S_digital_S_dig_3) fn(DT_N_S_digital_S_dig_4)
+#define DT_COMPAT_fixed_partitions_LABEL_partitiona DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_0
+#define DT_COMPAT_fixed_partitions_LABEL_partitiona_EXISTS 1
+#define DT_COMPAT_fixed_partitions_LABEL_partitionb DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_3000
+#define DT_COMPAT_fixed_partitions_LABEL_partitionb_EXISTS 1
+#define DT_COMPAT_fixed_partitions_LABEL_partitionc DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_40000
+#define DT_COMPAT_fixed_partitions_LABEL_partitionc_EXISTS 1
+#define DT_COMPAT_fixed_partitions_LABEL_partitiond DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_70000
+#define DT_COMPAT_fixed_partitions_LABEL_partitiond_EXISTS 1
+#define DT_COMPAT_fixed_partitions_LABEL_partitione DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions_S_partition_110000
+#define DT_COMPAT_fixed_partitions_LABEL_partitione_EXISTS 1
 #define DT_COMPAT_fixed_partitions_LABEL_mcuboot DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_0
 #define DT_COMPAT_fixed_partitions_LABEL_mcuboot_EXISTS 1
 #define DT_COMPAT_fixed_partitions_LABEL_image_0 DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions_S_partition_10000
@@ -18618,12 +19316,12 @@
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_ipc 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_qspi 1
 #define DT_COMPAT_HAS_OKAY_nordic_qspi_nor 1
+#define DT_COMPAT_HAS_OKAY_fixed_partitions 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_mutex 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_usbd 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_usbreg 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf53_flash_controller 1
 #define DT_COMPAT_HAS_OKAY_soc_nv_flash 1
-#define DT_COMPAT_HAS_OKAY_fixed_partitions 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_kmu 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_vmc 1
 #define DT_COMPAT_HAS_OKAY_nordic_nrf_gpio 1
@@ -18673,12 +19371,12 @@
 #define DT_N_INST_nordic_nrf_ipc_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_qspi_NUM_OKAY 1
 #define DT_N_INST_nordic_qspi_nor_NUM_OKAY 1
+#define DT_N_INST_fixed_partitions_NUM_OKAY 2
 #define DT_N_INST_nordic_nrf_mutex_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_usbd_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_usbreg_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf53_flash_controller_NUM_OKAY 1
 #define DT_N_INST_soc_nv_flash_NUM_OKAY 1
-#define DT_N_INST_fixed_partitions_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_kmu_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_vmc_NUM_OKAY 1
 #define DT_N_INST_nordic_nrf_gpio_NUM_OKAY 2
@@ -18808,6 +19506,10 @@
 #define DT_FOREACH_OKAY_VARGS_nordic_qspi_nor(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0, __VA_ARGS__)
 #define DT_FOREACH_OKAY_INST_nordic_qspi_nor(fn) fn(0)
 #define DT_FOREACH_OKAY_INST_VARGS_nordic_qspi_nor(fn, ...) fn(0, __VA_ARGS__)
+#define DT_FOREACH_OKAY_fixed_partitions(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions)
+#define DT_FOREACH_OKAY_VARGS_fixed_partitions(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_qspi_2b000_S_mx25r6435f_0_S_partitions, __VA_ARGS__) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions, __VA_ARGS__)
+#define DT_FOREACH_OKAY_INST_fixed_partitions(fn) fn(0) fn(1)
+#define DT_FOREACH_OKAY_INST_VARGS_fixed_partitions(fn, ...) fn(0, __VA_ARGS__) fn(1, __VA_ARGS__)
 #define DT_FOREACH_OKAY_nordic_nrf_mutex(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000)
 #define DT_FOREACH_OKAY_VARGS_nordic_nrf_mutex(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_mutex_30000, __VA_ARGS__)
 #define DT_FOREACH_OKAY_INST_nordic_nrf_mutex(fn) fn(0)
@@ -18828,10 +19530,6 @@
 #define DT_FOREACH_OKAY_VARGS_soc_nv_flash(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0, __VA_ARGS__)
 #define DT_FOREACH_OKAY_INST_soc_nv_flash(fn) fn(0)
 #define DT_FOREACH_OKAY_INST_VARGS_soc_nv_flash(fn, ...) fn(0, __VA_ARGS__)
-#define DT_FOREACH_OKAY_fixed_partitions(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions)
-#define DT_FOREACH_OKAY_VARGS_fixed_partitions(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_flash_controller_39000_S_flash_0_S_partitions, __VA_ARGS__)
-#define DT_FOREACH_OKAY_INST_fixed_partitions(fn) fn(0)
-#define DT_FOREACH_OKAY_INST_VARGS_fixed_partitions(fn, ...) fn(0, __VA_ARGS__)
 #define DT_FOREACH_OKAY_nordic_nrf_kmu(fn) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000)
 #define DT_FOREACH_OKAY_VARGS_nordic_nrf_kmu(fn, ...) fn(DT_N_S_soc_S_peripheral_40000000_S_kmu_39000, __VA_ARGS__)
 #define DT_FOREACH_OKAY_INST_nordic_nrf_kmu(fn) fn(0)

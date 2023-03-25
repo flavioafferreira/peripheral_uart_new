@@ -484,6 +484,31 @@
 					has-dpd;
 					t-enter-dpd = < 0x2710 >;
 					t-exit-dpd = < 0x88b8 >;
+					partitions {
+						compatible = "fixed-partitions";
+						#address-cells = < 0x1 >;
+						#size-cells = < 0x1 >;
+						partition1: partition@0 {
+							label = "partitionA";
+							reg = < 0x0 0x2fff >;
+						};
+						partition2: partition@3000 {
+							label = "partitionB";
+							reg = < 0x3000 0x2fff >;
+						};
+						partition3: partition@40000 {
+							label = "partitionC";
+							reg = < 0x40000 0x2ffff >;
+						};
+						partition4: partition@70000 {
+							label = "partitionD";
+							reg = < 0x70000 0x2ffff >;
+						};
+						partition5: partition@110000 {
+							label = "partitionE";
+							reg = < 0x110000 0x7fffff >;
+						};
+					};
 				};
 			};
 			nfct: nfct@2d000 {
