@@ -1349,7 +1349,7 @@ zephyr_udc0: &usbd {
  };
  io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>,<&adc 7>;
 };
-# 181 "c:/Nordic/peripheral_uart/app.overlay"
+# 180 "c:/Nordic/peripheral_uart/app.overlay"
 &pinctrl {
  uart2_default: uart2_default {
         group1 {

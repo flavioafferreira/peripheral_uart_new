@@ -2,7 +2,7 @@
 _region_min_align = 32;
 MEMORY
     {
-    FLASH (rx) : ORIGIN = 0x8000, LENGTH = 0xee000
+    FLASH (rx) : ORIGIN = 0x8000, LENGTH = 0xf8000
     RAM (wx) : ORIGIN = 0x20008000, LENGTH = 0x68000
    
     IDT_LIST (wx) : ORIGIN = 0xFFFFF7FF, LENGTH = 2K

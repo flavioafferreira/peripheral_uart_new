@@ -223,6 +223,11 @@ const struct adc_dt_spec adc_channels[] = {
 //const struct device *flash_dev;
 //struct flash_area *my_area_partition;
    
+static const struct device *flash_device =
+DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
+
+
+
 
 int err = 0;
 uint8_t start_send=0;
@@ -850,22 +855,26 @@ add_region(
 */
 void flash_test_(void) {
 
+
    int err = 0;
    uint32_t size;
+   off_t  offtest=0;
+   
+   static uint8_t buf[16];
 
+    flash_device = device_get_binding("mx25r6435f@0");
+    err = flash_read(flash_device, 0, buf, sizeof(buf));
+    printf("Result flash_read:%d \n", err);
+    printf("valor:%d/n",buf[0]);
 
+   //err=flash_erase(flash_dev, 0,0xf);
+ 
 
-const struct device *flash_dev = DEVICE_DT_GET(DT_ALIAS(external_mx25));
+  // printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
+  //err=flash_area_open(DT_FIXED_PARTITION_ID( DT_NODELABEL(partition1)), &my_area)
 
-uint8_t dev_ok = device_is_ready(flash_dev);
-struct flash_area *my_area;
-
-
-
-printf("Dev_OK:%d \n", dev_ok);
-err=flash_area_open(FIXED_PARTITION_ID(partition_0), &my_area);
-printf("Result Open:%d \n", err);
-printf("fa_id:%d device_id:%d size=%zu\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
+//fix this printf zu has an error
+   //printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
   
    //err = flash_area_erase(my_area, 0, my_area->fa_size);
    //printf("Result Erase:%d size=%lu \n", err,my_area->fa_size);
@@ -1191,6 +1200,14 @@ void main(void)
 	}
     
 	flag=1;//print ad values once
+
+    //flash_device = device_get_binding("mx25r6435f@0");
+	//static uint8_t buf[16];
+    //err = flash_read(flash_device, 0, buf, sizeof(buf));
+
+    //printf("Result flash_read:%d \n", err);
+    //flash_test_();
+
 
 
 	for (;;) {

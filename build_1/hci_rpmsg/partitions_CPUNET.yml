@@ -6,11 +6,6 @@ app:
   region: flash_primary
   size: 0x40000
   span: *id001
-external_flash:
-  address: 0x0
-  end_address: 0x800000
-  region: external_flash
-  size: 0x800000
 hci_rpmsg:
   address: 0x1000000
   end_address: 0x1040000
