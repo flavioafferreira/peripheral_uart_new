@@ -231,19 +231,21 @@ DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
 
 
 //NVS deploy
-static struct nvs_fs fs;
+struct nvs_fs fs;
+struct flash_pages_info info;
 
 #define NVS_PARTITION		storage_partition
 #define NVS_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(NVS_PARTITION)
 #define NVS_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(NVS_PARTITION)
-
+/*
 #define ADDRESS_ID 1
 #define KEY_ID 2
 #define RBT_CNT_ID 3
 #define STRING_ID 4
 #define LONG_ID 5
+*/
 uint32_t button2_counter = 0U, button2_counter_his;
-struct flash_pages_info info;
+
 
 
 
@@ -873,7 +875,7 @@ add_region(
   )
 */
 
-void flash_button2_counter(void){
+void flash_button2_counter_old(void){
 	int rc = 0;
     button2_counter++;
 	(void)nvs_write(
@@ -883,6 +885,7 @@ void flash_button2_counter(void){
 	if (rc > 0) { /* item was found, show it */
 		printk("Id: %d, button2_counter: %d\n",
 			RBT_CNT_ID, button2_counter);
+
 	}	
 }
 
@@ -967,62 +970,6 @@ void flash_test_atom(void) {
     printf("valor:%d\n",buf[0]);
 
 
-
-}
-void flash_test_old(void) {
-
-   int err = 0;
-
-   /*  
-   static struct flash_area *my_area;
-   //my_area->fa_dev=device_get_binding("mx25r6435f@0");
-   err=flash_area_open(DT_FIXED_PARTITION_ID(DT_NODELABEL(partition1)), &my_area);
-   printf("flash_area_open:%d \n", err);
-   printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
-  
-   uint32_t quantity_of_bytes = sizeof(uint32_t);
-   uint32_t buf_word = 0U;
-   err = flash_area_read(&my_area, 0, &buf_word, quantity_of_bytes);
-   printf("1  Data read: %x\n", buf_word);
-   printf("2  Status Read:%d \n", err);
-   */ 
-
-//fix this printf zu has an error
-   //printf("fa_id:%d device_id:%d size=%d\n", my_area->fa_id,my_area->fa_device_id,my_area->fa_size);
-  
-   //err = flash_area_erase(my_area, 0, my_area->fa_size);
-   //printf("Result Erase:%d size=%lu \n", err,my_area->fa_size);
- 
-  /*
-   uint32_t position_info = 20;
-   ;
-
-   err = flash_area_read(my_area_partition, position_info, &buf_word, quantity_of_bytes);
-   printf("1  Data read: %x\n", buf_word);
-   printf("2  Status Read:%d \n", err);
-
-   buf_word = 0x51525357;
-   err = flash_area_write(my_area_partition, position_info, &buf_word, quantity_of_bytes);
-   printf("3  Status Write:%d \n", err);
-
-   buf_word = 0x0;
-   err = flash_area_read(my_area_partition, position_info, &buf_word, quantity_of_bytes);
-   printf("4  Data read: %x\n", buf_word);
-   printf("5  Status Read:%d \n", err);
-
-   err = flash_area_erase(my_area_partition, 0, my_area_partition->fa_size);
-   printf("Result Erase:%d \n", err);
-
-   buf_word = 0x51525358;
-   err = flash_area_write(my_area_partition, position_info, &buf_word, quantity_of_bytes);
-   printf("6  Status Write:%d \n", err);
-
-   buf_word = 0x0;
-
-   err = flash_area_read(my_area_partition, position_info, &buf_word, quantity_of_bytes);
-   printf("7  Data read: %x\n", buf_word);
-   printf("8  Status Read:%d \n", err);
-  */
 
 }
 

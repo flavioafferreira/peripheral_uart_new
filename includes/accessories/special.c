@@ -26,7 +26,7 @@
 
 #include <time.h>
 #include <date_time.h>
-
+#include <zephyr/fs/nvs.h>
 
 //Circular Buffer
 uint32_t C_Buffer_Free_Position=0;
@@ -47,6 +47,27 @@ extern int16_t adc_value[8]; //0=channel 1
 extern int16_t digital_value[8];//value for digital inputs
 extern struct k_mutex ad_ready;
 extern const struct adc_dt_spec adc_channels[];
+
+//NVS
+extern struct flash_pages_info info;
+extern struct nvs_fs fs;
+extern uint32_t button2_counter;
+void save_memory(uint32_t Pos);
+_Circular_Buffer read_memory(uint32_t Pos);
+
+void flash_button2_counter(void){
+	int rc = 0;
+    button2_counter++;
+	(void)nvs_write(
+	&fs, RBT_CNT_ID, &button2_counter,
+	sizeof(button2_counter));
+    rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
+	if (rc > 0) { /* item was found, show it */
+		printk("Id: %d, button2_counter: %d\n",
+			RBT_CNT_ID, button2_counter);
+
+	}	
+}
 
 
 void time_print (void){
@@ -163,6 +184,46 @@ void print_current_position_cb(uint32_t pos){
 
 }
 
+void print_current_position_cb_new(uint32_t pos){
+   int32_t val_mv;
+   _Circular_Buffer C_Buffer=read_memory(pos);
+
+    printf("\n\n####Position %d #####\n",pos);
+
+    printf("GNSS Position Lat=%d Long=%d TimeStamp=%d \n",
+      C_Buffer.gnss_module.latitude,
+      C_Buffer.gnss_module.longitude,
+      C_Buffer.gnss_module.timestamp);
+
+
+    val_mv = C_Buffer.analog.value;
+    adc_raw_to_millivolts_dt(&adc_channels[ANALOG_SENSOR],&val_mv);
+ 
+    printf("Analog  TimeStamp=%d Value=%d  %"PRId32"mV \n",
+      C_Buffer.analog.timestamp,
+      C_Buffer.analog.value,
+      val_mv);
+    
+    int i=0;
+    while (i<3){
+      printf("NTC %d TimeStamp=%d Value=%d %3.1f C\n",
+      i,
+      C_Buffer.ntc[i].timestamp,
+      C_Buffer.ntc[i].value,
+      ntc_temperature(C_Buffer.ntc[i].value,(i+1)));
+      i++;
+    }
+
+    i=0;
+    while (i<2){
+      printf("Digital%d  TimeStamp=%d Value=%d\n",
+      i,
+      C_Buffer.digital[i].timestamp,
+      C_Buffer.digital[i].value);
+      i++;
+    }
+
+}
 
 
 void init_circular_buffer(void){
@@ -191,12 +252,31 @@ void feed_circular_buffer(void){
    
      C_Buffer[C_Buffer_Free_Position].digital[0]=values_of_digital_sensor(0);
      C_Buffer[C_Buffer_Free_Position].digital[1]=values_of_digital_sensor(1);
+     save_memory(C_Buffer_Free_Position);
      C_Buffer_Free_Position++;
     }else{
       C_Buffer_Free_Position=0;
       }
 }
 
+
+_Circular_Buffer read_memory(uint32_t Pos){
+    _Circular_Buffer *buf;
+    buf = k_malloc(sizeof(_Circular_Buffer));
+    uint16_t Id= Pos + BASE_DATA_BUFFER;
+    (void)nvs_read(&fs, Id, &buf, sizeof(_Circular_Buffer));
+    return *buf;
+    k_free(buf);
+}
+
+void save_memory(uint32_t Pos){
+    _Circular_Buffer *buf;
+    buf = k_malloc(sizeof(_Circular_Buffer));
+    *buf=C_Buffer[Pos];
+    uint16_t id= Pos + BASE_DATA_BUFFER;
+    (void)nvs_write(&fs, id, &buf,sizeof(_Circular_Buffer));
+    k_free(buf);
+}
 
 void init_alarm_circular_buffer(void){
     C_Buffer_Alarm_Free_Position=0;
