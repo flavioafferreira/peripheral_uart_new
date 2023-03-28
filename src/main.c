@@ -38,6 +38,7 @@
 
 #include <zephyr/drivers/flash.h>
 #include <zephyr/storage/flash_map.h>
+#include <zephyr/fs/nvs.h>
 
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
@@ -229,18 +230,20 @@ static const struct device *flash_device =
 DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
 
 
-//trying NVS deploy
-#define NVS_FLASH_DEVICE DEVICE_DT_GET_OR_NULL(DT_CHOSEN(nordic-pm-ext-flash))
-#define NVS_SECTOR_SIZE 256
-#define NVS_SECTOR_COUNT 256
-#define NVS_STORAGE_OFFSET 0
-/*
-static nvs_fs *fs;
-fs.flash_device = NVS_FLASH_DEVICE;
-fs.sector_size = NVS_SECTOR_SIZE;
-fs.sector_count = NVS_SECTOR_COUNT;
-fs.offset = NVS_STORAGE_OFFSET;
-*/
+//NVS deploy
+static struct nvs_fs fs;
+
+#define NVS_PARTITION		storage_partition
+#define NVS_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(NVS_PARTITION)
+#define NVS_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(NVS_PARTITION)
+
+#define ADDRESS_ID 1
+#define KEY_ID 2
+#define RBT_CNT_ID 3
+#define STRING_ID 4
+#define LONG_ID 5
+uint32_t button2_counter = 0U, button2_counter_his;
+struct flash_pages_info info;
 
 
 
@@ -870,7 +873,73 @@ add_region(
   )
 */
 
+void flash_button2_counter(void){
+	int rc = 0;
+    button2_counter++;
+	(void)nvs_write(
+	&fs, RBT_CNT_ID, &button2_counter,
+	sizeof(button2_counter));
+    rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
+	if (rc > 0) { /* item was found, show it */
+		printk("Id: %d, button2_counter: %d\n",
+			RBT_CNT_ID, button2_counter);
+	}	
+}
+
 void flash_test_(void) {
+
+    //struct flash_pages_info info;
+
+    int rc = 0, cnt = 0, cnt_his = 0;
+	char buf[16];
+	uint8_t key[8], longarray[128];
+	//uint32_t button2_counter = 0U, button2_counter_his;
+
+
+	/* define the nvs file system by settings with:
+	 *	sector_size equal to the pagesize,
+	 *	3 sectors
+	 *	starting at NVS_PARTITION_OFFSET
+	 */
+	fs.flash_device = NVS_PARTITION_DEVICE;
+	
+	if (!device_is_ready(fs.flash_device)) {
+		printk("Flash device %s is not ready\n", fs.flash_device->name);
+		return;
+	}
+	fs.offset = NVS_PARTITION_OFFSET;
+	rc = flash_get_page_info_by_offs(fs.flash_device, fs.offset, &info);
+	if (rc) {
+		printk("Unable to get page info\n");
+		return;
+	}
+	fs.sector_size = info.size;
+	fs.sector_count = 2048U; //NUMBER OF SECTORS total 0X800000 BYTES
+
+	rc = nvs_mount(&fs);
+	if (rc) {
+		printk("Flash Init failed\n");
+		return;
+	}
+
+
+	
+	rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
+	if (rc > 0) { /* item was found, show it */
+		printk("Id: %d, button2_counter: %d\n",
+			RBT_CNT_ID, button2_counter);
+	} else   {/* item was not found, add it */
+		printk("No Reboot counter found, adding it at id %d\n",
+		       RBT_CNT_ID);
+		(void)nvs_write(&fs, RBT_CNT_ID, &button2_counter,
+			  sizeof(button2_counter));
+	}
+
+
+
+}
+
+void flash_test_atom(void) {
    uint32_t buff_size=256; //Minimum to be saved
    uint8_t *buf;
    buf = k_malloc(buff_size);
@@ -900,7 +969,7 @@ void flash_test_(void) {
 
 
 }
-void flash_test(void) {
+void flash_test_old(void) {
 
    int err = 0;
 
@@ -1245,11 +1314,7 @@ void main(void)
     
 	flag=1;//print ad values once
 
-    //flash_device = device_get_binding("mx25r6435f@0");
-	//static uint8_t buf[16];
-    //err = flash_read(flash_device, 0, buf, sizeof(buf));
-
-    //printf("Result flash_read:%d \n", err);
+ 	k_msleep(300);
     flash_test_();
 
 
@@ -1330,7 +1395,8 @@ void send_protobuf_thread(void){
 void write_memory_thread(void){
 	while(1){
 		    k_sem_take(&save_memory,K_FOREVER);
-		    flash_test_();
+		    flash_button2_counter();
+
 	}
 }
 
