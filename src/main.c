@@ -42,6 +42,8 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 
+
+
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/gatt.h>
@@ -225,6 +227,20 @@ const struct adc_dt_spec adc_channels[] = {
    
 static const struct device *flash_device =
 DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
+
+
+//trying NVS deploy
+#define NVS_FLASH_DEVICE DEVICE_DT_GET_OR_NULL(DT_CHOSEN(nordic-pm-ext-flash))
+#define NVS_SECTOR_SIZE 256
+#define NVS_SECTOR_COUNT 256
+#define NVS_STORAGE_OFFSET 0
+/*
+static nvs_fs *fs;
+fs.flash_device = NVS_FLASH_DEVICE;
+fs.sector_size = NVS_SECTOR_SIZE;
+fs.sector_count = NVS_SECTOR_COUNT;
+fs.offset = NVS_STORAGE_OFFSET;
+*/
 
 
 
@@ -853,19 +869,40 @@ add_region(
   DEFAULT_DRIVER_KCONFIG CONFIG_PM_EXTERNAL_FLASH_HAS_DRIVER
   )
 */
+
 void flash_test_(void) {
-
-
-   int err = 0;
-   uint32_t size;
-   off_t  offtest=0;
-   
-   static uint8_t buf[16];
+   uint32_t buff_size=256; //Minimum to be saved
+   uint8_t *buf;
+   buf = k_malloc(buff_size);
 
     flash_device = device_get_binding("mx25r6435f@0");
-    err = flash_read(flash_device, 0, buf, sizeof(buf));
+
+	//size_t page_size = flash_get_write_block_size(flash_device);
+
+    //printf("Result flash_page_size:%d \n", page_size);
+
+    err = flash_read(flash_device, 0, buf, buff_size);
     printf("Result flash_read:%d \n", err);
     printf("valor:%d\n",buf[0]);
+
+    err = flash_erase(flash_device, 0, 4096); //Mininum to be erased
+    printf("Result flash_erase:%d \n", err);
+
+    buf[0]=0xfd;
+    err = flash_write(flash_device, 0,  buf, buff_size);
+    printf("Result flash_write:%d \n", err);
+
+	buf[0]=0xFF;
+    err = flash_read(flash_device, 0,  buf, buff_size);
+    printf("Result flash_read:%d \n", err);
+    printf("valor:%d\n",buf[0]);
+
+
+
+}
+void flash_test(void) {
+
+   int err = 0;
 
    /*  
    static struct flash_area *my_area;
@@ -1213,7 +1250,7 @@ void main(void)
     //err = flash_read(flash_device, 0, buf, sizeof(buf));
 
     //printf("Result flash_read:%d \n", err);
-    //flash_test_();
+    flash_test_();
 
 
 

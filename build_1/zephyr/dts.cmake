@@ -15,6 +15,7 @@ set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|zephyr,sram" "/res
 set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|zephyr,flash" "/soc/peripheral@40000000/flash-controller@39000/flash@0")
 set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|zephyr,code-partition" "/soc/peripheral@40000000/flash-controller@39000/flash@0/partitions/partition@50000")
 set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|nordic,nus-uart" "/soc/peripheral@40000000/uart@8000")
+set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|nordic,pm-ext-flash" "/soc/peripheral@40000000/qspi@2b000/mx25r6435f@0")
 set_target_properties(devicetree_target PROPERTIES "DT_CHOSEN|nordic,nrf-adc" "/soc/peripheral@40000000/adc@e000")
 set_target_properties(devicetree_target PROPERTIES "DT_ALIAS|adc" "/soc/peripheral@40000000/adc@e000")
 set_target_properties(devicetree_target PROPERTIES "DT_ALIAS|watchdog0" "/soc/peripheral@40000000/watchdog@18000")

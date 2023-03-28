@@ -22,8 +22,7 @@ config:
 # Runner specific arguments
 args:
   nrfjprog:
-    []
-
+    - --erase
   jlink:
     - --dt-flash=y
     - --device=nrf5340_xxaa_app

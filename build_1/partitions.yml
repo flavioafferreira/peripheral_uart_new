@@ -3,6 +3,21 @@ app:
   end_address: 0x100000
   region: flash_primary
   size: 0xf8000
+external_flash:
+  address: 0x800000
+  end_address: 0x800000
+  region: external_flash
+  size: 0x0
+nvs_storage:
+  address: 0x0
+  device: DT_CHOSEN(nordic_pm_ext_flash)
+  end_address: 0x800000
+  placement:
+    before:
+    - tfm_storage
+    - end
+  region: external_flash
+  size: 0x800000
 otp:
   address: 0xff8100
   end_address: 0xff83fc

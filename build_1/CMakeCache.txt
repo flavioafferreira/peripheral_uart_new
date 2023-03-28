@@ -27,7 +27,7 @@ BOARD:STRING=nrf5340dk_nrf5340_cpuapp_ns
 BOARD_DIR:PATH=C:/ncs/v2.3.0-rc1/zephyr/boards/arm/nrf5340dk_nrf5340
 
 //No help, variable specified on the command line.
-BOARD_ROOT:STRING=c:/Nordic/peripheral_uart;c:/Nordic/rpc_host;c:/Nordic/spi_flash;c:/Nordic/flash_shell;c:/Nordic/fs;c:/Nordic/littlefs;c:/Nordic/nvs
+BOARD_ROOT:STRING=c:/Nordic/peripheral_uart;c:/Nordic/rpc_host;c:/Nordic/spi_flash;c:/Nordic/nvs;c:/Nordic/flash_shell;c:/Nordic/fs;c:/Nordic/littlefs
 
 //Path to a program.
 BOSSAC:FILEPATH=BOSSAC-NOTFOUND
@@ -115,8 +115,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//Path to a program.
-CMAKE_C_COMPILER:FILEPATH=C:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe
+//C compiler
+CMAKE_C_COMPILER:STRING=C:/ncs/toolchains/v2.3.0-rc1/opt/zephyr-sdk/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -490,6 +490,8 @@ CMAKE_CXX_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_CXX_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_CXX_FLAGS_RELWITHDEBINFO
 CMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_C_COMPILER
+CMAKE_C_COMPILER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_COMPILER_AR
 CMAKE_C_COMPILER_AR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_COMPILER_RANLIB
