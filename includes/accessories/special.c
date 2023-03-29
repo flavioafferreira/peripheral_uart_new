@@ -283,7 +283,7 @@ void save_memory(uint32_t Pos){
     buf = k_malloc(size);
     *buf=C_Buffer[Pos];
     uint16_t id= Pos + BASE_DATA_BUFFER;
-    printf("Position %d\n",id);
+    printf("Position %d\n",id); 
 
     err=nvs_write(&fs, id, buf,size);
     printf("Result=%d bytes saved\n",err);

@@ -37,7 +37,7 @@ Button 2 - Save the memory
 
 Button 3 - Print to Terminal all 24h data from HEAP
 
-Button 4 - Send the word "ISADORA" to Bluetooth
+Button 4 - Send the word "ISADORA PENATI FERREIRA" to Bluetooth
 
 
 Next Steps:
