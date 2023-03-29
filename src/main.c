@@ -240,7 +240,7 @@ struct flash_pages_info info;
 /*
 #define ADDRESS_ID 1
 #define KEY_ID 2
-#define RBT_CNT_ID 3
+#define BOOT_POSITION 3
 #define STRING_ID 4
 #define LONG_ID 5
 */
@@ -273,7 +273,7 @@ static K_SEM_DEFINE(button_3,0, 1);
 //K_MUTEX_DEFINE(ad_ready)
 
 //CIRCULAR BUFFER
-//extern uint32_t C_Buffer_Free_Position;
+extern uint32_t C_Buffer_Free_Position;
 extern uint32_t C_Buffer_Current_Position;
 //extern uint32_t C_Buffer_Alarm_Free_Position;
 //extern uint32_t C_Buffer_Alarm_Current_Position;
@@ -855,41 +855,8 @@ void button_changed(uint32_t button_state, uint32_t has_changed)
 #endif /* CONFIG_BT_NUS_SECURITY_ENABLED */
 
 //FLASH FUNCTIONS
-/*
 
-  //C:\ncs\v2.3.0-rc1\zephyr\tests\subsys\storage\flash_map\src
-  //C:\ncs\v2.3.0-rc1\zephyr\include\zephyr\devicetree\fixed-partitions.h
-  //https://elinux.org/Device_Tree_Usage#How_Addressing_Works
-
-C:\ncs\v2.3.0-rc1\nrf\cmake\partition_manager.cmake
-added this on the partition_manager after 
-dt_chosen(ext_flash_dev PROPERTY nordic,pm-ext-flash)
-
-add_region(
-  NAME external_flash
-  SIZE 0X800000
-  BASE 0
-  PLACEMENT start_to_end
-  DEVICE "DT_ALIAS(external-mx25)"
-  DEFAULT_DRIVER_KCONFIG CONFIG_PM_EXTERNAL_FLASH_HAS_DRIVER
-  )
-*/
-
-void flash_button2_counter_old(void){
-	int rc = 0;
-    button2_counter++;
-	(void)nvs_write(
-	&fs, RBT_CNT_ID, &button2_counter,
-	sizeof(button2_counter));
-    rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
-	if (rc > 0) { /* item was found, show it */
-		printk("Id: %d, button2_counter: %d\n",
-			RBT_CNT_ID, button2_counter);
-
-	}	
-}
-
-void flash_test_(void) {
+void flash_init(void) {
 
     //struct flash_pages_info info;
 
@@ -926,17 +893,32 @@ void flash_test_(void) {
 	}
 
 
-	
-	rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
+	//Button Counter
+	rc = nvs_read(&fs, BOOT_POSITION, &button2_counter, sizeof(button2_counter));
 	if (rc > 0) { /* item was found, show it */
 		printk("Id: %d, button2_counter: %d\n",
-			RBT_CNT_ID, button2_counter);
+			BOOT_POSITION, button2_counter);
 	} else   {/* item was not found, add it */
 		printk("No Reboot counter found, adding it at id %d\n",
-		       RBT_CNT_ID);
-		(void)nvs_write(&fs, RBT_CNT_ID, &button2_counter,
+		       BOOT_POSITION);
+		(void)nvs_write(&fs, BOOT_POSITION, &button2_counter,
 			  sizeof(button2_counter));
 	}
+
+
+     //Creates C_Buffer_Current_Position if not exist or retrieve the value stored on memory
+	rc = nvs_read(&fs, LOG_POSITION, &C_Buffer_Current_Position, sizeof(C_Buffer_Current_Position));
+	if (rc > 0) { /* item was found, show it */
+		printk("Id: %d, Current Position: %d\n",
+			LOG_POSITION, C_Buffer_Current_Position);
+			if (C_Buffer_Free_Position < CIRCULAR_BUFFER_ELEMENTS) C_Buffer_Free_Position=C_Buffer_Current_Position+1;
+			if (C_Buffer_Free_Position == CIRCULAR_BUFFER_ELEMENTS) C_Buffer_Free_Position=0;
+	} else   {/* item was not found, add it */
+		printk("Current Position counter found, adding it at id %d\n",
+		       LOG_POSITION);
+		(void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position,sizeof(C_Buffer_Current_Position));
+	}
+
 
 
 
@@ -1262,8 +1244,7 @@ void main(void)
 	flag=1;//print ad values once
 
  	k_msleep(300);
-    flash_test_();
-
+    flash_init();
 
 
 	for (;;) {
@@ -1362,21 +1343,45 @@ void button3_thread(void){
 }
 
 void button4_thread(void){
+  //print ISADORA PENATI FERREIRA
+    char Name[] = "ISADORA PENATI FERREIRA";
+    uint16_t size= sizeof(Name);
 
+    /*
     uint8_t *packet_data;
 	packet_data = k_malloc(25);
-	//49 53 41 44 4f 52 41 
-    *packet_data = 0x49;
-    *(packet_data+1) = 0x53;
-    *(packet_data+2) = 0x41;
-    *(packet_data+3) = 0x44;
-    *(packet_data+4) = 0x4F;
-    *(packet_data+5) = 0x52;
-    *(packet_data+6) = 0x41;
+		
+    *packet_data     = 0x49;//I
+    *(packet_data+1) = 0x53;//S
+    *(packet_data+2) = 0x41;//A
+    *(packet_data+3) = 0x44;//D
+    *(packet_data+4) = 0x4F;//O
+    *(packet_data+5) = 0x52;//R
+    *(packet_data+6) = 0x41;//A
+    *(packet_data+7) = 0x20;//SPACE
+	*(packet_data+8)  = 0x50;//P
+	*(packet_data+9)  = 0x45;//E
+	*(packet_data+10) = 0x4E;//N
+	*(packet_data+11) = 0x41;//A
+	*(packet_data+12) = 0x54;//T
+	*(packet_data+13) = 0x49;//I
+	*(packet_data+14) = 0x20;//SPACE
+	*(packet_data+15) = 0x46;//F
+	*(packet_data+16) = 0x45;//E
+	*(packet_data+17) = 0x52;//R
+	*(packet_data+18) = 0x52;//R
+	*(packet_data+19) = 0x45;//E
+	*(packet_data+20) = 0x49;//I
+	*(packet_data+21) = 0x52;//R
+	*(packet_data+22) = 0x41;//A
+  
+    */
+    
 	while(1){
 		k_sem_take(&button_test,K_FOREVER);
-    	bt_nus_send(NULL, packet_data,7);
+    	bt_nus_send(NULL, Name,size);
 	}
+	//k_free(packet_data);
 }
 
 

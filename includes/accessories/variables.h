@@ -46,12 +46,10 @@
 #define TERMISTOR_RES_25       10000 // RESISTANCE AT 25C
 #define TERMISTOR_BETA          3969 // BETA
 
-#define ADDRESS_ID 1
-#define KEY_ID 2
-#define RBT_CNT_ID 3
-#define STRING_ID 4
-#define LONG_ID 5
+#define BOOT_POSITION    1
+#define LOG_POSITION     2
 #define BASE_DATA_BUFFER 1000
+
 
 
 //STRUCTURE FOR HISTORY

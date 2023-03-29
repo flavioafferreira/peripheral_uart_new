@@ -59,12 +59,12 @@ void flash_button2_counter(void){
 	int rc = 0;
     button2_counter++;
 	(void)nvs_write(
-	&fs, RBT_CNT_ID, &button2_counter,
+	&fs, BOOT_POSITION, &button2_counter,
 	sizeof(button2_counter));
-    rc = nvs_read(&fs, RBT_CNT_ID, &button2_counter, sizeof(button2_counter));
+    rc = nvs_read(&fs, BOOT_POSITION, &button2_counter, sizeof(button2_counter));
 	if (rc > 0) { /* item was found, show it */
 		printk("Id: %d, button2_counter: %d\n",
-			RBT_CNT_ID, button2_counter);
+			BOOT_POSITION, button2_counter);
 
 	}	
 }
@@ -283,10 +283,12 @@ void save_memory(uint32_t Pos){
     buf = k_malloc(size);
     *buf=C_Buffer[Pos];
     uint16_t id= Pos + BASE_DATA_BUFFER;
-    printf("Position %d\n",id); 
+    printf("Position %d\n",Pos); 
 
     err=nvs_write(&fs, id, buf,size);
     printf("Result=%d bytes saved\n",err);
+    (void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position,sizeof(C_Buffer_Current_Position));
+
     k_free(buf);
 }
 
@@ -309,8 +311,6 @@ void feed_alarm_circular_buffer(void){
 
     C_Buffer_Alarm_Free_Position++;
 }
-
-
 
 
 History_st *fill_fields_to_test(){
