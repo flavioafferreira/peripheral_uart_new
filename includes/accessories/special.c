@@ -186,31 +186,35 @@ void print_current_position_cb(uint32_t pos){
 
 void print_current_position_cb_new(uint32_t pos){
    int32_t val_mv;
-   _Circular_Buffer C_Buffer=read_memory(pos);
+   _Circular_Buffer *C_Buffer;
+   uint16_t size=sizeof(_Circular_Buffer);
+
+   C_Buffer = k_malloc(size);
+   *C_Buffer=read_memory(pos);
 
     printf("\n\n####Position %d #####\n",pos);
 
     printf("GNSS Position Lat=%d Long=%d TimeStamp=%d \n",
-      C_Buffer.gnss_module.latitude,
-      C_Buffer.gnss_module.longitude,
-      C_Buffer.gnss_module.timestamp);
+      C_Buffer->gnss_module.latitude,
+      C_Buffer->gnss_module.longitude,
+      C_Buffer->gnss_module.timestamp);
 
 
-    val_mv = C_Buffer.analog.value;
+    val_mv = C_Buffer->analog.value;
     adc_raw_to_millivolts_dt(&adc_channels[ANALOG_SENSOR],&val_mv);
  
     printf("Analog  TimeStamp=%d Value=%d  %"PRId32"mV \n",
-      C_Buffer.analog.timestamp,
-      C_Buffer.analog.value,
+      C_Buffer->analog.timestamp,
+      C_Buffer->analog.value,
       val_mv);
     
     int i=0;
     while (i<3){
       printf("NTC %d TimeStamp=%d Value=%d %3.1f C\n",
       i,
-      C_Buffer.ntc[i].timestamp,
-      C_Buffer.ntc[i].value,
-      ntc_temperature(C_Buffer.ntc[i].value,(i+1)));
+      C_Buffer->ntc[i].timestamp,
+      C_Buffer->ntc[i].value,
+      ntc_temperature(C_Buffer->ntc[i].value,(i+1)));
       i++;
     }
 
@@ -218,11 +222,12 @@ void print_current_position_cb_new(uint32_t pos){
     while (i<2){
       printf("Digital%d  TimeStamp=%d Value=%d\n",
       i,
-      C_Buffer.digital[i].timestamp,
-      C_Buffer.digital[i].value);
+      C_Buffer->digital[i].timestamp,
+      C_Buffer->digital[i].value);
       i++;
     }
 
+ k_free(C_Buffer);
 }
 
 
@@ -262,19 +267,26 @@ void feed_circular_buffer(void){
 
 _Circular_Buffer read_memory(uint32_t Pos){
     _Circular_Buffer *buf;
-    buf = k_malloc(sizeof(_Circular_Buffer));
+    uint16_t size=sizeof(_Circular_Buffer),err=0;
+    buf = k_malloc(size);
     uint16_t Id= Pos + BASE_DATA_BUFFER;
-    (void)nvs_read(&fs, Id, &buf, sizeof(_Circular_Buffer));
+    err=nvs_read(&fs, Id, buf, size);
+    printf("Result read=%d bytes\n",err);
     return *buf;
     k_free(buf);
 }
 
 void save_memory(uint32_t Pos){
     _Circular_Buffer *buf;
-    buf = k_malloc(sizeof(_Circular_Buffer));
+    uint16_t size=sizeof(_Circular_Buffer),err=0;
+    printf("Size of structure=%d bytes\n",size);
+    buf = k_malloc(size);
     *buf=C_Buffer[Pos];
     uint16_t id= Pos + BASE_DATA_BUFFER;
-    (void)nvs_write(&fs, id, &buf,sizeof(_Circular_Buffer));
+    printf("Position %d\n",id);
+
+    err=nvs_write(&fs, id, buf,size);
+    printf("Result=%d bytes saved\n",err);
     k_free(buf);
 }
 

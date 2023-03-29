@@ -1343,6 +1343,7 @@ void write_memory_thread(void){
 	while(1){
 		    k_sem_take(&save_memory,K_FOREVER);
 		    flash_button2_counter();
+			print_current_position_cb_new(0);
 
 	}
 }
