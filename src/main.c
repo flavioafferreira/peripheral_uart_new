@@ -323,16 +323,69 @@ static const struct device *const async_adapter;
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
     
 	ARG_UNUSED(dev);
-	static size_t aborted_len;
 	struct uart_data_t *buf;
-	static uint8_t *aborted_buf;
 	static bool disable_req;
-	switch (evt->type) {
-	    case UART_TX_DONE:break;
-		
-		case UART_RX_RDY:break;
 
-        case UART_RX_BUF_RELEASED:break;
+	switch (evt->type) {
+	   case UART_RX_RDY:
+		LOG_DBG("UART_RX_RDY");
+		buf = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
+		buf->len += evt->data.rx.len;
+		if (disable_req) {
+			return;
+		}
+		if ((evt->data.rx.buf[buf->len - 1] == '\n') ||
+		    (evt->data.rx.buf[buf->len - 1] == '\r')) {
+			disable_req = true;
+			uart_rx_disable(uart_2);
+			
+			//start_send=1;
+		}
+		break;
+		/*
+       case UART_RX_DISABLED:
+		LOG_DBG("UART_RX_DISABLED");
+		disable_req = false;
+
+		buf = k_malloc(sizeof(*buf));
+		if (buf) {
+			buf->len = 0;
+		} else {
+			LOG_WRN("Not able to allocate UART receive buffer");
+			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
+			return;
+		}
+
+		uart_rx_enable(uart_2, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
+
+		break;
+		
+        case UART_RX_BUF_REQUEST:
+		LOG_DBG("UART_RX_BUF_REQUEST");
+		buf = k_malloc(sizeof(*buf));
+		if (buf) {
+			buf->len = 0;
+			uart_rx_buf_rsp(uart_2, buf->data, sizeof(buf->data));
+		} else {
+			LOG_WRN("Not able to allocate UART receive buffer");
+		}
+
+		break;
+
+	   case UART_RX_BUF_RELEASED:
+		LOG_DBG("UART_RX_BUF_RELEASED");
+		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
+
+		if (buf->len > 0) {
+			k_fifo_put(&fifo_uart2_rx_data, buf);
+		} else {
+			k_free(buf);
+		}
+
+		break;
+		*/
+        default:
+		break;
 
 	}	
 
@@ -604,26 +657,26 @@ static int uart_2_init(void)
 	rx_uart2->len = 0;
 	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
 	uart_callback_set(uart_2, uart_cb_2, NULL);
-	//tx_uart2 = k_malloc(sizeof(*tx_uart2));
-	//tx_uart2->len = 0;
-	//uart_tx(uart_2, tx_uart2->data, tx_uart2->len, SYS_FOREVER_MS);
+
 	uart_rx_enable(uart_2, rx_uart2->data, sizeof(rx_uart2->data), 50);
 
     return 0;
 }
 
-void uart2_teste(void){
+void uart2_tx(uint8_t Name[]){
    struct uart_data_t *buf;
    buf = k_malloc(sizeof(*buf));
+   uint16_t size= sizeof(Name);
 
-    buf->data[0] = 0x41;
-	buf->data[1] = 0x42;
-	buf->data[2] = 0x43;
-    buf->len=3;
-
+   uint8_t i=0;
+   while (i<sizeof(Name)){
+	buf->data[i] = Name[i];
+	i++;
+   }
+   buf->len=(sizeof(Name)-1);
    uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
    k_free(buf);
-   //printf("Printed uart2 \n");
+   
 }
 
 
@@ -1248,8 +1301,8 @@ void main(void)
 
 
 	for (;;) {
-		uart2_teste();
 		
+		uart2_tx("ABC");
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
@@ -1329,7 +1382,6 @@ void write_memory_thread(void){
 	}
 }
 
-
 void button3_thread(void){
     uint32_t i;
 	while(1){
@@ -1349,8 +1401,7 @@ void button4_thread(void){
 
     /*
     uint8_t *packet_data;
-	packet_data = k_malloc(25);
-		
+	packet_data = k_malloc(7);
     *packet_data     = 0x49;//I
     *(packet_data+1) = 0x53;//S
     *(packet_data+2) = 0x41;//A
@@ -1359,33 +1410,15 @@ void button4_thread(void){
     *(packet_data+5) = 0x52;//R
     *(packet_data+6) = 0x41;//A
     *(packet_data+7) = 0x20;//SPACE
-	*(packet_data+8)  = 0x50;//P
-	*(packet_data+9)  = 0x45;//E
-	*(packet_data+10) = 0x4E;//N
-	*(packet_data+11) = 0x41;//A
-	*(packet_data+12) = 0x54;//T
-	*(packet_data+13) = 0x49;//I
-	*(packet_data+14) = 0x20;//SPACE
-	*(packet_data+15) = 0x46;//F
-	*(packet_data+16) = 0x45;//E
-	*(packet_data+17) = 0x52;//R
-	*(packet_data+18) = 0x52;//R
-	*(packet_data+19) = 0x45;//E
-	*(packet_data+20) = 0x49;//I
-	*(packet_data+21) = 0x52;//R
-	*(packet_data+22) = 0x41;//A
-  
-    */
+	*/
     
 	while(1){
 		k_sem_take(&button_test,K_FOREVER);
     	bt_nus_send(NULL, Name,size);
+		
 	}
 	//k_free(packet_data);
 }
-
-
-
 
 void adc_thread(void){
 	int err;
@@ -1415,6 +1448,22 @@ void adc_thread(void){
 	}
 }
 
+void gnss_write_thread(void)
+{
+	/* Don't go any further until BLE is initialized */
+	//k_sem_take(&ble_init_ok, K_FOREVER);
+
+	for (;;) {
+		/* Wait indefinitely for data to be sent over bluetooth */
+		struct uart_data_t *buf2 = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
+
+        //SE ATIVAR ABAIXO VAI ENVIAR TODO CARACTERE DIGITADO
+		//if (bt_nus_send(NULL, buf2->data, buf2->len)) {
+		//	printf("DataGNSS &s",buf2->data);
+		//}
+		//k_free(buf2);
+	}
+}
 
 //THREADS START
 
