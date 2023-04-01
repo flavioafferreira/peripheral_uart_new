@@ -283,9 +283,9 @@ static struct bt_conn *current_conn;
 static struct bt_conn *auth_conn;
 
 //UART PORT DEFINITION ON app.overlay
-	//static const struct device *uart   = DEVICE_DT_GET(DT_CHOSEN(nordic_nus_uart));
-	static const struct device *uart   = DEVICE_DT_GET(DT_NODELABEL(uart0));
-    static const struct device *uart_2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
+	
+static const struct device *uart   = DEVICE_DT_GET(DT_NODELABEL(uart0));
+static const struct device *uart_2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
 
 static struct k_work_delayable uart_work;
 static struct k_work_delayable uart_work_2;
@@ -316,42 +316,66 @@ static const struct bt_data sd[] = {
 UART_ASYNC_ADAPTER_INST_DEFINE(async_adapter);
 #else
 static const struct device *const async_adapter;
+static const struct device *const async_adapter_2;
+
 #endif
 
 //UART
 
+void uart2_tx(uint8_t Name[]){
+   struct uart_data_t *buf;
+   buf = k_malloc(sizeof(*buf));
+   uint16_t size= sizeof(Name);
+
+   uint8_t i=0;
+   while (i<sizeof(Name)){
+	buf->data[i] = Name[i];
+	i++;
+   }
+   buf->len=(sizeof(Name)-1);
+   uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
+   k_free(buf);
+   
+}
+
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
     
 	ARG_UNUSED(dev);
+	static size_t aborted_len;
 	struct uart_data_t *buf;
+	static uint8_t *aborted_buf;
 	static bool disable_req;
 
 	switch (evt->type) {
-	   case UART_RX_RDY:
-		LOG_DBG("UART_RX_RDY");
+	
+	case UART_RX_RDY:
+		LOG_DBG("UART_RX_RDY2");
+		
 		buf = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf->len += evt->data.rx.len;
+
 		if (disable_req) {
 			return;
 		}
+
 		if ((evt->data.rx.buf[buf->len - 1] == '\n') ||
 		    (evt->data.rx.buf[buf->len - 1] == '\r')) {
 			disable_req = true;
 			uart_rx_disable(uart_2);
-			
 			//start_send=1;
 		}
+
 		break;
-		/*
-       case UART_RX_DISABLED:
-		LOG_DBG("UART_RX_DISABLED");
+
+	case UART_RX_DISABLED:
+		LOG_DBG("UART_RX_DISABLED2");
 		disable_req = false;
 
 		buf = k_malloc(sizeof(*buf));
 		if (buf) {
 			buf->len = 0;
 		} else {
-			LOG_WRN("Not able to allocate UART receive buffer");
+			LOG_WRN("UART_RX_DISABLED2-Not able to allocate UART receive buffer");
 			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
@@ -359,22 +383,23 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		uart_rx_enable(uart_2, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
 
 		break;
-		
-        case UART_RX_BUF_REQUEST:
-		LOG_DBG("UART_RX_BUF_REQUEST");
+
+	case UART_RX_BUF_REQUEST:
+		LOG_DBG("UART_RX_BUF_REQUEST2");
 		buf = k_malloc(sizeof(*buf));
 		if (buf) {
 			buf->len = 0;
 			uart_rx_buf_rsp(uart_2, buf->data, sizeof(buf->data));
 		} else {
-			LOG_WRN("Not able to allocate UART receive buffer");
+			LOG_WRN("UART_RX_BUF_REQUEST2-Not able to allocate UART receive buffer");
 		}
 
 		break;
 
-	   case UART_RX_BUF_RELEASED:
-		LOG_DBG("UART_RX_BUF_RELEASED");
-		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
+	case UART_RX_BUF_RELEASED:
+		LOG_DBG("UART_RX_BUF_RELEASED2");
+		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,
+				   data);
 
 		if (buf->len > 0) {
 			k_fifo_put(&fifo_uart2_rx_data, buf);
@@ -383,12 +408,12 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		}
 
 		break;
-		*/
-        default:
+
+	
+    
+	default:
 		break;
-
-	}	
-
+	}
 }
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data){
@@ -577,7 +602,7 @@ static int uart_init(void)
 	}
 
 	k_work_init_delayable(&uart_work, uart_work_handler);
-
+    
 
 	if (IS_ENABLED(CONFIG_BT_NUS_UART_ASYNC_ADAPTER) && !uart_test_async_api(uart)) {
 		/* Implement API adapter */
@@ -639,7 +664,7 @@ static int uart_init(void)
 		return err;
 	}
 
-	return uart_rx_enable(uart, rx->data, sizeof(rx->data), 50);
+	return uart_rx_enable(uart, rx->data, sizeof(rx->data), UART_BUF_SIZE);
 
 }
 
@@ -656,28 +681,14 @@ static int uart_2_init(void)
 	rx_uart2 = k_malloc(sizeof(*rx_uart2));
 	rx_uart2->len = 0;
 	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
-	uart_callback_set(uart_2, uart_cb_2, NULL);
 
-	uart_rx_enable(uart_2, rx_uart2->data, sizeof(rx_uart2->data), 50);
+	uart_callback_set(uart_2, uart_cb_2, NULL);
+	uart_rx_enable(uart_2, rx_uart2->data, sizeof(rx_uart2->data), UART_BUF_SIZE);
 
     return 0;
 }
 
-void uart2_tx(uint8_t Name[]){
-   struct uart_data_t *buf;
-   buf = k_malloc(sizeof(*buf));
-   uint16_t size= sizeof(Name);
 
-   uint8_t i=0;
-   while (i<sizeof(Name)){
-	buf->data[i] = Name[i];
-	i++;
-   }
-   buf->len=(sizeof(Name)-1);
-   uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
-   k_free(buf);
-   
-}
 
 
 //BLUETOOTH
@@ -1302,7 +1313,7 @@ void main(void)
 
 	for (;;) {
 		
-		uart2_tx("ABC");
+		//uart2_tx("ABC");
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
@@ -1452,16 +1463,27 @@ void gnss_write_thread(void)
 {
 	/* Don't go any further until BLE is initialized */
 	//k_sem_take(&ble_init_ok, K_FOREVER);
-
+    uint8_t i=0;
 	for (;;) {
-		/* Wait indefinitely for data to be sent over bluetooth */
-		struct uart_data_t *buf2 = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
+		/* Wait indefinitely for data  */
+		struct uart_data_t *buf2;
 
-        //SE ATIVAR ABAIXO VAI ENVIAR TODO CARACTERE DIGITADO
-		//if (bt_nus_send(NULL, buf2->data, buf2->len)) {
+		buf2 = k_malloc(UART_BUF_SIZE);
+
+        buf2 = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
+
+        i=0;
+		printf("UART2:");
+        while (i< (buf2->len-1)){
+         printf("%X ",buf2->data[i]);
+		 i++;
+		}
+        printf("\n");
+		printf("i:%d\n",i);
+      
 		//	printf("DataGNSS &s",buf2->data);
-		//}
-		//k_free(buf2);
+		
+		k_free(buf2);
 	}
 }
 
@@ -1473,5 +1495,6 @@ K_THREAD_DEFINE(message_id, 10000, button4_thread, NULL, NULL,NULL,PRIORITY, 0, 
 K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
 K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
+K_THREAD_DEFINE(gnss_write_thread_id, 10000, gnss_write_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL,NULL, 9, 0, 0);
 
