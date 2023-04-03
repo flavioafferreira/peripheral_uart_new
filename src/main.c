@@ -341,6 +341,7 @@ void uart2_tx(uint8_t Name[]){
    
 }
 
+
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
     
 	ARG_UNUSED(dev);
@@ -374,27 +375,28 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		LOG_DBG("UART_RX_DISABLED2");
 		disable_req = false;
 
-		buf = k_malloc(sizeof(*buf));
+		//buf = k_malloc(sizeof(*buf));
 		if (buf) {
 			buf->len = 0;
 		} else {
-			LOG_WRN("UART_RX_DISABLED2-Not able to allocate UART receive buffer");
+			//LOG_WRN("UART_RX_DISABLED2-Not able to allocate UART receive buffer");
 			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
-
+		
+        
 		uart_rx_enable(uart_2, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
 
 		break;
 
 	case UART_RX_BUF_REQUEST:
 		LOG_DBG("UART_RX_BUF_REQUEST2");
-		buf = k_malloc(sizeof(*buf));
+		//buf = k_malloc(sizeof(*buf));
 		if (buf) {
 			buf->len = 0;
 			uart_rx_buf_rsp(uart_2, buf->data, sizeof(buf->data));
 		} else {
-			LOG_WRN("UART_RX_BUF_REQUEST2-Not able to allocate UART receive buffer");
+			//LOG_WRN("UART_RX_BUF_REQUEST2-Not able to allocate UART receive buffer");
 		}
 
 		break;
@@ -405,7 +407,8 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 				   data);
 
 		if (buf->len > 0) {
-			k_fifo_put(&fifo_uart2_rx_data, buf);
+			//k_fifo_put(&fifo_uart2_rx_data, buf);
+			k_fifo_alloc_put(&fifo_uart2_rx_data, buf);
 		} else {
 			k_free(buf);
 		}
@@ -418,7 +421,6 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		break;
 	}
 }
-
 
 static void uart_cb_2_orig(const struct device *dev, struct uart_event *evt, void *user_data){
     
@@ -636,9 +638,7 @@ static void uart_work_handler(struct k_work *item)
 
 static void uart_2_work_handler(struct k_work *item)
 {
-	//struct uart_data_t *buf2;
 
-	//buf2 = k_malloc(sizeof(*buf2));
 	if (buf2) {
 		buf2->len = 0;
 	} else {
