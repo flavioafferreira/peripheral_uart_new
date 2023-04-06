@@ -303,7 +303,12 @@ static K_FIFO_DEFINE(fifo_uart_rx_data);
 static K_FIFO_DEFINE(fifo_uart2_tx_data);
 static K_FIFO_DEFINE(fifo_uart2_rx_data);
 
-struct uart_data_t *buf2;
+
+
+uint16_t rxdatalen0 = 0;
+uint8_t	 datarx[200];
+		
+
 
 
 static const struct bt_data ad[] = {
@@ -345,79 +350,53 @@ void uart2_tx(uint8_t Name[]){
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
     
 	ARG_UNUSED(dev);
-	static size_t aborted_len;
-	struct uart_data_t *buf;
-	static uint8_t *aborted_buf;
 	static bool disable_req;
+    struct uart_data_t *buf2;
 
 	switch (evt->type) {
 	
-	case UART_RX_RDY:
-		LOG_DBG("UART_RX_RDY2");
-		
-		buf = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
-		buf->len += evt->data.rx.len;
+    case UART_RX_RDY:
+		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
+		buf2->len += evt->data.rx.len;
 
 		if (disable_req) {
 			return;
 		}
 
-		if ((evt->data.rx.buf[buf->len - 1] == '\n') ||
-		    (evt->data.rx.buf[buf->len - 1] == '\r')) {
+        //CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal) 
+		if (evt->data.rx.buf[buf2->len - 1] == 0x0D) {
+            uart_rx_disable(uart_2);
 			disable_req = true;
-			uart_rx_disable(uart_2);
-			//start_send=1;
+			
 		}
-
-		break;
+      	break;
 
 	case UART_RX_DISABLED:
-		LOG_DBG("UART_RX_DISABLED2");
-		disable_req = false;
+	    disable_req = false;
+		buf2 = k_malloc(sizeof(*buf2));
 
-		//buf = k_malloc(sizeof(*buf));
-		if (buf) {
-			buf->len = 0;
+        if (buf2) {
+			buf2->len = 0;
 		} else {
-			//LOG_WRN("UART_RX_DISABLED2-Not able to allocate UART receive buffer");
-			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
+			k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
-		
-        
-		uart_rx_enable(uart_2, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
-
+  		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data),50);
 		break;
-
+   
 	case UART_RX_BUF_REQUEST:
-		LOG_DBG("UART_RX_BUF_REQUEST2");
-		//buf = k_malloc(sizeof(*buf));
-		if (buf) {
-			buf->len = 0;
-			uart_rx_buf_rsp(uart_2, buf->data, sizeof(buf->data));
-		} else {
-			//LOG_WRN("UART_RX_BUF_REQUEST2-Not able to allocate UART receive buffer");
+	    buf2 = k_malloc(sizeof(*buf2));
+        if (buf2) {
+			buf2->len = 0;
+			uart_rx_buf_rsp(uart, buf2->data, sizeof(buf2->data));
 		}
-
-		break;
-
-	case UART_RX_BUF_RELEASED:
-		LOG_DBG("UART_RX_BUF_RELEASED2");
-		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,
-				   data);
-
-		if (buf->len > 0) {
-			//k_fifo_put(&fifo_uart2_rx_data, buf);
-			k_fifo_alloc_put(&fifo_uart2_rx_data, buf);
-		} else {
-			k_free(buf);
-		}
-
-		break;
-
-	
+	    break;
     
-	default:
+	case UART_RX_BUF_RELEASED:
+	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
+		if (buf2->len > 0)
+		   k_fifo_put(&fifo_uart2_rx_data, buf2);
+		   else k_free(buf2);
 		break;
 	}
 }
@@ -623,12 +602,11 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 static void uart_work_handler(struct k_work *item)
 {
 	struct uart_data_t *buf;
-
 	buf = k_malloc(sizeof(*buf));
 	if (buf) {
 		buf->len = 0;
 	} else {
-		LOG_WRN("Not able to allocate UART receive buffer");
+		LOG_WRN("Not able to allocate UART_1 receive buffer");
 		k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
 		return;
 	}
@@ -638,7 +616,8 @@ static void uart_work_handler(struct k_work *item)
 
 static void uart_2_work_handler(struct k_work *item)
 {
-
+	struct uart_data_t *buf2;
+	buf2 = k_malloc(sizeof(*buf2));
 	if (buf2) {
 		buf2->len = 0;
 	} else {
@@ -1338,9 +1317,10 @@ void main(void)
 		error();
 	}
 
-    buf2     = k_malloc(sizeof(*buf2));
+    
 	
 	   
+	
 	
 	err = uart_2_init();
 	if (err) {
@@ -1550,7 +1530,7 @@ void gnss_write_thread(void)
 {
 	/* Don't go any further until BLE is initialized */
 	//k_sem_take(&ble_init_ok, K_FOREVER);
-    uint32_t i=0,j=1;
+    uint32_t i=0,j=1,k=0;;
 
 	struct uart_data_t *buf2a;
 	buf2a = k_malloc(sizeof(*buf2a));
@@ -1559,17 +1539,19 @@ void gnss_write_thread(void)
 	for (;;) {
 		/* Wait indefinitely for data  */
 	    buf2a = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
-		
+		k_fifo_init(&fifo_uart2_rx_data);
+    
+        k=(buf2a->len-1);
 
         i=0;
-		printf("UART2:");
-        while (i< (buf2a->len-2)){
+		printf("k:%d UART2:",k);
+        while (i< (buf2a->len-1)){
          printf("%X ",buf2a->data[i]);
 		 i++;
 		}
 		
      
-		printf("  j:%d\n",j);
+		printf("j:%d\n",j);
         j++;
 		
 	    
