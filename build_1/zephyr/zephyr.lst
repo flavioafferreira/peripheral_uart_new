@@ -4041,15 +4041,15 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb,uint
 0000a99c <uart_2_work_handler>:
 {
     a99c:	b51f      	push	{r0, r1, r2, r3, r4, lr}
-	buf2 = k_malloc(sizeof(*buf2));
-    a99e:	20d0      	movs	r0, #208	; 0xd0
+	buf2 = k_malloc(sizeof(*buf2));  //SIZE IS 92 BYTES
+    a99e:	205c      	movs	r0, #92	; 0x5c
     a9a0:	f01e fef2 	bl	29788 <k_malloc>
     a9a4:	4603      	mov	r3, r0
 	if (buf2) {
     a9a6:	b150      	cbz	r0, a9be <uart_2_work_handler+0x22>
 		buf2->len = 0;
     a9a8:	2200      	movs	r2, #0
-    a9aa:	f8a0 20cc 	strh.w	r2, [r0, #204]	; 0xcc
+    a9aa:	f8a0 205a 	strh.w	r2, [r0, #90]	; 0x5a
 	uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data), UART_WAIT_FOR_RX);
     a9ae:	2232      	movs	r2, #50	; 0x32
     a9b0:	1d01      	adds	r1, r0, #4
@@ -4084,14 +4084,14 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb,uint
 {
     a9f0:	b51f      	push	{r0, r1, r2, r3, r4, lr}
 	buf = k_malloc(sizeof(*buf));
-    a9f2:	20d0      	movs	r0, #208	; 0xd0
+    a9f2:	205c      	movs	r0, #92	; 0x5c
     a9f4:	f01e fec8 	bl	29788 <k_malloc>
     a9f8:	4603      	mov	r3, r0
 	if (buf) {
     a9fa:	b150      	cbz	r0, aa12 <uart_work_handler+0x22>
 		buf->len = 0;
     a9fc:	2200      	movs	r2, #0
-    a9fe:	f8a0 20cc 	strh.w	r2, [r0, #204]	; 0xcc
+    a9fe:	f8a0 205a 	strh.w	r2, [r0, #90]	; 0x5a
 	uart_rx_enable(uart, buf->data, sizeof(buf->data), UART_WAIT_FOR_RX);
     aa02:	2232      	movs	r2, #50	; 0x32
     aa04:	1d01      	adds	r1, r0, #4
@@ -4596,7 +4596,7 @@ static inline int bt_addr_le_to_str(const bt_addr_le_t *addr, char *str,
     ad8a:	42b4      	cmp	r4, r6
     ad8c:	d007      	beq.n	ad9e <bt_receive_cb+0x4a>
 		struct uart_data_t *tx = k_malloc(sizeof(*tx));
-    ad8e:	20d0      	movs	r0, #208	; 0xd0
+    ad8e:	205c      	movs	r0, #92	; 0x5c
     ad90:	f01e fcfa 	bl	29788 <k_malloc>
 		if (!tx) {
     ad94:	4605      	mov	r5, r0
@@ -4609,21 +4609,21 @@ static inline int bt_addr_le_to_str(const bt_addr_le_t *addr, char *str,
     ada0:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
 		if ((len - pos) > tx_data_size) {
     ada4:	1b32      	subs	r2, r6, r4
-    ada6:	2ac7      	cmp	r2, #199	; 0xc7
+    ada6:	2a55      	cmp	r2, #85	; 0x55
 			tx->len = tx_data_size;
     ada8:	bf8c      	ite	hi
-    adaa:	22c7      	movhi	r2, #199	; 0xc7
+    adaa:	2255      	movhi	r2, #85	; 0x55
 			tx->len = (len - pos);
     adac:	b292      	uxthls	r2, r2
 		memcpy(tx->data, &data[pos], tx->len);
     adae:	f100 0a04 	add.w	sl, r0, #4
-    adb2:	f8a0 20cc 	strh.w	r2, [r0, #204]	; 0xcc
+    adb2:	f8a0 205a 	strh.w	r2, [r0, #90]	; 0x5a
 __ssp_bos_icheck3_restrict(memcpy, void *, const void *)
     adb6:	1939      	adds	r1, r7, r4
     adb8:	4650      	mov	r0, sl
     adba:	f01e fcfa 	bl	297b2 <memcpy>
 		pos += tx->len;
-    adbe:	f8b5 30cc 	ldrh.w	r3, [r5, #204]	; 0xcc
+    adbe:	f8b5 305a 	ldrh.w	r3, [r5, #90]	; 0x5a
     adc2:	441c      	add	r4, r3
     adc4:	b2a4      	uxth	r4, r4
 		if ((pos == len) && (data[len - 1] == '\r')) {
@@ -4641,11 +4641,11 @@ __ssp_bos_icheck3_restrict(memcpy, void *, const void *)
 			tx->data[tx->len] = '\n';
     adda:	7111      	strb	r1, [r2, #4]
 			tx->len++;
-    addc:	f8a5 30cc 	strh.w	r3, [r5, #204]	; 0xcc
+    addc:	f8a5 305a 	strh.w	r3, [r5, #90]	; 0x5a
 		err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
     ade0:	4651      	mov	r1, sl
     ade2:	4640      	mov	r0, r8
-    ade4:	f8b5 20cc 	ldrh.w	r2, [r5, #204]	; 0xcc
+    ade4:	f8b5 205a 	ldrh.w	r2, [r5, #90]	; 0x5a
     ade8:	f019 fbe8 	bl	245bc <uart_tx.constprop.0>
 		if (err) {
     adec:	2800      	cmp	r0, #0
@@ -5139,13 +5139,13 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
     b15e:	684a      	ldr	r2, [r1, #4]
 		buf2->len += evt->data.rx.len;
     b160:	68cb      	ldr	r3, [r1, #12]
-    b162:	f8b2 00c8 	ldrh.w	r0, [r2, #200]	; 0xc8
+    b162:	f8b2 0056 	ldrh.w	r0, [r2, #86]	; 0x56
 		if (disable_req) {
     b166:	4c25      	ldr	r4, [pc, #148]	; (b1fc <uart_cb_2+0xb0>)
 		buf2->len += evt->data.rx.len;
     b168:	4403      	add	r3, r0
     b16a:	b29b      	uxth	r3, r3
-    b16c:	f8a2 30c8 	strh.w	r3, [r2, #200]	; 0xc8
+    b16c:	f8a2 3056 	strh.w	r3, [r2, #86]	; 0x56
 		if (disable_req) {
     b170:	7822      	ldrb	r2, [r4, #0]
     b172:	b952      	cbnz	r2, b18a <uart_cb_2+0x3e>
@@ -5166,16 +5166,16 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	    disable_req = false;
     b18c:	2400      	movs	r4, #0
     b18e:	4b1b      	ldr	r3, [pc, #108]	; (b1fc <uart_cb_2+0xb0>)
-		buf2 = k_malloc(sizeof(*buf2));
-    b190:	20d0      	movs	r0, #208	; 0xd0
+		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
+    b190:	205c      	movs	r0, #92	; 0x5c
 	    disable_req = false;
     b192:	701c      	strb	r4, [r3, #0]
-		buf2 = k_malloc(sizeof(*buf2));
+		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
     b194:	f01e faf8 	bl	29788 <k_malloc>
         if (buf2) {
     b198:	b140      	cbz	r0, b1ac <uart_cb_2+0x60>
 			buf2->len = 0;
-    b19a:	f8a0 40cc 	strh.w	r4, [r0, #204]	; 0xcc
+    b19a:	f8a0 405a 	strh.w	r4, [r0, #90]	; 0x5a
   		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data),50);
     b19e:	1d01      	adds	r1, r0, #4
     b1a0:	2232      	movs	r2, #50	; 0x32
@@ -5193,7 +5193,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
     b1b6:	4813      	ldr	r0, [pc, #76]	; (b204 <uart_cb_2+0xb8>)
     b1b8:	f015 bbce 	b.w	20958 <k_work_reschedule>
 	    buf2 = k_malloc(sizeof(*buf2));
-    b1bc:	20d0      	movs	r0, #208	; 0xd0
+    b1bc:	205c      	movs	r0, #92	; 0x5c
     b1be:	f01e fae3 	bl	29788 <k_malloc>
         if (buf2) {
     b1c2:	4601      	mov	r1, r0
@@ -5201,7 +5201,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
     b1c6:	d0e0      	beq.n	b18a <uart_cb_2+0x3e>
 			buf2->len = 0;
     b1c8:	2300      	movs	r3, #0
-    b1ca:	f8a0 30cc 	strh.w	r3, [r0, #204]	; 0xcc
+    b1ca:	f8a0 305a 	strh.w	r3, [r0, #90]	; 0x5a
 {
 #ifdef CONFIG_UART_ASYNC_API
 	const struct uart_driver_api *api =
@@ -5209,7 +5209,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 
 	return api->rx_buf_rsp(dev, buf, len);
     b1ce:	480e      	ldr	r0, [pc, #56]	; (b208 <uart_cb_2+0xbc>)
-    b1d0:	22c8      	movs	r2, #200	; 0xc8
+    b1d0:	2256      	movs	r2, #86	; 0x56
 }
     b1d2:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
     b1d6:	6883      	ldr	r3, [r0, #8]
@@ -5219,8 +5219,8 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
     b1de:	684b      	ldr	r3, [r1, #4]
     b1e0:	1f19      	subs	r1, r3, #4
-		if (buf2->len > 0)
-    b1e2:	f8b3 30c8 	ldrh.w	r3, [r3, #200]	; 0xc8
+		if (buf2->len > 0){
+    b1e2:	f8b3 3056 	ldrh.w	r3, [r3, #86]	; 0x56
     b1e6:	b123      	cbz	r3, b1f2 <uart_cb_2+0xa6>
 }
     b1e8:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
@@ -5385,7 +5385,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		if (!buf) {
     b32c:	b180      	cbz	r0, b350 <uart_cb+0x5c>
 		if (uart_tx(uart, buf->data, buf->len, SYS_FOREVER_MS)) {
-    b32e:	f8b0 20cc 	ldrh.w	r2, [r0, #204]	; 0xcc
+    b32e:	f8b0 205a 	ldrh.w	r2, [r0, #90]	; 0x5a
     b332:	1d01      	adds	r1, r0, #4
     b334:	484a      	ldr	r0, [pc, #296]	; (b460 <uart_cb+0x16c>)
     b336:	f019 f941 	bl	245bc <uart_tx.constprop.0>
@@ -5410,13 +5410,13 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
     b358:	684a      	ldr	r2, [r1, #4]
 		buf->len += evt->data.rx.len;
     b35a:	68cb      	ldr	r3, [r1, #12]
-    b35c:	f8b2 00c8 	ldrh.w	r0, [r2, #200]	; 0xc8
+    b35c:	f8b2 0056 	ldrh.w	r0, [r2, #86]	; 0x56
     b360:	4403      	add	r3, r0
 		if (disable_req) {
     b362:	4842      	ldr	r0, [pc, #264]	; (b46c <uart_cb+0x178>)
 		buf->len += evt->data.rx.len;
     b364:	b29b      	uxth	r3, r3
-    b366:	f8a2 30c8 	strh.w	r3, [r2, #200]	; 0xc8
+    b366:	f8a2 3056 	strh.w	r3, [r2, #86]	; 0x56
 		if (disable_req) {
     b36a:	7802      	ldrb	r2, [r0, #0]
     b36c:	2a00      	cmp	r2, #0
@@ -5443,7 +5443,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
     b390:	2400      	movs	r4, #0
     b392:	4b36      	ldr	r3, [pc, #216]	; (b46c <uart_cb+0x178>)
 		buf = k_malloc(sizeof(*buf));
-    b394:	20d0      	movs	r0, #208	; 0xd0
+    b394:	205c      	movs	r0, #92	; 0x5c
 		disable_req = false;
     b396:	701c      	strb	r4, [r3, #0]
 		buf = k_malloc(sizeof(*buf));
@@ -5454,7 +5454,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		uart_rx_enable(uart, buf->data, sizeof(buf->data),
     b3a0:	2232      	movs	r2, #50	; 0x32
 			buf->len = 0;
-    b3a2:	f8a0 40cc 	strh.w	r4, [r0, #204]	; 0xcc
+    b3a2:	f8a0 405a 	strh.w	r4, [r0, #90]	; 0x5a
 		uart_rx_enable(uart, buf->data, sizeof(buf->data),
     b3a6:	1d01      	adds	r1, r0, #4
     b3a8:	482d      	ldr	r0, [pc, #180]	; (b460 <uart_cb+0x16c>)
@@ -5480,19 +5480,19 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 			k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
     b3d2:	f015 bac1 	b.w	20958 <k_work_reschedule>
 		buf = k_malloc(sizeof(*buf));
-    b3d6:	20d0      	movs	r0, #208	; 0xd0
+    b3d6:	205c      	movs	r0, #92	; 0x5c
     b3d8:	f01e f9d6 	bl	29788 <k_malloc>
     b3dc:	4603      	mov	r3, r0
 		if (buf) {
     b3de:	b160      	cbz	r0, b3fa <uart_cb+0x106>
 			buf->len = 0;
     b3e0:	2200      	movs	r2, #0
-    b3e2:	f8a0 20cc 	strh.w	r2, [r0, #204]	; 0xcc
+    b3e2:	f8a0 205a 	strh.w	r2, [r0, #90]	; 0x5a
     b3e6:	481e      	ldr	r0, [pc, #120]	; (b460 <uart_cb+0x16c>)
     b3e8:	1d19      	adds	r1, r3, #4
     b3ea:	6882      	ldr	r2, [r0, #8]
     b3ec:	6914      	ldr	r4, [r2, #16]
-    b3ee:	22c8      	movs	r2, #200	; 0xc8
+    b3ee:	2256      	movs	r2, #86	; 0x56
     b3f0:	4623      	mov	r3, r4
 }
     b3f2:	b004      	add	sp, #16
@@ -5509,7 +5509,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
     b408:	684b      	ldr	r3, [r1, #4]
     b40a:	1f19      	subs	r1, r3, #4
 		if (buf->len > 0) {
-    b40c:	f8b3 30c8 	ldrh.w	r3, [r3, #200]	; 0xc8
+    b40c:	f8b3 3056 	ldrh.w	r3, [r3, #86]	; 0x56
     b410:	b12b      	cbz	r3, b41e <uart_cb+0x12a>
 			k_fifo_put(&fifo_uart_rx_data, buf);
     b412:	4819      	ldr	r0, [pc, #100]	; (b478 <uart_cb+0x184>)
@@ -5542,7 +5542,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		aborted_len += evt->data.tx.len;
     b43e:	6003      	str	r3, [r0, #0]
 			buf->len - aborted_len, SYS_FOREVER_MS);
-    b440:	f8b1 20c8 	ldrh.w	r2, [r1, #200]	; 0xc8
+    b440:	f8b1 2056 	ldrh.w	r2, [r1, #86]	; 0x56
 		uart_tx(uart, &buf->data[aborted_len],
     b444:	4806      	ldr	r0, [pc, #24]	; (b460 <uart_cb+0x16c>)
     b446:	1ad2      	subs	r2, r2, r3
@@ -5627,7 +5627,7 @@ void gnss_write_thread(void)
 
 	struct uart_data_t *buf2a;
 	buf2a = k_malloc(sizeof(*buf2a));
-    b4ec:	20d0      	movs	r0, #208	; 0xd0
+    b4ec:	205c      	movs	r0, #92	; 0x5c
     b4ee:	f01e f94b 	bl	29788 <k_malloc>
     uint32_t i=0,j=1,k=0;;
     b4f2:	2501      	movs	r5, #1
@@ -5652,7 +5652,7 @@ void gnss_write_thread(void)
     b50e:	4638      	mov	r0, r7
     b510:	f01d ff79 	bl	29406 <z_impl_k_queue_init>
         k=(buf2a->len-1);
-    b514:	f8b4 10cc 	ldrh.w	r1, [r4, #204]	; 0xcc
+    b514:	f8b4 105a 	ldrh.w	r1, [r4, #90]	; 0x5a
 		printf("k:%d UART2:",k);
     b518:	4648      	mov	r0, r9
         while (i< (buf2a->len-1)){
@@ -5663,7 +5663,7 @@ void gnss_write_thread(void)
         while (i< (buf2a->len-1)){
     b524:	1ce6      	adds	r6, r4, #3
     b526:	ebaa 0a04 	sub.w	sl, sl, r4
-    b52a:	f8b4 30cc 	ldrh.w	r3, [r4, #204]	; 0xcc
+    b52a:	f8b4 305a 	ldrh.w	r3, [r4, #90]	; 0x5a
     b52e:	eb0a 0206 	add.w	r2, sl, r6
     b532:	3b01      	subs	r3, #1
     b534:	4293      	cmp	r3, r2
@@ -5709,7 +5709,7 @@ void gnss_write_thread(void)
     b57e:	f014 fbe1 	bl	1fd44 <z_impl_k_queue_get>
     b582:	4604      	mov	r4, r0
 		if (bt_nus_send(NULL, buf->data, buf->len)) {
-    b584:	f8b0 20cc 	ldrh.w	r2, [r0, #204]	; 0xcc
+    b584:	f8b0 205a 	ldrh.w	r2, [r0, #90]	; 0x5a
     b588:	1d01      	adds	r1, r0, #4
     b58a:	2000      	movs	r0, #0
     b58c:	f004 fbb2 	bl	fcf4 <bt_nus_send>
@@ -6330,7 +6330,7 @@ void configure_adc(void){
 	if (!device_is_ready(uart)) {
     ba2a:	b1d8      	cbz	r0, ba64 <main+0x60>
 	rx = k_malloc(sizeof(*rx));
-    ba2c:	20d0      	movs	r0, #208	; 0xd0
+    ba2c:	205c      	movs	r0, #92	; 0x5c
     ba2e:	f01d feab 	bl	29788 <k_malloc>
 	if (rx) {
     ba32:	4604      	mov	r4, r0
@@ -6340,7 +6340,7 @@ void configure_adc(void){
 	k_work_init_delayable(&uart_work, uart_work_handler);
     ba38:	495c      	ldr	r1, [pc, #368]	; (bbac <main+0x1a8>)
 		rx->len = 0;
-    ba3a:	f8a0 60cc 	strh.w	r6, [r0, #204]	; 0xcc
+    ba3a:	f8a0 605a 	strh.w	r6, [r0, #90]	; 0x5a
 	k_work_init_delayable(&uart_work, uart_work_handler);
     ba3e:	485c      	ldr	r0, [pc, #368]	; (bbb0 <main+0x1ac>)
     ba40:	f014 fe6e 	bl	20720 <k_work_init_delayable>
@@ -6371,7 +6371,7 @@ void configure_adc(void){
     ba70:	2800      	cmp	r0, #0
     ba72:	d1ea      	bne.n	ba4a <main+0x46>
 	tx = k_malloc(sizeof(*tx));
-    ba74:	20d0      	movs	r0, #208	; 0xd0
+    ba74:	205c      	movs	r0, #92	; 0x5c
     ba76:	f01d fe87 	bl	29788 <k_malloc>
 	if (tx) {
     ba7a:	4606      	mov	r6, r0
@@ -6387,7 +6387,7 @@ void configure_adc(void){
 	err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
     ba8c:	4601      	mov	r1, r0
 		tx->len = pos;
-    ba8e:	f8a6 20cc 	strh.w	r2, [r6, #204]	; 0xcc
+    ba8e:	f8a6 205a 	strh.w	r2, [r6, #90]	; 0x5a
 	err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
     ba92:	4628      	mov	r0, r5
     ba94:	f018 fd92 	bl	245bc <uart_tx.constprop.0>
@@ -6401,7 +6401,7 @@ void configure_adc(void){
     baa2:	e7df      	b.n	ba64 <main+0x60>
 	return uart_rx_enable(uart, rx->data, sizeof(rx->data), UART_BUF_SIZE);
     baa4:	1d21      	adds	r1, r4, #4
-    baa6:	22c8      	movs	r2, #200	; 0xc8
+    baa6:	2256      	movs	r2, #86	; 0x56
     baa8:	4628      	mov	r0, r5
     baaa:	f018 fd7f 	bl	245ac <uart_rx_enable.constprop.0>
 	if (err) {
@@ -6415,12 +6415,12 @@ void configure_adc(void){
     babc:	2800      	cmp	r0, #0
     babe:	d0d1      	beq.n	ba64 <main+0x60>
 	rx_uart2 = k_malloc(sizeof(*rx_uart2));
-    bac0:	20d0      	movs	r0, #208	; 0xd0
+    bac0:	205c      	movs	r0, #92	; 0x5c
     bac2:	f01d fe61 	bl	29788 <k_malloc>
 	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
     bac6:	4941      	ldr	r1, [pc, #260]	; (bbcc <main+0x1c8>)
 	rx_uart2->len = 0;
-    bac8:	f8a0 40cc 	strh.w	r4, [r0, #204]	; 0xcc
+    bac8:	f8a0 405a 	strh.w	r4, [r0, #90]	; 0x5a
 	rx_uart2 = k_malloc(sizeof(*rx_uart2));
     bacc:	4605      	mov	r5, r0
 	k_work_init_delayable(&uart_work_2, uart_2_work_handler);
@@ -20066,7 +20066,7 @@ static int malloc_prepare(const struct device *unused)
 }
    10f4c:	2000      	movs	r0, #0
    10f4e:	bd08      	pop	{r3, pc}
-   10f50:	20037c60 	.word	0x20037c60
+   10f50:	20038430 	.word	0x20038430
    10f54:	0002d4b7 	.word	0x0002d4b7
    10f58:	0002d487 	.word	0x0002d487
    10f5c:	0002b6a9 	.word	0x0002b6a9
@@ -20231,7 +20231,7 @@ void *_sbrk(intptr_t count)
 }
    10ff6:	bd10      	pop	{r4, pc}
    10ff8:	20020fd0 	.word	0x20020fd0
-   10ffc:	20037c60 	.word	0x20037c60
+   10ffc:	20038430 	.word	0x20038430
 
 00011000 <__retarget_lock_init_recursive>:
 	k_sem_init((struct k_sem *)*lock, 1, 1);
@@ -64462,7 +64462,7 @@ static inline int uart_rx_enable(const struct device * dev, uint8_t * buf, size_
 	return api->rx_enable(dev, buf, len, timeout);
    245b0:	6882      	ldr	r2, [r0, #8]
    245b2:	68d4      	ldr	r4, [r2, #12]
-   245b4:	22c8      	movs	r2, #200	; 0xc8
+   245b4:	2256      	movs	r2, #86	; 0x56
    245b6:	46a4      	mov	ip, r4
 		return (int) arch_syscall_invoke4(parm0.x, parm1.x, parm2.x, parm3.x, K_SYSCALL_UART_RX_ENABLE);
 	}
@@ -65843,7 +65843,7 @@ void assert_print(const char *fmt, ...)
 
 00024d00 <_ConfigAbsSyms>:
 GEN_ABSOLUTE_SYM_KCONFIG(CONFIG_BT_NUS_THREAD_STACK_SIZE, 1024);
-GEN_ABSOLUTE_SYM_KCONFIG(CONFIG_BT_NUS_UART_BUFFER_SIZE, 200);
+GEN_ABSOLUTE_SYM_KCONFIG(CONFIG_BT_NUS_UART_BUFFER_SIZE, 86);
 GEN_ABSOLUTE_SYM_KCONFIG(CONFIG_BT_NUS_SECURITY_ENABLED, 1);
 GEN_ABSOLUTE_SYM_KCONFIG(CONFIG_BT_NUS_UART_RX_WAIT_TIME, 50);
 

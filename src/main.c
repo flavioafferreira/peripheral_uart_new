@@ -304,13 +304,6 @@ static K_FIFO_DEFINE(fifo_uart2_tx_data);
 static K_FIFO_DEFINE(fifo_uart2_rx_data);
 
 
-
-uint16_t rxdatalen0 = 0;
-uint8_t	 datarx[200];
-		
-
-
-
 static const struct bt_data ad[] = {
 	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
 	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN),
@@ -373,7 +366,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 
 	case UART_RX_DISABLED:
 	    disable_req = false;
-		buf2 = k_malloc(sizeof(*buf2));
+		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
 
         if (buf2) {
 			buf2->len = 0;
@@ -394,90 +387,14 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
     
 	case UART_RX_BUF_RELEASED:
 	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
-		if (buf2->len > 0)
+		if (buf2->len > 0){
 		   k_fifo_put(&fifo_uart2_rx_data, buf2);
+		}
 		   else k_free(buf2);
 		break;
 	}
 }
 
-static void uart_cb_2_orig(const struct device *dev, struct uart_event *evt, void *user_data){
-    
-	ARG_UNUSED(dev);
-	static size_t aborted_len;
-	struct uart_data_t *buf;
-	static uint8_t *aborted_buf;
-	static bool disable_req;
-
-	switch (evt->type) {
-	
-	case UART_RX_RDY:
-		LOG_DBG("UART_RX_RDY2");
-		
-		buf = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
-		buf->len += evt->data.rx.len;
-
-		if (disable_req) {
-			return;
-		}
-
-		if ((evt->data.rx.buf[buf->len - 1] == '\n') ||
-		    (evt->data.rx.buf[buf->len - 1] == '\r')) {
-			disable_req = true;
-			uart_rx_disable(uart_2);
-			//start_send=1;
-		}
-
-		break;
-
-	case UART_RX_DISABLED:
-		LOG_DBG("UART_RX_DISABLED2");
-		disable_req = false;
-
-		buf = k_malloc(sizeof(*buf));
-		if (buf) {
-			buf->len = 0;
-		} else {
-			LOG_WRN("UART_RX_DISABLED2-Not able to allocate UART receive buffer");
-			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
-			return;
-		}
-
-		uart_rx_enable(uart_2, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
-
-		break;
-
-	case UART_RX_BUF_REQUEST:
-		LOG_DBG("UART_RX_BUF_REQUEST2");
-		buf = k_malloc(sizeof(*buf));
-		if (buf) {
-			buf->len = 0;
-			uart_rx_buf_rsp(uart_2, buf->data, sizeof(buf->data));
-		} else {
-			LOG_WRN("UART_RX_BUF_REQUEST2-Not able to allocate UART receive buffer");
-		}
-
-		break;
-
-	case UART_RX_BUF_RELEASED:
-		LOG_DBG("UART_RX_BUF_RELEASED2");
-		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,
-				   data);
-
-		if (buf->len > 0) {
-			k_fifo_put(&fifo_uart2_rx_data, buf);
-		} else {
-			k_free(buf);
-		}
-
-		break;
-
-	
-    
-	default:
-		break;
-	}
-}
 
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data){
@@ -617,7 +534,7 @@ static void uart_work_handler(struct k_work *item)
 static void uart_2_work_handler(struct k_work *item)
 {
 	struct uart_data_t *buf2;
-	buf2 = k_malloc(sizeof(*buf2));
+	buf2 = k_malloc(sizeof(*buf2));  //SIZE IS 92 BYTES
 	if (buf2) {
 		buf2->len = 0;
 	} else {
