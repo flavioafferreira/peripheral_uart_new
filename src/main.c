@@ -214,17 +214,10 @@ const struct adc_dt_spec adc_channels[] = {
 
 
 //FLASH
-//#define FLASH_DEVICE "mx25r64" 
-//#define FLASH_DEVICE "qspi" 
-
-
-//#define FLASH_NAME "JEDEC QSPI-NOR"
 
 #ifndef DT_CHOSEN_ZEPHYR_FLASH_CONTROLLER_LABEL
 #define DT_CHOSEN_ZEPHYR_FLASH_CONTROLLER_LABEL ""
 #endif
-//const struct device *flash_dev;
-//struct flash_area *my_area_partition;
    
 static const struct device *flash_device =
 DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
@@ -245,10 +238,6 @@ struct flash_pages_info info;
 #define LONG_ID 5
 */
 uint32_t button2_counter = 0U, button2_counter_his;
-
-
-
-
 
 int err = 0;
 uint8_t start_send=0;
@@ -299,15 +288,9 @@ struct uart_data_t {
 
 
 
-struct uart_data_t *buf_extra;
-static struct uart_data_t *last_buf2;
-uint8_t reserved_memory=0;
-
-
-static uint8_t datarx2[250];
-static uint8_t rxupdate2 = 0;
-static uint8_t rxdatalen2;
-
+//struct uart_data_t *buf_extra;
+//static struct uart_data_t *last_buf2;
+//uint8_t reserved_memory=0;
 
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 static K_FIFO_DEFINE(fifo_uart_rx_data);
@@ -361,7 +344,6 @@ void blink(struct gpio_dt_spec *led,uint8_t times){
 
 }
 
-
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
     
 	ARG_UNUSED(dev);
@@ -378,21 +360,18 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		}
         //CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal) 
 		if (evt->data.rx.buf[buf2->len - 1] == 0x0D) {
-			blink(LED4,3);
-            uart_rx_disable(uart_2);
+			uart_rx_disable(uart_2);
 			disable_req = true;
 		}
       	break;
 
 	case UART_RX_DISABLED:
 	    disable_req = false;
-		blink(LED3,5);
-        
+		
 		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
 		if (buf2) {
 			buf2->len = 0;
 		} else {
-			
 			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
@@ -405,74 +384,12 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
 		if (buf2->len > 0){
 		   k_fifo_put(&fifo_uart2_rx_data, buf2);
-		   blink(LED4,6);
 		   k_free(buf2);
 		}
 		break;
 	}
 
-    
-   
 }
-
-
-
-static void uart_cb_2_ok(const struct device *dev, struct uart_event *evt, void *user_data){
-    
-	ARG_UNUSED(dev);
-	static bool disable_req;
-    struct uart_data_t *buf2;
-
-	switch (evt->type) {
-	
-    case UART_RX_RDY:
-		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
-		buf2->len += evt->data.rx.len;
-
-		if (disable_req) {
-			return;
-		}
-
-        //CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal) 
-		if (evt->data.rx.buf[buf2->len - 1] == 0x0D) {
-            uart_rx_disable(uart_2);
-			disable_req = true;
-			
-		}
-      	break;
-
-	case UART_RX_DISABLED:
-	    disable_req = false;
-		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
-
-        if (buf2) {
-			buf2->len = 0;
-		} else {
-			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
-			return;
-		}
-  		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data),50);
-		break;
-   
-	case UART_RX_BUF_REQUEST:
-	    buf2 = k_malloc(sizeof(*buf2));
-        if (buf2) {
-			buf2->len = 0;
-			uart_rx_buf_rsp(uart, buf2->data, sizeof(buf2->data));
-		}
-	    break;
-    
-	case UART_RX_BUF_RELEASED:
-	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
-		if (buf2->len > 0){
-		   k_fifo_put(&fifo_uart2_rx_data, buf2);
-		}
-		   else k_free(buf2);
-		break;
-	}
-}
-
-
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data){
 	ARG_UNUSED(dev);
@@ -567,9 +484,8 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 
 		if (buf->len > 0) {
 			k_fifo_put(&fifo_uart_rx_data, buf);
-		} else {
 			k_free(buf);
-		}
+		} 
 
 		break;
 
@@ -1311,7 +1227,7 @@ void main(void)
 		error();
 	}
 
-    buf_extra = k_malloc(sizeof(buf_extra));	
+    
 	
 	err = uart_2_init();
 	if (err) {
@@ -1519,8 +1435,7 @@ void adc_thread(void){
 
 void gnss_write_thread(void)
 {
-	/* Don't go any further until BLE is initialized */
-	//k_sem_take(&ble_init_ok, K_FOREVER);
+	
     uint32_t i=0,j=1,k=0;;
 
 	struct uart_data_t *buf2a;
@@ -1532,11 +1447,11 @@ void gnss_write_thread(void)
 	   buf2a = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
 	   k_fifo_init(&fifo_uart2_rx_data);
        if(buf2a->len>0){
-        k=(buf2a->len-2);
+        k=(buf2a->len-1);
 
         i=0;
 		printf("k:%d UART2:",k);
-        while (i< (buf2a->len-2)){
+        while (i< (buf2a->len-1)){
          printf("%X ",buf2a->data[i]);
 		 i++;
 		}
