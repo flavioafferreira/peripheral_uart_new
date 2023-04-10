@@ -286,8 +286,6 @@ struct uart_data_t {
 	uint16_t len;
 };
 
-
-
 //struct uart_data_t *buf_extra;
 //static struct uart_data_t *last_buf2;
 //uint8_t reserved_memory=0;
@@ -355,19 +353,24 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
     case UART_RX_RDY:
 		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf2->len += evt->data.rx.len;
+		blink(LED3,2);
 		if (disable_req) {
-			return;
+			//return;
+			
 		}
         //CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal) 
-		if (evt->data.rx.buf[buf2->len - 1] == 0x0D) {
+		if (evt->data.rx.buf[buf2->len - 1] == 0x0A ) {
+		
+
 			uart_rx_disable(uart_2);
+			blink(LED4,2);
 			disable_req = true;
 		}
       	break;
 
 	case UART_RX_DISABLED:
 	    disable_req = false;
-		
+		blink(LED4,4);
 		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
 		if (buf2) {
 			buf2->len = 0;
@@ -378,6 +381,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
         
         buf2->len = 0;
   		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data),UART_WAIT_FOR_RX);
+		
 		break;
    
 	case UART_RX_BUF_RELEASED:
@@ -484,8 +488,9 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 
 		if (buf->len > 0) {
 			k_fifo_put(&fifo_uart_rx_data, buf);
+		} else {
 			k_free(buf);
-		} 
+		}
 
 		break;
 
@@ -553,6 +558,8 @@ static int uart_init(void)
 	int pos;
 	struct uart_data_t *rx;
 	struct uart_data_t *tx;
+
+     uart_irq_rx_enable(uart);
 
 	if (!device_is_ready(uart)) {
 		return -ENODEV;
@@ -636,13 +643,15 @@ static int uart_init(void)
 		return err;
 	}
 
-	return uart_rx_enable(uart, rx->data, sizeof(rx->data), UART_BUF_SIZE);
+	return uart_rx_enable(uart, rx->data, sizeof(rx->data), UART_WAIT_FOR_RX);
 
 }
 
 static int uart_2_init(void)
 {
 
+    uart_irq_rx_enable(uart_2);
+	
 	struct uart_data_t *rx_uart2;
 	struct uart_data_t *tx_uart2;
 
@@ -1447,11 +1456,11 @@ void gnss_write_thread(void)
 	   buf2a = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
 	   k_fifo_init(&fifo_uart2_rx_data);
        if(buf2a->len>0){
-        k=(buf2a->len-1);
+        k=(buf2a->len);
 
         i=0;
 		printf("k:%d UART2:",k);
-        while (i< (buf2a->len-1)){
+        while (i< k){
          printf("%X ",buf2a->data[i]);
 		 i++;
 		}
