@@ -9,14 +9,13 @@
  *  @brief Nordic UART Bridge Service (NUS) sample
  */
 
-
 #include "uart_async_adapter.h"
 
-//Special Routines
+// Special Routines
 #include "includes/accessories/variables.h"
 #include "includes/accessories/special.h"
 
-//Encoder & Decoder Protobuf
+// Encoder & Decoder Protobuf
 #include "includes/Protobuf/pb.h"
 #include "includes/Protobuf/pb_common.h"
 #include "includes/Protobuf/pb_decode.h"
@@ -43,8 +42,6 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 
-
-
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/gatt.h>
@@ -52,19 +49,18 @@
 #include <zephyr/bluetooth/conn.h>
 #include <bluetooth/services/nus.h>
 
-//#include <dk_buttons_and_leds.h>
+// #include <dk_buttons_and_leds.h>
 #include <zephyr/settings/settings.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/printk.h>
 
-//ublox module gnss
-//https://github.com/u-blox/ubxlib
-//https://github.com/u-blox/ubxlib/tree/master/gnss  - examples
-//#define U_CFG_APP_PIN_CELL_TX 41
-//#define U_CFG_APP_PIN_CELL_RX 40
+// ublox module gnss
+// https://github.com/u-blox/ubxlib
+// https://github.com/u-blox/ubxlib/tree/master/gnss  - examples
+// #define U_CFG_APP_PIN_CELL_TX 41
+// #define U_CFG_APP_PIN_CELL_RX 40
 #define U_CFG_APP_PIN_CELL_TXD 45 // P1.09
 #define U_CFG_APP_PIN_CELL_RXD 44 // P1.08
-
 
 #include "ubxlib.h"
 #include "u_cfg_app_platform_specific.h"
@@ -74,10 +70,8 @@ void gnss_read(void);
 int32_t latitudeX1e7;
 int32_t longitudeX1e7;
 
-//uGnssTransportHandle_t transportHandle;
-//uDeviceHandle_t gnssHandle = NULL;
-
-
+// uGnssTransportHandle_t transportHandle;
+// uDeviceHandle_t gnssHandle = NULL;
 
 #define LOG_MODULE_NAME peripheral_uart
 LOG_MODULE_REGISTER(LOG_MODULE_NAME);
@@ -86,7 +80,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define PRIORITY 7
 
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
-#define DEVICE_NAME_LEN	(sizeof(DEVICE_NAME) - 1)
+#define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
 
 #define RUN_LED_BLINK_INTERVAL 1000
 
@@ -97,23 +91,23 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define UART_WAIT_FOR_BUF_DELAY K_MSEC(50)
 #define UART_WAIT_FOR_RX CONFIG_BT_NUS_UART_RX_WAIT_TIME
 
-//LEDS and Buttons and Digital
+// LEDS and Buttons and Digital
 
-//BUTTONS
-#define SW0_NODE	DT_ALIAS(sw0)
-static const struct gpio_dt_spec button_sw0 = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios,{0});
+// BUTTONS
+#define SW0_NODE DT_ALIAS(sw0)
+static const struct gpio_dt_spec button_sw0 = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios, {0});
 static struct gpio_callback button_cb_data_sw0;
 
-#define SW1_NODE	DT_ALIAS(sw1)
-static const struct gpio_dt_spec button_sw1 = GPIO_DT_SPEC_GET_OR(SW1_NODE, gpios,{0});
+#define SW1_NODE DT_ALIAS(sw1)
+static const struct gpio_dt_spec button_sw1 = GPIO_DT_SPEC_GET_OR(SW1_NODE, gpios, {0});
 static struct gpio_callback button_cb_data_sw1;
 
-#define SW2_NODE	DT_ALIAS(sw2)
-static const struct gpio_dt_spec button_sw2 = GPIO_DT_SPEC_GET_OR(SW2_NODE, gpios,{0});
+#define SW2_NODE DT_ALIAS(sw2)
+static const struct gpio_dt_spec button_sw2 = GPIO_DT_SPEC_GET_OR(SW2_NODE, gpios, {0});
 static struct gpio_callback button_cb_data_sw2;
 
-#define SW3_NODE	DT_ALIAS(sw3)
-static const struct gpio_dt_spec button_sw3 = GPIO_DT_SPEC_GET_OR(SW3_NODE, gpios,{0});
+#define SW3_NODE DT_ALIAS(sw3)
+static const struct gpio_dt_spec button_sw3 = GPIO_DT_SPEC_GET_OR(SW3_NODE, gpios, {0});
 static struct gpio_callback button_cb_data_sw3;
 
 #define BUTTON1_ADR &button_sw0
@@ -131,18 +125,18 @@ static struct gpio_callback button_cb_data_sw3;
 #define BUTTON3_CB &button_cb_data_sw2
 #define BUTTON4_CB &button_cb_data_sw3
 
-//DIGITAL INPUT
+// DIGITAL INPUT
 
-#define DIG_0_NODE	DT_ALIAS(dg0)
-static const struct gpio_dt_spec digital_dig0 = GPIO_DT_SPEC_GET_OR(DIG_0_NODE, gpios,{0});
+#define DIG_0_NODE DT_ALIAS(dg0)
+static const struct gpio_dt_spec digital_dig0 = GPIO_DT_SPEC_GET_OR(DIG_0_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig0;
 
-#define DIG_1_NODE	DT_ALIAS(dg1)
-static const struct gpio_dt_spec digital_dig1 = GPIO_DT_SPEC_GET_OR(DIG_1_NODE, gpios,{0});
+#define DIG_1_NODE DT_ALIAS(dg1)
+static const struct gpio_dt_spec digital_dig1 = GPIO_DT_SPEC_GET_OR(DIG_1_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig1;
 
-#define DIG_2_NODE	DT_ALIAS(dg2)
-static const struct gpio_dt_spec digital_dig2 = GPIO_DT_SPEC_GET_OR(DIG_2_NODE, gpios,{0});
+#define DIG_2_NODE DT_ALIAS(dg2)
+static const struct gpio_dt_spec digital_dig2 = GPIO_DT_SPEC_GET_OR(DIG_2_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig2;
 
 #define DIG_0_ADR &digital_dig0
@@ -157,7 +151,7 @@ static struct gpio_callback digital_cb_data_dig2;
 #define DIG_1_CB &digital_cb_data_dig1
 #define DIG_2_CB &digital_cb_data_dig2
 
-//LEDS
+// LEDS
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec pin_test_led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
@@ -178,20 +172,18 @@ static const struct gpio_dt_spec pin_test_led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpi
 #define CON_STATUS_LED LED1
 #define RUN_STATUS_LED LED2
 
-//#define ON  1
-//#define OFF 0
+// #define ON  1
+// #define OFF 0
 
-//MUTEX DEFINE
+// MUTEX DEFINE
 struct k_mutex ad_ready;
 
-//ADC
-int flag=0; //used to print once the results
+// ADC
+int flag = 0; // used to print once the results
 
 int16_t buf_adc;
 volatile int16_t adc_value[8];
 volatile int16_t digital_value[8];
-
-
 
 struct adc_sequence sequence = {
 	.buffer = &buf_adc,
@@ -201,35 +193,32 @@ struct adc_sequence sequence = {
 
 //#if !DT_NODE_EXISTS(DT_PATH(zephyr_user)) || \
 //	!DT_NODE_HAS_PROP(DT_PATH(zephyr_user), io_channels)
-//#error "No suitable devicetree overlay specified"
-//#endif
+// #error "No suitable devicetree overlay specified"
+// #endif
 
-#define DT_SPEC_AND_COMMA(node_id, prop, idx)  ADC_DT_SPEC_GET_BY_IDX(node_id, idx),
+#define DT_SPEC_AND_COMMA(node_id, prop, idx) ADC_DT_SPEC_GET_BY_IDX(node_id, idx),
 
 /* Data of ADC io-channels specified in devicetree. */
 const struct adc_dt_spec adc_channels[] = {
 	DT_FOREACH_PROP_ELEM(DT_PATH(soc, peripheral_40000000, adc_e000), io_channels,
-			     DT_SPEC_AND_COMMA)
-};
+						 DT_SPEC_AND_COMMA)};
 
-
-//FLASH
+// FLASH
 
 #ifndef DT_CHOSEN_ZEPHYR_FLASH_CONTROLLER_LABEL
 #define DT_CHOSEN_ZEPHYR_FLASH_CONTROLLER_LABEL ""
 #endif
-   
+
 static const struct device *flash_device =
-DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
+	DEVICE_DT_GET_OR_NULL(DT_CHOSEN(zephyr_flash_controller));
 
-
-//NVS deploy
+// NVS deploy
 struct nvs_fs fs;
 struct flash_pages_info info;
 
-#define NVS_PARTITION		storage_partition
-#define NVS_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(NVS_PARTITION)
-#define NVS_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(NVS_PARTITION)
+#define NVS_PARTITION storage_partition
+#define NVS_PARTITION_DEVICE FIXED_PARTITION_DEVICE(NVS_PARTITION)
+#define NVS_PARTITION_OFFSET FIXED_PARTITION_OFFSET(NVS_PARTITION)
 /*
 #define ADDRESS_ID 1
 #define KEY_ID 2
@@ -240,8 +229,7 @@ struct flash_pages_info info;
 uint32_t button2_counter = 0U, button2_counter_his;
 
 int err = 0;
-uint8_t start_send=0;
-
+uint8_t start_send = 0;
 
 // variable to measure time
 int64_t time_stamp;
@@ -250,52 +238,49 @@ int64_t time_stamp_end;
 
 void turn_off_all_leds(void);
 
-//SEMAPHORES FOR THREADS
+// SEMAPHORES FOR THREADS
 static K_SEM_DEFINE(ble_init_ok, 0, 1);
 static K_SEM_DEFINE(send_proto, 0, 1);
-static K_SEM_DEFINE(save_memory,0, 1);
-static K_SEM_DEFINE(button_test,0, 1);
-static K_SEM_DEFINE(button_3,0, 1);
+static K_SEM_DEFINE(save_memory, 0, 1);
+static K_SEM_DEFINE(button_test, 0, 1);
+static K_SEM_DEFINE(button_3, 0, 1);
 
+// MUTEX FOR AD CONVERSION
+// K_MUTEX_DEFINE(ad_ready)
 
-//MUTEX FOR AD CONVERSION
-//K_MUTEX_DEFINE(ad_ready)
-
-//CIRCULAR BUFFER
+// CIRCULAR BUFFER
 extern uint32_t C_Buffer_Free_Position;
 extern uint32_t C_Buffer_Current_Position;
-//extern uint32_t C_Buffer_Alarm_Free_Position;
-//extern uint32_t C_Buffer_Alarm_Current_Position;
-
+// extern uint32_t C_Buffer_Alarm_Free_Position;
+// extern uint32_t C_Buffer_Alarm_Current_Position;
 
 static struct bt_conn *current_conn;
 static struct bt_conn *auth_conn;
 
-//UART PORT DEFINITION ON app.overlay
-	
-static const struct device *uart   = DEVICE_DT_GET(DT_NODELABEL(uart0));
+// UART PORT DEFINITION ON app.overlay
+
+static const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 static const struct device *uart_2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
 
 static struct k_work_delayable uart_work;
 static struct k_work_delayable uart_work_2;
 
-
-struct uart_data_t {
+struct uart_data_t
+{
 	void *fifo_reserved;
 	uint8_t data[UART_BUF_SIZE];
 	uint16_t len;
 };
 
 struct uart_data_t *buf_extra;
-//static struct uart_data_t *last_buf2;
-//uint8_t reserved_memory=0;
+// static struct uart_data_t *last_buf2;
+// uint8_t reserved_memory=0;
 
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 static K_FIFO_DEFINE(fifo_uart_rx_data);
 
 static K_FIFO_DEFINE(fifo_uart2_tx_data);
 static K_FIFO_DEFINE(fifo_uart2_rx_data);
-
 
 static const struct bt_data ad[] = {
 	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
@@ -314,132 +299,149 @@ static const struct device *const async_adapter_2;
 
 #endif
 
-//UART
+// TIME MARKER
 
-void uart2_tx(uint8_t Name[]){
-   struct uart_data_t *buf;
-   buf = k_malloc(sizeof(*buf));
-   uint16_t size= sizeof(Name);
+// UART
 
-   uint8_t i=0;
-   while (i<sizeof(Name)){
-	buf->data[i] = Name[i];
-	i++;
-   }
-   buf->len=(sizeof(Name)-1);
-   uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
-   k_free(buf);
-   
+void uart2_tx(uint8_t Name[])
+{
+	struct uart_data_t *buf;
+	buf = k_malloc(sizeof(*buf));
+	uint16_t size = sizeof(Name);
+
+	uint8_t i = 0;
+	while (i < sizeof(Name))
+	{
+		buf->data[i] = Name[i];
+		i++;
+	}
+	buf->len = (sizeof(Name) - 1);
+	uart_tx(uart_2, buf->data, buf->len, SYS_FOREVER_MS);
+	k_free(buf);
 }
 
-void blink(struct gpio_dt_spec *led,uint8_t times){
-  uint8_t i=0;
-  while(i<times){
-	gpio_pin_set_dt(led, ON);
-    gpio_pin_set_dt(led, OFF);
-	i++;
-  }
-
+void blink(struct gpio_dt_spec *led, uint8_t times)
+{
+	uint8_t i = 0;
+	while (i < times)
+	{
+		gpio_pin_set_dt(led, ON);
+		gpio_pin_set_dt(led, OFF);
+		i++;
+	}
 }
 
+static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data)
+{
 
-static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data){
-    
 	ARG_UNUSED(dev);
 	static bool disable_req;
-    struct uart_data_t *buf2;
-    uint8_t i=0;
- 	switch (evt->type) {
-	
-    case UART_RX_RDY:
+	struct uart_data_t *buf2;
+	uint8_t i = 0;
+	switch (evt->type)
+	{
+
+	case UART_RX_RDY:
 		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf2->len += evt->data.rx.len;
-		//blink(LED3,2);
-	
-        //CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal) 
-		if (evt->data.rx.buf[buf2->len - 1] == 0x0A ) {
+		// blink(LED3,2);
 
-            i=0;
-			while(i<buf2->len-1){
-				buf_extra->data[i]=buf2->data[i];
-				i++;
-			}
-            buf_extra->len=buf2->len;
-            
-			//uart_rx_disable(uart_2);
-			blink(LED4,2);
-			
+		// CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal)
+		if (evt->data.rx.buf[buf2->len - 1] == 0x0A)
+		{
+
+			//i = 0;
+			//while (i < buf2->len - 1)
+			//{
+			//	buf_extra->data[i] = buf2->data[i];
+			//	i++;
+			//}
+			//buf_extra->len = buf2->len;
+
+			// uart_rx_disable(uart_2);
+			// blink(LED4,2);
 		}
-      	break;
+		break;
 
 	case UART_RX_DISABLED:
-	    
-		//blink(LED4,4);
-		buf2 = k_malloc(sizeof(*buf2)); //THE SIZE IS 92 BYTES
-		if (buf2) {
+
+		// blink(LED4,4);
+		buf2 = k_malloc(sizeof(*buf2)); // THE SIZE IS 92 BYTES
+		if (buf2)
+		{
 			buf2->len = 0;
-		} else {
+		}
+		else
+		{
 			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
-        
-        buf2->len = 0;
-  		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data),UART_WAIT_FOR_RX);
-		
+
+		buf2->len = 0;
+		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data), UART_WAIT_FOR_RX);
+
 		break;
-   
-    case UART_RX_BUF_REQUEST:
-	      buf2 = k_malloc(sizeof(*buf2));
-		  buf2->len = 0;
-	      uart_rx_buf_rsp(uart_2, buf2->data, sizeof(buf2->data));
-	    break;
-	
+
+	case UART_RX_BUF_REQUEST:
+		buf2 = k_malloc(sizeof(*buf2));
+		buf2->len = 0;
+		uart_rx_buf_rsp(uart_2, buf2->data, sizeof(buf2->data));
+		break;
+
 	case UART_RX_BUF_RELEASED:
-	    
-	    buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,data);
-		if (buf2->len > 0){
-		   k_fifo_put(&fifo_uart2_rx_data, buf2);
-		   //k_fifo_put(&fifo_uart2_rx_data, buf_extra);
-		   k_free(buf2);
-		   
+
+		buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t, data);
+		if (buf2->len > 0)
+		{
+			blink(LED3, 2);
+
+			k_fifo_put(&fifo_uart2_rx_data, buf2);
+			k_free(buf2);
 		}
-       
+
 		break;
 	}
-
 }
 
-static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data){
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
+{
 	ARG_UNUSED(dev);
 	static size_t aborted_len;
 	struct uart_data_t *buf;
 	static uint8_t *aborted_buf;
 	static bool disable_req;
 
-	switch (evt->type) {
+	switch (evt->type)
+	{
 	case UART_TX_DONE:
 		LOG_DBG("UART_TX_DONE");
 		if ((evt->data.tx.len == 0) ||
-		    (!evt->data.tx.buf)) {
+			(!evt->data.tx.buf))
+		{
 			return;
 		}
 
-		if (aborted_buf) {
-			buf = CONTAINER_OF(aborted_buf, struct uart_data_t,data);
+		if (aborted_buf)
+		{
+			buf = CONTAINER_OF(aborted_buf, struct uart_data_t, data);
 			aborted_buf = NULL;
 			aborted_len = 0;
-		} else {
-			buf = CONTAINER_OF(evt->data.tx.buf, struct uart_data_t,data);
+		}
+		else
+		{
+			buf = CONTAINER_OF(evt->data.tx.buf, struct uart_data_t, data);
 		}
 
 		k_free(buf);
 
 		buf = k_fifo_get(&fifo_uart_tx_data, K_NO_WAIT);
-		if (!buf) {
+		if (!buf)
+		{
 			return;
 		}
 
-		if (uart_tx(uart, buf->data, buf->len, SYS_FOREVER_MS)) {
+		if (uart_tx(uart, buf->data, buf->len, SYS_FOREVER_MS))
+		{
 			LOG_WRN("Failed to send data over UART");
 		}
 
@@ -450,16 +452,18 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		buf = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf->len += evt->data.rx.len;
 
-		if (disable_req) {
+		if (disable_req)
+		{
 			return;
 		}
 
 		if ((evt->data.rx.buf[buf->len - 1] == '\n') ||
-		    (evt->data.rx.buf[buf->len - 1] == '\r')) {
+			(evt->data.rx.buf[buf->len - 1] == '\r'))
+		{
 			disable_req = true;
 			uart_rx_disable(uart);
-			
-			//start_send=1;
+
+			// start_send=1;
 		}
 
 		break;
@@ -469,25 +473,31 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		disable_req = false;
 
 		buf = k_malloc(sizeof(*buf));
-		if (buf) {
+		if (buf)
+		{
 			buf->len = 0;
-		} else {
+		}
+		else
+		{
 			LOG_WRN("Not able to allocate UART receive buffer");
 			k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
 			return;
 		}
-        
-		uart_rx_enable(uart, buf->data, sizeof(buf->data),UART_WAIT_FOR_RX);
+
+		uart_rx_enable(uart, buf->data, sizeof(buf->data), UART_WAIT_FOR_RX);
 
 		break;
 
 	case UART_RX_BUF_REQUEST:
 		LOG_DBG("UART_RX_BUF_REQUEST");
 		buf = k_malloc(sizeof(*buf));
-		if (buf) {
+		if (buf)
+		{
 			buf->len = 0;
 			uart_rx_buf_rsp(uart, buf->data, sizeof(buf->data));
-		} else {
+		}
+		else
+		{
 			LOG_WRN("Not able to allocate UART receive buffer");
 		}
 
@@ -496,12 +506,14 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 	case UART_RX_BUF_RELEASED:
 		LOG_DBG("UART_RX_BUF_RELEASED");
 		buf = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t,
-				   data);
+						   data);
 
-		if (buf->len > 0) {
+		if (buf->len > 0)
+		{
 			k_fifo_put(&fifo_uart_rx_data, buf);
-			
-		} else {
+		}
+		else
+		{
 			k_free(buf);
 		}
 
@@ -509,14 +521,15 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 
 	case UART_TX_ABORTED:
 		LOG_DBG("UART_TX_ABORTED");
-		if (!aborted_buf) {
+		if (!aborted_buf)
+		{
 			aborted_buf = (uint8_t *)evt->data.tx.buf;
 		}
 
 		aborted_len += evt->data.tx.len;
-		buf = CONTAINER_OF(aborted_buf, struct uart_data_t,data);
+		buf = CONTAINER_OF(aborted_buf, struct uart_data_t, data);
 
-		uart_tx(uart, &buf->data[aborted_len],buf->len - aborted_len, SYS_FOREVER_MS);
+		uart_tx(uart, &buf->data[aborted_len], buf->len - aborted_len, SYS_FOREVER_MS);
 
 		break;
 
@@ -529,9 +542,12 @@ static void uart_work_handler(struct k_work *item)
 {
 	struct uart_data_t *buf;
 	buf = k_malloc(sizeof(*buf));
-	if (buf) {
+	if (buf)
+	{
 		buf->len = 0;
-	} else {
+	}
+	else
+	{
 		LOG_WRN("Not able to allocate UART_1 receive buffer");
 		k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
 		return;
@@ -543,10 +559,13 @@ static void uart_work_handler(struct k_work *item)
 static void uart_2_work_handler(struct k_work *item)
 {
 	struct uart_data_t *buf2;
-	buf2 = k_malloc(sizeof(*buf2));  //SIZE IS 92 BYTES
-	if (buf2) {
+	buf2 = k_malloc(sizeof(*buf2)); // SIZE IS 92 BYTES
+	if (buf2)
+	{
 		buf2->len = 0;
-	} else {
+	}
+	else
+	{
 		LOG_WRN("Not able to allocate UART_2 receive buffer");
 		k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 		return;
@@ -558,7 +577,7 @@ static void uart_2_work_handler(struct k_work *item)
 static bool uart_test_async_api(const struct device *dev)
 {
 	const struct uart_driver_api *api =
-			(const struct uart_driver_api *)dev->api;
+		(const struct uart_driver_api *)dev->api;
 
 	return (api->callback_set != NULL);
 }
@@ -570,50 +589,60 @@ static int uart_init(void)
 	struct uart_data_t *rx;
 	struct uart_data_t *tx;
 
-     uart_irq_rx_enable(uart);
+	uart_irq_rx_enable(uart);
 
-	if (!device_is_ready(uart)) {
+	if (!device_is_ready(uart))
+	{
 		return -ENODEV;
 	}
 
-	if (IS_ENABLED(CONFIG_USB_DEVICE_STACK)) {
+	if (IS_ENABLED(CONFIG_USB_DEVICE_STACK))
+	{
 		err = usb_enable(NULL);
-		if (err && (err != -EALREADY)) {
+		if (err && (err != -EALREADY))
+		{
 			LOG_ERR("Failed to enable USB");
 			return err;
 		}
 	}
 
 	rx = k_malloc(sizeof(*rx));
-	if (rx) {
+	if (rx)
+	{
 		rx->len = 0;
-	} else {
+	}
+	else
+	{
 		return -ENOMEM;
 	}
 
 	k_work_init_delayable(&uart_work, uart_work_handler);
-    
 
-	if (IS_ENABLED(CONFIG_BT_NUS_UART_ASYNC_ADAPTER) && !uart_test_async_api(uart)) {
+	if (IS_ENABLED(CONFIG_BT_NUS_UART_ASYNC_ADAPTER) && !uart_test_async_api(uart))
+	{
 		/* Implement API adapter */
 		uart_async_adapter_init(async_adapter, uart);
 		uart = async_adapter;
 	}
 
 	err = uart_callback_set(uart, uart_cb, NULL);
-	if (err) {
+	if (err)
+	{
 		k_free(rx);
 		LOG_ERR("Cannot initialize UART callback");
 		return err;
 	}
 
-	if (IS_ENABLED(CONFIG_UART_LINE_CTRL)) {
+	if (IS_ENABLED(CONFIG_UART_LINE_CTRL))
+	{
 		LOG_INF("Wait for DTR");
-		while (true) {
+		while (true)
+		{
 			uint32_t dtr = 0;
 
 			uart_line_ctrl_get(uart, UART_LINE_CTRL_DTR, &dtr);
-			if (dtr) {
+			if (dtr)
+			{
 				break;
 			}
 			/* Give CPU resources to low priority threads. */
@@ -621,52 +650,58 @@ static int uart_init(void)
 		}
 		LOG_INF("DTR set");
 		err = uart_line_ctrl_set(uart, UART_LINE_CTRL_DCD, 1);
-		if (err) {
+		if (err)
+		{
 			LOG_WRN("Failed to set DCD, ret code %d", err);
 		}
 		err = uart_line_ctrl_set(uart, UART_LINE_CTRL_DSR, 1);
-		if (err) {
+		if (err)
+		{
 			LOG_WRN("Failed to set DSR, ret code %d", err);
 		}
 	}
 
 	tx = k_malloc(sizeof(*tx));
-	
 
-	if (tx) {
+	if (tx)
+	{
 		pos = snprintf(tx->data, sizeof(tx->data),
-			       "Starting Nordic UART service example\r\n");
+					   "Starting Nordic UART service example\r\n");
 
-		if ((pos < 0) || (pos >= sizeof(tx->data))) {
+		if ((pos < 0) || (pos >= sizeof(tx->data)))
+		{
 			k_free(tx);
 			printf("snprintf returned %d", pos);
 			return -ENOMEM;
 		}
 
 		tx->len = pos;
-	} else {
+	}
+	else
+	{
 		return -ENOMEM;
 	}
 
 	err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
-	if (err) {
+	if (err)
+	{
 		printf("Cannot display welcome message (err: %d)", err);
 		return err;
 	}
 
 	return uart_rx_enable(uart, rx->data, sizeof(rx->data), UART_WAIT_FOR_RX);
-
 }
 
 static int uart_2_init(void)
 {
 
-    uart_irq_rx_enable(uart_2);
+	uart_irq_rx_enable(uart_2);
 
 	struct uart_data_t *rx_uart2;
 	struct uart_data_t *tx_uart2;
 
-	if (!device_is_ready(uart_2)) {
+	if (!device_is_ready(uart_2))
+	{
 		return -ENODEV;
 	}
 
@@ -677,19 +712,17 @@ static int uart_2_init(void)
 	uart_callback_set(uart_2, uart_cb_2, NULL);
 	uart_rx_enable(uart_2, rx_uart2->data, sizeof(rx_uart2->data), UART_WAIT_FOR_RX);
 
-    return 0;
+	return 0;
 }
 
-
-
-
-//BLUETOOTH
+// BLUETOOTH
 
 static void connected(struct bt_conn *conn, uint8_t err)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
 
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("Connection failed (err %u)", err);
 		return;
 	}
@@ -698,9 +731,8 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	LOG_INF("Connected %s", addr);
 
 	current_conn = bt_conn_ref(conn);
-	
-    gpio_pin_set_dt(CON_STATUS_LED, ON);
 
+	gpio_pin_set_dt(CON_STATUS_LED, ON);
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
@@ -711,38 +743,43 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 
 	LOG_INF("Disconnected: %s (reason %u)", addr, reason);
 
-	if (auth_conn) {
+	if (auth_conn)
+	{
 		bt_conn_unref(auth_conn);
 		auth_conn = NULL;
 	}
 
-	if (current_conn) {
+	if (current_conn)
+	{
 		bt_conn_unref(current_conn);
 		current_conn = NULL;
-		
+
 		gpio_pin_set_dt(CON_STATUS_LED, OFF);
 	}
 }
 
 #ifdef CONFIG_BT_NUS_SECURITY_ENABLED
 static void security_changed(struct bt_conn *conn, bt_security_t level,
-			     enum bt_security_err err)
+							 enum bt_security_err err)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
-	if (!err) {
+	if (!err)
+	{
 		LOG_INF("Security changed: %s level %u", addr, level);
-	} else {
+	}
+	else
+	{
 		LOG_WRN("Security failed: %s level %u err %d", addr,
-			level, err);
+				level, err);
 	}
 }
 #endif
 
 BT_CONN_CB_DEFINE(conn_callbacks) = {
-	.connected    = connected,
+	.connected = connected,
 	.disconnected = disconnected,
 #ifdef CONFIG_BT_NUS_SECURITY_ENABLED
 	.security_changed = security_changed,
@@ -771,7 +808,6 @@ static void auth_passkey_confirm(struct bt_conn *conn, unsigned int passkey)
 	LOG_INF("Press Button 1 to confirm, Button 2 to reject.");
 }
 
-
 static void auth_cancel(struct bt_conn *conn)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
@@ -780,7 +816,6 @@ static void auth_cancel(struct bt_conn *conn)
 
 	LOG_INF("Pairing cancelled: %s", addr);
 }
-
 
 static void pairing_complete(struct bt_conn *conn, bool bonded)
 {
@@ -791,7 +826,6 @@ static void pairing_complete(struct bt_conn *conn, bool bonded)
 	LOG_INF("Pairing completed: %s, bonded: %d", addr, bonded);
 }
 
-
 static void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
@@ -801,7 +835,6 @@ static void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 	LOG_INF("Pairing failed conn: %s, reason %d", addr, reason);
 }
 
-
 static struct bt_conn_auth_cb conn_auth_callbacks = {
 	.passkey_display = auth_passkey_display,
 	.passkey_confirm = auth_passkey_confirm,
@@ -810,14 +843,13 @@ static struct bt_conn_auth_cb conn_auth_callbacks = {
 
 static struct bt_conn_auth_info_cb conn_auth_info_callbacks = {
 	.pairing_complete = pairing_complete,
-	.pairing_failed = pairing_failed
-};
+	.pairing_failed = pairing_failed};
 #else
 static struct bt_conn_auth_cb conn_auth_callbacks;
 static struct bt_conn_auth_info_cb conn_auth_info_callbacks;
 #endif
 
-static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,uint16_t len)
+static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data, uint16_t len)
 {
 	int err;
 	char addr[BT_ADDR_LE_STR_LEN] = {0};
@@ -826,10 +858,12 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,uint16
 
 	printf("Received data from: %s", addr);
 
-	for (uint16_t pos = 0; pos != len;) {
+	for (uint16_t pos = 0; pos != len;)
+	{
 		struct uart_data_t *tx = k_malloc(sizeof(*tx));
 
-		if (!tx) {
+		if (!tx)
+		{
 			printf("Not able to allocate UART send data buffer");
 			return;
 		}
@@ -837,9 +871,12 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,uint16
 		/* Keep the last byte of TX buffer for potential LF char. */
 		size_t tx_data_size = sizeof(tx->data) - 1;
 
-		if ((len - pos) > tx_data_size) {
+		if ((len - pos) > tx_data_size)
+		{
 			tx->len = tx_data_size;
-		} else {
+		}
+		else
+		{
 			tx->len = (len - pos);
 		}
 
@@ -850,13 +887,15 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data,uint16
 		/* Append the LF character when the CR character triggered
 		 * transmission from the peer.
 		 */
-		if ((pos == len) && (data[len - 1] == '\r')) {
+		if ((pos == len) && (data[len - 1] == '\r'))
+		{
 			tx->data[tx->len] = '\n';
 			tx->len++;
 		}
 
 		err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
-		if (err) {
+		if (err)
+		{
 			k_fifo_put(&fifo_uart_tx_data, tx);
 		}
 	}
@@ -870,22 +909,25 @@ void error(void)
 {
 	turn_off_all_leds();
 
-	while (true) {
+	while (true)
+	{
 		/* Spin for ever */
 		k_sleep(K_MSEC(1000));
 	}
 }
 
-
-//HERE THE AUTHENTICATION
+// HERE THE AUTHENTICATION
 
 #ifdef CONFIG_BT_NUS_SECURITY_ENABLED
 static void num_comp_reply(bool accept)
 {
-	if (accept) {
+	if (accept)
+	{
 		bt_conn_auth_passkey_confirm(auth_conn);
 		LOG_INF("Numeric Match, conn %p", (void *)auth_conn);
-	} else {
+	}
+	else
+	{
 		bt_conn_auth_cancel(auth_conn);
 		LOG_INF("Numeric Reject, conn %p", (void *)auth_conn);
 	}
@@ -896,31 +938,32 @@ static void num_comp_reply(bool accept)
 
 void button_changed(uint32_t button_state, uint32_t has_changed)
 {
-	//uint32_t buttons = button_state & has_changed;
+	// uint32_t buttons = button_state & has_changed;
 
-	if (auth_conn) {
-		//if (buttons & KEY_PASSKEY_ACCEPT) {
+	if (auth_conn)
+	{
+		// if (buttons & KEY_PASSKEY_ACCEPT) {
 		//	num_comp_reply(true);
-		//}
+		// }
 
-		//if (buttons & KEY_PASSKEY_REJECT) {
+		// if (buttons & KEY_PASSKEY_REJECT) {
 		//	num_comp_reply(false);
-		//}
+		// }
 	}
 }
 #endif /* CONFIG_BT_NUS_SECURITY_ENABLED */
 
-//FLASH FUNCTIONS
+// FLASH FUNCTIONS
 
-void flash_init(void) {
+void flash_init(void)
+{
 
-    //struct flash_pages_info info;
+	// struct flash_pages_info info;
 
-    int rc = 0, cnt = 0, cnt_his = 0;
+	int rc = 0, cnt = 0, cnt_his = 0;
 	char buf[16];
 	uint8_t key[8], longarray[128];
-	//uint32_t button2_counter = 0U, button2_counter_his;
-
+	// uint32_t button2_counter = 0U, button2_counter_his;
 
 	/* define the nvs file system by settings with:
 	 *	sector_size equal to the pagesize,
@@ -928,424 +971,453 @@ void flash_init(void) {
 	 *	starting at NVS_PARTITION_OFFSET
 	 */
 	fs.flash_device = NVS_PARTITION_DEVICE;
-	
-	if (!device_is_ready(fs.flash_device)) {
+
+	if (!device_is_ready(fs.flash_device))
+	{
 		printk("Flash device %s is not ready\n", fs.flash_device->name);
 		return;
 	}
 	fs.offset = NVS_PARTITION_OFFSET;
 	rc = flash_get_page_info_by_offs(fs.flash_device, fs.offset, &info);
-	if (rc) {
+	if (rc)
+	{
 		printk("Unable to get page info\n");
 		return;
 	}
 	fs.sector_size = info.size;
-	fs.sector_count = 2048U; //NUMBER OF SECTORS total 0X800000 BYTES
+	fs.sector_count = 2048U; // NUMBER OF SECTORS total 0X800000 BYTES
 
 	rc = nvs_mount(&fs);
-	if (rc) {
+	if (rc)
+	{
 		printk("Flash Init failed\n");
 		return;
 	}
 
-
-	//Button Counter
+	// Button Counter
 	rc = nvs_read(&fs, BOOT_POSITION, &button2_counter, sizeof(button2_counter));
-	if (rc > 0) { /* item was found, show it */
+	if (rc > 0)
+	{ /* item was found, show it */
 		printk("Id: %d, button2_counter: %d\n",
-			BOOT_POSITION, button2_counter);
-	} else   {/* item was not found, add it */
+			   BOOT_POSITION, button2_counter);
+	}
+	else
+	{ /* item was not found, add it */
 		printk("No Reboot counter found, adding it at id %d\n",
-		       BOOT_POSITION);
+			   BOOT_POSITION);
 		(void)nvs_write(&fs, BOOT_POSITION, &button2_counter,
-			  sizeof(button2_counter));
+						sizeof(button2_counter));
 	}
 
-
-     //Creates C_Buffer_Current_Position if not exist or retrieve the value stored on memory
+	// Creates C_Buffer_Current_Position if not exist or retrieve the value stored on memory
 	rc = nvs_read(&fs, LOG_POSITION, &C_Buffer_Current_Position, sizeof(C_Buffer_Current_Position));
-	if (rc > 0) { /* item was found, show it */
+	if (rc > 0)
+	{ /* item was found, show it */
 		printk("Id: %d, Current Position: %d\n",
-			LOG_POSITION, C_Buffer_Current_Position);
-			if (C_Buffer_Free_Position < CIRCULAR_BUFFER_ELEMENTS) C_Buffer_Free_Position=C_Buffer_Current_Position+1;
-			if (C_Buffer_Free_Position == CIRCULAR_BUFFER_ELEMENTS) C_Buffer_Free_Position=0;
-	} else   {/* item was not found, add it */
-		printk("Current Position counter found, adding it at id %d\n",
-		       LOG_POSITION);
-		(void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position,sizeof(C_Buffer_Current_Position));
+			   LOG_POSITION, C_Buffer_Current_Position);
+		if (C_Buffer_Free_Position < CIRCULAR_BUFFER_ELEMENTS)
+			C_Buffer_Free_Position = C_Buffer_Current_Position + 1;
+		if (C_Buffer_Free_Position == CIRCULAR_BUFFER_ELEMENTS)
+			C_Buffer_Free_Position = 0;
 	}
-
-
-
-
+	else
+	{ /* item was not found, add it */
+		printk("Current Position counter found, adding it at id %d\n",
+			   LOG_POSITION);
+		(void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position, sizeof(C_Buffer_Current_Position));
+	}
 }
 
-void flash_test_atom(void) {
-   uint32_t buff_size=256; //Minimum to be saved
-   uint8_t *buf;
-   buf = k_malloc(buff_size);
+void flash_test_atom(void)
+{
+	uint32_t buff_size = 256; // Minimum to be saved
+	uint8_t *buf;
+	buf = k_malloc(buff_size);
 
-    flash_device = device_get_binding("mx25r6435f@0");
+	flash_device = device_get_binding("mx25r6435f@0");
 
-	//size_t page_size = flash_get_write_block_size(flash_device);
+	// size_t page_size = flash_get_write_block_size(flash_device);
 
-    //printf("Result flash_page_size:%d \n", page_size);
+	// printf("Result flash_page_size:%d \n", page_size);
 
-    err = flash_read(flash_device, 0, buf, buff_size);
-    printf("Result flash_read:%d \n", err);
-    printf("valor:%d\n",buf[0]);
+	err = flash_read(flash_device, 0, buf, buff_size);
+	printf("Result flash_read:%d \n", err);
+	printf("valor:%d\n", buf[0]);
 
-    err = flash_erase(flash_device, 0, 4096); //Mininum to be erased
-    printf("Result flash_erase:%d \n", err);
+	err = flash_erase(flash_device, 0, 4096); // Mininum to be erased
+	printf("Result flash_erase:%d \n", err);
 
-    buf[0]=0xfd;
-    err = flash_write(flash_device, 0,  buf, buff_size);
-    printf("Result flash_write:%d \n", err);
+	buf[0] = 0xfd;
+	err = flash_write(flash_device, 0, buf, buff_size);
+	printf("Result flash_write:%d \n", err);
 
-	buf[0]=0xFF;
-    err = flash_read(flash_device, 0,  buf, buff_size);
-    printf("Result flash_read:%d \n", err);
-    printf("valor:%d\n",buf[0]);
-
-
-
+	buf[0] = 0xFF;
+	err = flash_read(flash_device, 0, buf, buff_size);
+	printf("Result flash_read:%d \n", err);
+	printf("valor:%d\n", buf[0]);
 }
 
-//PROTOBUFFER FUNCTIONS
+// PROTOBUFFER FUNCTIONS
 
 uint8_t send_bluetooth(buf_data buf)
 {
-    uint32_t comprimento=buf.len;
-    uint8_t err_code=0;
-    uint8_t BLE_NUS_MAX_DATA_LEN;//=bt_nus_get_mtu(NULL);
+	uint32_t comprimento = buf.len;
+	uint8_t err_code = 0;
+	uint8_t BLE_NUS_MAX_DATA_LEN; //=bt_nus_get_mtu(NULL);
 
-    // 18 bytes de MTU - depende de negociacao com o host
-    BLE_NUS_MAX_DATA_LEN=61; //was18
+	// 18 bytes de MTU - depende de negociacao com o host
+	BLE_NUS_MAX_DATA_LEN = 61; // was18
 
-    uint8_t data[BLE_NUS_MAX_DATA_LEN];
-    // here we have to send MTU less than BLE_NUS_MAX_DATA_LEN bytes
-     uint8_t *packet_data;
-    
+	uint8_t data[BLE_NUS_MAX_DATA_LEN];
+	// here we have to send MTU less than BLE_NUS_MAX_DATA_LEN bytes
+	uint8_t *packet_data;
+
 	packet_data = k_malloc(BLE_NUS_MAX_DATA_LEN);
 
-    uint16_t small_pkt=0;
-    int k=0;
-    
-    int pacote=0;
-    while(k<comprimento-1){
-     pacote++;
-      while (small_pkt<BLE_NUS_MAX_DATA_LEN && k < comprimento  ){
-       data[small_pkt]=buf.data[k];
-	   *(packet_data+small_pkt) = buf.data[k];
-	    
-       k++;
-       small_pkt++;
-      }
-   
-           if (bt_nus_send(NULL, packet_data ,small_pkt)) {
-		    	printk("FALHA - ATIVE A RECEPCAO BLUETOOTH ");
-		   }
-        
+	uint16_t small_pkt = 0;
+	int k = 0;
 
-      small_pkt=0;
-    }
-     k_free(packet_data);
-	 return err_code;
- 
+	int pacote = 0;
+	while (k < comprimento - 1)
+	{
+		pacote++;
+		while (small_pkt < BLE_NUS_MAX_DATA_LEN && k < comprimento)
+		{
+			data[small_pkt] = buf.data[k];
+			*(packet_data + small_pkt) = buf.data[k];
+
+			k++;
+			small_pkt++;
+		}
+
+		if (bt_nus_send(NULL, packet_data, small_pkt))
+		{
+			printk("FALHA - ATIVE A RECEPCAO BLUETOOTH ");
+		}
+
+		small_pkt = 0;
+	}
+	k_free(packet_data);
+	return err_code;
 }
 
-void print_serial(void){
-    buf_data buf;
-    buf=send_array_dd_v0(); 
+void print_serial(void)
+{
+	buf_data buf;
+	buf = send_array_dd_v0();
 
-   //printk("START");
+	// printk("START");
 
-   int j=0;
-    while(j < buf.len ){
-    LOG_ERR("%c",buf.data[j]);
-	k_sleep(K_MSEC(2));
-   j++;
-   }
+	int j = 0;
+	while (j < buf.len)
+	{
+		LOG_ERR("%c", buf.data[j]);
+		k_sleep(K_MSEC(2));
+		j++;
+	}
 }
 
-void send_protobuf(void){
+void send_protobuf(void)
+{
 
-    buf_data buf_proto;
-    buf_proto=send_array_dd_v0(); 
-    //print_serial();
-    send_bluetooth(buf_proto);
-   
+	buf_data buf_proto;
+	buf_proto = send_array_dd_v0();
+	// print_serial();
+	send_bluetooth(buf_proto);
 }
 
-//BUTTONS INTERRUPTS CALL BACK
+// BUTTONS INTERRUPTS CALL BACK
 
-void button_pressed_1(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
-	//SEND MESSAGE 
+void button_pressed_1(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	// SEND MESSAGE
 	k_sem_give(&send_proto);
 	gpio_pin_set_dt(LED4, ON);
 	printk("Button pressed 1 at %" PRIu32 "\n", k_cycle_get_32());
 }
 
-void button_pressed_2(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
-	//SAVE MEMORY
+void button_pressed_2(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	// SAVE MEMORY
 	k_sem_give(&save_memory);
 	gpio_pin_set_dt(LED3, ON);
 	printk("Button pressed 2 at %" PRIu32 "\n", k_cycle_get_32());
-    
 }
 
-void button_pressed_3(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+void button_pressed_3(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
 	k_sem_give(&button_3);
 	printk("Button pressed 3 at %" PRIu32 "\n", k_cycle_get_32());
-	
 }
 
-void button_pressed_4(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
-    k_sem_give(&button_test);
+void button_pressed_4(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	k_sem_give(&button_test);
 	printk("Button pressed 4 at %" PRIu32 "\n", k_cycle_get_32());
-	
 }
 
-//DIGITAL CALL BACK
-void digital_0_call_back(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+// DIGITAL CALL BACK
+void digital_0_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
 	printk("Digital 0 activated at %" PRIu32 "\n", k_cycle_get_32());
-	if(digital_value[0]<=DIGITAL_0_LIMIT)digital_value[0]++;
+	if (digital_value[0] <= DIGITAL_0_LIMIT)
+		digital_value[0]++;
 }
 
-void digital_1_call_back(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+void digital_1_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
 	printk("Digital 1 activated at %" PRIu32 "\n", k_cycle_get_32());
-	if(digital_value[1]<=DIGITAL_0_LIMIT)digital_value[1]++;
+	if (digital_value[1] <= DIGITAL_0_LIMIT)
+		digital_value[1]++;
 }
 
-void digital_2_call_back(const struct device *dev, struct gpio_callback *cb,uint32_t pins){
+void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
 	printk("Digital 2 activated at %" PRIu32 "\n", k_cycle_get_32());
-	if(digital_value[2]<=DIGITAL_0_LIMIT)digital_value[2]++;
+	if (digital_value[2] <= DIGITAL_0_LIMIT)
+		digital_value[2]++;
 }
 
+// CONFIGURE BUTTONS
 
-//CONFIGURE BUTTONS
+void configure_all_buttons(void)
+{
+	gpio_pin_configure_dt(BUTTON1_ADR, GPIO_INPUT);
+	gpio_pin_interrupt_configure_dt(BUTTON1_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(BUTTON1_CB, button_pressed_1, BIT(BUTTON1.pin));
+	gpio_add_callback(BUTTON1.port, BUTTON1_CB);
+	printk("Set up button at %s pin %d\n", BUTTON1.port->name, BUTTON1.pin);
 
-void configure_all_buttons(void){
- gpio_pin_configure_dt(BUTTON1_ADR, GPIO_INPUT);
- gpio_pin_interrupt_configure_dt(BUTTON1_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(BUTTON1_CB, button_pressed_1, BIT(BUTTON1.pin));
- gpio_add_callback(BUTTON1.port, BUTTON1_CB);
- printk("Set up button at %s pin %d\n", BUTTON1.port->name, BUTTON1.pin);
+	gpio_pin_configure_dt(BUTTON2_ADR, GPIO_INPUT);
+	gpio_pin_interrupt_configure_dt(BUTTON2_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(BUTTON2_CB, button_pressed_2, BIT(BUTTON2.pin));
+	gpio_add_callback(BUTTON2.port, BUTTON2_CB);
+	printk("Set up button at %s pin %d\n", BUTTON2.port->name, BUTTON2.pin);
 
- gpio_pin_configure_dt(BUTTON2_ADR, GPIO_INPUT);
- gpio_pin_interrupt_configure_dt(BUTTON2_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(BUTTON2_CB, button_pressed_2, BIT(BUTTON2.pin));
- gpio_add_callback(BUTTON2.port, BUTTON2_CB);
- printk("Set up button at %s pin %d\n", BUTTON2.port->name, BUTTON2.pin);
+	gpio_pin_configure_dt(BUTTON3_ADR, GPIO_INPUT);
+	gpio_pin_interrupt_configure_dt(BUTTON3_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(BUTTON3_CB, button_pressed_3, BIT(BUTTON3.pin));
+	gpio_add_callback(BUTTON3.port, BUTTON3_CB);
+	printk("Set up button at %s pin %d\n", BUTTON3.port->name, BUTTON3.pin);
 
- gpio_pin_configure_dt(BUTTON3_ADR, GPIO_INPUT);
- gpio_pin_interrupt_configure_dt(BUTTON3_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(BUTTON3_CB, button_pressed_3, BIT(BUTTON3.pin));
- gpio_add_callback(BUTTON3.port, BUTTON3_CB);
- printk("Set up button at %s pin %d\n", BUTTON3.port->name, BUTTON3.pin);
-
- gpio_pin_configure_dt(BUTTON4_ADR, GPIO_INPUT);
- gpio_pin_interrupt_configure_dt(BUTTON4_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(BUTTON4_CB, button_pressed_4, BIT(BUTTON4.pin));
- gpio_add_callback(BUTTON4.port, BUTTON4_CB);
- printk("Set up button at %s pin %d\n", BUTTON4.port->name, BUTTON4.pin);
+	gpio_pin_configure_dt(BUTTON4_ADR, GPIO_INPUT);
+	gpio_pin_interrupt_configure_dt(BUTTON4_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(BUTTON4_CB, button_pressed_4, BIT(BUTTON4.pin));
+	gpio_add_callback(BUTTON4.port, BUTTON4_CB);
+	printk("Set up button at %s pin %d\n", BUTTON4.port->name, BUTTON4.pin);
 }
 
-//CONFIGURE DIGITAL INPUTS
+// CONFIGURE DIGITAL INPUTS
 
-void configure_digital_inputs(void){
- 	
- gpio_pin_configure_dt(DIG_0_ADR, GPIO_INPUT );
- printk("GPIO 1 Pin 4 Value:%d \n",gpio_pin_get_dt(DIG_0_ADR));
- gpio_pin_interrupt_configure_dt(DIG_0_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(DIG_0_CB, digital_0_call_back, BIT(DIG_0.pin));
- gpio_add_callback(DIG_0.port, DIG_0_CB);
- printk("Set up Digital Input at %s pin %d\n", DIG_0.port->name, DIG_0.pin);
+void configure_digital_inputs(void)
+{
 
- gpio_pin_configure_dt(DIG_1_ADR, GPIO_INPUT);
- printk("GPIO 1 Pin 5 Value:%d \n",gpio_pin_get_dt(DIG_1_ADR));
- gpio_pin_interrupt_configure_dt(DIG_1_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(DIG_1_CB, digital_1_call_back, BIT(DIG_1.pin));
- gpio_add_callback(DIG_1.port, DIG_1_CB);
- printk("Set up Digital Input at %s pin %d\n", DIG_1.port->name, DIG_1.pin);
+	gpio_pin_configure_dt(DIG_0_ADR, GPIO_INPUT);
+	printk("GPIO 1 Pin 4 Value:%d \n", gpio_pin_get_dt(DIG_0_ADR));
+	gpio_pin_interrupt_configure_dt(DIG_0_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(DIG_0_CB, digital_0_call_back, BIT(DIG_0.pin));
+	gpio_add_callback(DIG_0.port, DIG_0_CB);
+	printk("Set up Digital Input at %s pin %d\n", DIG_0.port->name, DIG_0.pin);
 
- gpio_pin_configure_dt(DIG_2_ADR, GPIO_INPUT);
- printk("GPIO 1 Pin 6 Value:%d \n",gpio_pin_get_dt(DIG_2_ADR));
- gpio_pin_interrupt_configure_dt(DIG_2_ADR,GPIO_INT_EDGE_TO_ACTIVE);
- gpio_init_callback(DIG_2_CB, digital_2_call_back, BIT(DIG_2.pin));
- gpio_add_callback(DIG_2.port, DIG_2_CB);
- printk("Set up Digital Input at %s pin %d\n", DIG_2.port->name, DIG_2.pin);
+	gpio_pin_configure_dt(DIG_1_ADR, GPIO_INPUT);
+	printk("GPIO 1 Pin 5 Value:%d \n", gpio_pin_get_dt(DIG_1_ADR));
+	gpio_pin_interrupt_configure_dt(DIG_1_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(DIG_1_CB, digital_1_call_back, BIT(DIG_1.pin));
+	gpio_add_callback(DIG_1.port, DIG_1_CB);
+	printk("Set up Digital Input at %s pin %d\n", DIG_1.port->name, DIG_1.pin);
+
+	gpio_pin_configure_dt(DIG_2_ADR, GPIO_INPUT);
+	printk("GPIO 1 Pin 6 Value:%d \n", gpio_pin_get_dt(DIG_2_ADR));
+	gpio_pin_interrupt_configure_dt(DIG_2_ADR, GPIO_INT_EDGE_TO_ACTIVE);
+	gpio_init_callback(DIG_2_CB, digital_2_call_back, BIT(DIG_2.pin));
+	gpio_add_callback(DIG_2.port, DIG_2_CB);
+	printk("Set up Digital Input at %s pin %d\n", DIG_2.port->name, DIG_2.pin);
 }
 
-void configure_led(void){
- gpio_pin_configure_dt(LED1, GPIO_OUTPUT);
- gpio_pin_configure_dt(LED2, GPIO_OUTPUT);
- gpio_pin_configure_dt(LED3, GPIO_OUTPUT);
- gpio_pin_configure_dt(LED4, GPIO_OUTPUT);
+void configure_led(void)
+{
+	gpio_pin_configure_dt(LED1, GPIO_OUTPUT);
+	gpio_pin_configure_dt(LED2, GPIO_OUTPUT);
+	gpio_pin_configure_dt(LED3, GPIO_OUTPUT);
+	gpio_pin_configure_dt(LED4, GPIO_OUTPUT);
 }
 
-void turn_off_all_leds(void){
-       gpio_pin_set_dt(LED1, OFF);
-       gpio_pin_set_dt(LED2, OFF);
-       gpio_pin_set_dt(LED3, OFF);
-       gpio_pin_set_dt(LED4, OFF);
-
+void turn_off_all_leds(void)
+{
+	gpio_pin_set_dt(LED1, OFF);
+	gpio_pin_set_dt(LED2, OFF);
+	gpio_pin_set_dt(LED3, OFF);
+	gpio_pin_set_dt(LED4, OFF);
 }
 
-void led_on_off(struct gpio_dt_spec led,uint8_t value){
-        gpio_pin_set_dt(&led, value);
+void led_on_off(struct gpio_dt_spec led, uint8_t value)
+{
+	gpio_pin_set_dt(&led, value);
 }
 
-//CONFIGURE ADC
+// CONFIGURE ADC
 
-void configure_adc(void){
+void configure_adc(void)
+{
 	int err;
 	/* Configure channels individually prior to sampling. */
-	for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++) {
-		if (!device_is_ready(adc_channels[i].dev)) {
+	for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++)
+	{
+		if (!device_is_ready(adc_channels[i].dev))
+		{
 			printk("ADC controller device not ready\n");
 			return;
 		}
 		err = adc_channel_setup_dt(&adc_channels[i]);
-		if (err < 0) {
+		if (err < 0)
+		{
 			printk("Could not setup channel #%d (%d)\n", i, err);
 			return;
 		}
 	}
 }
 
-//MAIN
+// MAIN
 
 void main(void)
 {
-	//int ret;
+	// int ret;
 	int blink_status = 0;
-	//int led1_status = 0;
-	//int led2_status = 0;
-	//int led3_status = 0;
-	//int led4_status = 0;
+	// int led1_status = 0;
+	// int led2_status = 0;
+	// int led3_status = 0;
+	// int led4_status = 0;
 	int err = 0;
 
-  //init MUTEX
-    k_mutex_init(&ad_ready);
+	// init MUTEX
+	k_mutex_init(&ad_ready);
 
 	configure_led();
 	turn_off_all_leds();
- 	configure_all_buttons();
+	configure_all_buttons();
 	configure_digital_inputs();
 	configure_adc();
-     
 
 	err = uart_init();
-	if (err) {
+	if (err)
+	{
 		error();
 	}
 
-    buf_extra = k_malloc(sizeof(*buf_extra));
-	
+	buf_extra = k_malloc(sizeof(*buf_extra));
+
 	err = uart_2_init();
-	if (err) {
+	if (err)
+	{
 		error();
 	}
-    
 
-	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED)) {
+	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED))
+	{
 		err = bt_conn_auth_cb_register(&conn_auth_callbacks);
-		if (err) {
+		if (err)
+		{
 			printk("Failed to register authorization callbacks.\n");
 			return;
 		}
 
 		err = bt_conn_auth_info_cb_register(&conn_auth_info_callbacks);
-		if (err) {
+		if (err)
+		{
 			printk("Failed to register authorization info callbacks.\n");
 			return;
 		}
 	}
 
 	err = bt_enable(NULL);
-	if (err) {
+	if (err)
+	{
 		error();
 	}
 
 	printf("Bluetooth initialized \n\r");
 	printf("Increase the Client MTU to 65 \n\r");
 	printf("Press any key to send the Protobuffer \n\r");
-	
 
 	k_sem_give(&ble_init_ok);
-	
 
-	if (IS_ENABLED(CONFIG_SETTINGS)) {
+	if (IS_ENABLED(CONFIG_SETTINGS))
+	{
 		settings_load();
 	}
 
 	err = bt_nus_init(&nus_cb);
-	if (err) {
+	if (err)
+	{
 		printf("Failed to initialize UART service (err: %d)", err);
 		return;
 	}
 
 	err = bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), sd,
-			      ARRAY_SIZE(sd));
-	if (err) {
+						  ARRAY_SIZE(sd));
+	if (err)
+	{
 		printf("Advertising failed to start (err %d)", err);
 		return;
 	}
-    
-	flag=1;//print ad values once
 
- 	k_msleep(300);
-    flash_init();
+	flag = 1; // print ad values once
 
+	k_msleep(300);
+	flash_init();
 
-	for (;;) {
-		
-		//uart2_tx("ABC");
+	for (;;)
+	{
+
+		// uart2_tx("ABC");
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
 		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
-    
 }
 
-//THREADS
+// THREADS
 
-void shoot_minute_save_thread(void){
+void shoot_minute_save_thread(void)
+{
 
-   // each one minute this thread will shot.
-   uint64_t actual_time = k_uptime_get()/1000;
-   signed int  h, m, s,last_minute;
-    h = (actual_time/3600); 
-	m = (actual_time -(3600*h))/60;
-	s = (actual_time -(3600*h)-(m*60));
-	last_minute=m;
+	// each one minute this thread will shot.
+	uint64_t actual_time = k_uptime_get() / 1000;
+	signed int h, m, s, last_minute;
+	h = (actual_time / 3600);
+	m = (actual_time - (3600 * h)) / 60;
+	s = (actual_time - (3600 * h) - (m * 60));
+	last_minute = m;
 
-    //time_print ();
+	// time_print ();
 
-  while(1){   
-    actual_time = k_uptime_get()/1000;
-	h = (actual_time/3600); 
-	m = (actual_time -(3600*h))/60;
-	s = (actual_time -(3600*h)-(m*60));
+	while (1)
+	{
+		actual_time = k_uptime_get() / 1000;
+		h = (actual_time / 3600);
+		m = (actual_time - (3600 * h)) / 60;
+		s = (actual_time - (3600 * h) - (m * 60));
 
-   
-   if (m==(last_minute+1)){
-		last_minute=m;
-        if (m==59){last_minute=-1;}
-		if (h==24){h=0;} // only up to 23:59:59h
-	    //START RUN THE MINUTE ROUTINE
-		printk("LOG Circular Buffer hh:mm:ss at %02d:%02d:%02d\n",h,m,s);
-		
-        feed_circular_buffer();
-		print_current_position_cb(C_Buffer_Current_Position);
-		printk(" \n");
-		
-		//
-         	    
-   }
-   
-  }
+		if (m == (last_minute + 1))
+		{
+			last_minute = m;
+			if (m == 59)
+			{
+				last_minute = -1;
+			}
+			if (h == 24)
+			{
+				h = 0;
+			} // only up to 23:59:59h
+			  // START RUN THE MINUTE ROUTINE
+			printk("LOG Circular Buffer hh:mm:ss at %02d:%02d:%02d\n", h, m, s);
 
+			feed_circular_buffer();
+			print_current_position_cb(C_Buffer_Current_Position);
+			printk(" \n");
+
+			//
+		}
+	}
 }
 
 void ble_write_thread(void)
@@ -1353,139 +1425,271 @@ void ble_write_thread(void)
 	/* Don't go any further until BLE is initialized */
 	k_sem_take(&ble_init_ok, K_FOREVER);
 
-	for (;;) {
+	for (;;)
+	{
 		/* Wait indefinitely for data to be sent over bluetooth */
-		struct uart_data_t *buf = k_fifo_get(&fifo_uart_rx_data,K_FOREVER);
+		struct uart_data_t *buf = k_fifo_get(&fifo_uart_rx_data, K_FOREVER);
 
-        //SE ATIVAR ABAIXO VAI ENVIAR TODO CARACTERE DIGITADO
-		if (bt_nus_send(NULL, buf->data, buf->len)) {
+		// SE ATIVAR ABAIXO VAI ENVIAR TODO CARACTERE DIGITADO
+		if (bt_nus_send(NULL, buf->data, buf->len))
+		{
 			printk("Falha aqui- Failed to send data over BLE connection");
 		}
 		k_free(buf);
 	}
 }
 
-void send_protobuf_thread(void){
-   while(1){
-		    k_sem_take(&send_proto,K_FOREVER);
-		    send_protobuf();
+void send_protobuf_thread(void)
+{
+	while (1)
+	{
+		k_sem_take(&send_proto, K_FOREVER);
+		send_protobuf();
 	}
 }
 
-void write_memory_thread(void){
-	while(1){
-		    k_sem_take(&save_memory,K_FOREVER);
-		    flash_button2_counter();
-			print_current_position_cb_new(0);
-
+void write_memory_thread(void)
+{
+	while (1)
+	{
+		k_sem_take(&save_memory, K_FOREVER);
+		flash_button2_counter();
+		print_current_position_cb_new(0);
 	}
 }
 
-void button3_thread(void){
-    uint32_t i;
-	while(1){
-		i=0;
-		k_sem_take(&button_3,K_FOREVER);
-	    while (i<=C_Buffer_Current_Position){
-	     print_current_position_cb(i);
-	     i++;
+void button3_thread(void)
+{
+	uint32_t i;
+	while (1)
+	{
+		i = 0;
+		k_sem_take(&button_3, K_FOREVER);
+		while (i <= C_Buffer_Current_Position)
+		{
+			print_current_position_cb(i);
+			i++;
 		}
-    }
-}
-
-void button4_thread(void){
-  //print ISADORA PENATI FERREIRA
-    char Name[] = "ISADORA PENATI FERREIRA";
-    uint16_t size= sizeof(Name);
-
-    /*
-    uint8_t *packet_data;
-	packet_data = k_malloc(7);
-    *packet_data     = 0x49;//I
-    *(packet_data+1) = 0x53;//S
-    *(packet_data+2) = 0x41;//A
-    *(packet_data+3) = 0x44;//D
-    *(packet_data+4) = 0x4F;//O
-    *(packet_data+5) = 0x52;//R
-    *(packet_data+6) = 0x41;//A
-    *(packet_data+7) = 0x20;//SPACE
-	*/
-    
-	while(1){
-		k_sem_take(&button_test,K_FOREVER);
-    	bt_nus_send(NULL, Name,size);
-		
 	}
-	//k_free(packet_data);
 }
 
-void adc_thread(void){
-	int err;
-    
+void button4_thread(void)
+{
+	// print ISADORA PENATI FERREIRA
+	char Name[] = "ISADORA PENATI FERREIRA";
+	uint16_t size = sizeof(Name);
 
-    while (1) {	
-		for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++) {
+	/*
+	uint8_t *packet_data;
+	packet_data = k_malloc(7);
+	*packet_data     = 0x49;//I
+	*(packet_data+1) = 0x53;//S
+	*(packet_data+2) = 0x41;//A
+	*(packet_data+3) = 0x44;//D
+	*(packet_data+4) = 0x4F;//O
+	*(packet_data+5) = 0x52;//R
+	*(packet_data+6) = 0x41;//A
+	*(packet_data+7) = 0x20;//SPACE
+	*/
+
+	while (1)
+	{
+		k_sem_take(&button_test, K_FOREVER);
+		bt_nus_send(NULL, Name, size);
+	}
+	// k_free(packet_data);
+}
+
+void adc_thread(void)
+{
+	int err;
+
+	while (1)
+	{
+		for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++)
+		{
 			int32_t val_mv;
 
 			(void)adc_sequence_init_dt(&adc_channels[i], &sequence);
-            k_mutex_lock(&ad_ready, K_FOREVER);
+			k_mutex_lock(&ad_ready, K_FOREVER);
 			err = adc_read(adc_channels[i].dev, &sequence);
-			adc_value[adc_channels[i].channel_id]=buf_adc;
+			adc_value[adc_channels[i].channel_id] = buf_adc;
 			k_mutex_unlock(&ad_ready);
 
-           if (flag==1){
-			printk("- %s, channel %d: ",adc_channels[i].dev->name,adc_channels[i].channel_id);
-			printk("%"PRId16, buf_adc);
-			val_mv = buf_adc;
-			adc_raw_to_millivolts_dt(&adc_channels[i],&val_mv);
-			printk(" = %"PRId32" mV\n", val_mv);
-		   }
-			
+			if (flag == 1)
+			{
+				printk("- %s, channel %d: ", adc_channels[i].dev->name, adc_channels[i].channel_id);
+				printk("%" PRId16, buf_adc);
+				val_mv = buf_adc;
+				adc_raw_to_millivolts_dt(&adc_channels[i], &val_mv);
+				printk(" = %" PRId32 " mV\n", val_mv);
+			}
 		}
-        flag=0;
+		flag = 0;
 		k_sleep(K_MSEC(100));
 	}
 }
 
 void gnss_write_thread(void)
 {
-	
-    uint32_t i=0,j=1,k=0;;
+#define BUFF_SIZE 480
+
+	uint32_t i = 0, j = 1, k = 0, h = 0, g = 0, index = 0, bfcnt = 0;
+
+	uint64_t time = k_uptime_get();
+	uint8_t state = 0, pkt_init = 0;
+
+	uint8_t buffer[BUFF_SIZE];
+
+	while (i < BUFF_SIZE)buffer[i++] = 0x20;//space
+	i = 0;
 
 	struct uart_data_t *buf2a;
 	buf2a = k_malloc(sizeof(*buf2a));
 	//
-
-	for (;;) {
+	for (;;)
+	{
 		/* Wait indefinitely for data  */
-	   buf2a = k_fifo_get(&fifo_uart2_rx_data,K_FOREVER);
-	   k_fifo_init(&fifo_uart2_rx_data);
+		
+		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
+		k_fifo_init(&fifo_uart2_rx_data);
 
-       if(buf2a->len>0){
-        k=(buf2a->len);
+		if (buf2a->len > 0)
+		{
+			k = (buf2a->len);
 
-        i=0;
-		printf("k:%d UART2:",k);
-        while (i< k){
-         printf("%02X ",buf2a->data[i]);
-		 i++;
+			i = 0;
+			index = 0;
+			// printf("k:%d UART2:",k);
+           
+			while (i < k && pkt_init == 0)
+			{
+				// printf("%02X ",buf2a->data[i]);
+				switch (buf2a->data[i])
+				{
+				case 0x24: //$
+					if (state == 0)state = 1;
+					break;
+				case 0x47: // G
+					if (state == 1)state = 2;
+
+					break;
+				case 0x50: // P
+					if (state == 2)state = 3;
+
+					break;
+				case 0x52: // R
+					if (state == 3)state = 4;
+
+					break;
+				case 0x4D: // M
+					if (state == 4)state = 5;
+
+					break;
+				case 0x43: // C
+					if (state == 5){
+						state = 6;
+					    index = i - 5;
+					}
+					break;
+				}
+				i++;
+			}
+
+            
+
+			if (state == 6 && pkt_init == 0)
+			{
+				printf("BEGIN:\n");
+				while (index < k)
+				{
+					printf("%c", buf2a->data[index]);
+					buffer[bfcnt] = buf2a->data[index];
+					index++;bfcnt++;
+				}
+				
+				pkt_init=1;
+			}
+
 		}
-     
-		printf("j:%d\n",j);
-        j++;
-	   }
-	    
+
+		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
+		//k_fifo_init(&fifo_uart2_rx_data);
+
+		if (buf2a->len > 0)
+		{
+
+
+			if ((pkt_init >= 1) && (bfcnt < BUFF_SIZE)  )
+			{
+				index = 0;
+				
+				while ((index < k)  && (bfcnt < BUFF_SIZE))
+				{
+					buffer[bfcnt] = buf2a->data[index];
+					printf("%c",buf2a->data[index]);
+					index++;bfcnt++;
+				}
+				pkt_init++;
+			}
+
+			if (bfcnt >= BUFF_SIZE - 1)
+			{
+				printf("\nEND\n");
+				index = 0;
+				pkt_init = 0;
+				bfcnt = 0;
+				state = 0;
+				while (index < BUFF_SIZE)buffer[index++] = 0x20;//space
+				index=0;
+			}
+
+			// printf("j:%d\n",j);
+			j++;
+		}
 	}
 }
 
-//THREADS START
+void gnss_write_thread_orig(void)
+{
 
-K_THREAD_DEFINE(adc_id, 10000, adc_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(circ_buff_id, 10000, button3_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(message_id, 10000, button4_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL,NULL,PRIORITY, 0, 0);
-K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL,NULL, 9, 0, 0);
+	uint32_t i = 0, j = 1, k = 0;
 
+	struct uart_data_t *buf2a;
+	buf2a = k_malloc(sizeof(*buf2a));
+	//
+	for (;;)
+	{
+		/* Wait indefinitely for data  */
+		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
+		k_fifo_init(&fifo_uart2_rx_data);
+
+		if (buf2a->len > 0)
+		{
+			k = (buf2a->len);
+
+			i = 0;
+			printf("k:%d UART2:", k);
+			while (i < k)
+			{
+				printf("%02X ", buf2a->data[i]);
+
+				i++;
+			}
+
+			printf("j:%d\n", j);
+			j++;
+		}
+	}
+}
+
+// THREADS START
+
+K_THREAD_DEFINE(adc_id, 10000, adc_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(circ_buff_id, 10000, button3_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(message_id, 10000, button4_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
