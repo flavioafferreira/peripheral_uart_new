@@ -1532,14 +1532,21 @@ void adc_thread(void)
 
 void gnss_write_thread(void)
 {
-#define BUFF_SIZE 480
 
+    uint8_t debug = ON;
 	uint32_t i = 0, j = 1, k = 0, h = 0, g = 0, index = 0, bfcnt = 0;
 
 	uint64_t time = k_uptime_get();
 	uint8_t state = 0, pkt_init = 0;
 
-	uint8_t buffer[BUFF_SIZE];
+	static uint8_t buffer[BUFF_SIZE];
+
+    const char nmea_id[10] = "$GPGGA";
+    char *field[20];
+    char *ret;
+    char *token;
+    char marker[2]="\n";
+    //marker[0]=0x0d;
 
 	while (i < BUFF_SIZE)buffer[i++] = 0x20;//space
 	i = 0;
@@ -1560,7 +1567,7 @@ void gnss_write_thread(void)
 
 			i = 0;
 			index = 0;
-			// printf("k:%d UART2:",k);
+			
            
 			while (i < k && pkt_init == 0)
 			{
@@ -1603,9 +1610,12 @@ void gnss_write_thread(void)
 				printf("BEGIN:\n");
 				while (index < k)
 				{
-					printf("%c", buf2a->data[index]);
-					buffer[bfcnt] = buf2a->data[index];
-					index++;bfcnt++;
+					//if(debug)printf("%c", buf2a->data[index]);
+					if (buf2a->data[index]!=0x0D) {
+						buffer[bfcnt] = buf2a->data[index];
+						bfcnt++;
+					}
+					index++;
 				}
 				
 				pkt_init=1;
@@ -1626,16 +1636,35 @@ void gnss_write_thread(void)
 				
 				while ((index < k)  && (bfcnt < BUFF_SIZE))
 				{
-					buffer[bfcnt] = buf2a->data[index];
-					printf("%c",buf2a->data[index]);
-					index++;bfcnt++;
+					if (buf2a->data[index]!=0x0D) {
+						buffer[bfcnt] = buf2a->data[index];
+						bfcnt++;
+					}
+					index++;
 				}
 				pkt_init++;
 			}
 
 			if (bfcnt >= BUFF_SIZE - 1)
 			{
-				printf("\nEND\n");
+                index = 0;
+				
+                while(index < bfcnt ){
+					//printf("%c",buffer[index]);
+				   	index++;
+				}
+
+   				ret = strstr(buffer, nmea_id);
+   				//printf("The substring is: %s\n", ret);
+   				token = strtok(ret, marker);
+   				//printf("%s\n", token );
+   				i=parse_comma_delimited_str(token, field, 20);
+				//if (i==14)debug_print_fields(i,field);
+				if (i==14){
+				  printf("TimeStamp  :%s\r\n",field[1]);	
+                  printf("Latitude  N:%s\r\n",field[2]);
+                  printf("Longitude E:%s\r\n",field[4]);
+			    }
 				index = 0;
 				pkt_init = 0;
 				bfcnt = 0;
@@ -1650,38 +1679,6 @@ void gnss_write_thread(void)
 	}
 }
 
-void gnss_write_thread_orig(void)
-{
-
-	uint32_t i = 0, j = 1, k = 0;
-
-	struct uart_data_t *buf2a;
-	buf2a = k_malloc(sizeof(*buf2a));
-	//
-	for (;;)
-	{
-		/* Wait indefinitely for data  */
-		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
-		k_fifo_init(&fifo_uart2_rx_data);
-
-		if (buf2a->len > 0)
-		{
-			k = (buf2a->len);
-
-			i = 0;
-			printf("k:%d UART2:", k);
-			while (i < k)
-			{
-				printf("%02X ", buf2a->data[i]);
-
-				i++;
-			}
-
-			printf("j:%d\n", j);
-			j++;
-		}
-	}
-}
 
 // THREADS START
 

@@ -23,3 +23,9 @@ void time_print (void);
 float ntc_temperature(uint16_t conversao,uint8_t sensor_number);
 void flash_button2_counter(void);
 
+int hex2int(char *c);
+int checksum_valid(char *string);
+int parse_comma_delimited_str(char *string, char **fields, int max_fields);
+int debug_print_fields(int numfields, char **fields);
+int SetTime(char *date, char *time);
+void gps_main(uint8_t *buffer,uint32_t nbytes);

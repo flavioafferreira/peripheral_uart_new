@@ -3,6 +3,12 @@
 #include <stdio.h>
 
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <stdlib.h>
+
+
 #include <zephyr/types.h>
 #include <zephyr/kernel.h>
 #include <zephyr/timing/timing.h>
@@ -54,6 +60,8 @@ extern struct nvs_fs fs;
 extern uint32_t button2_counter;
 void save_memory(uint32_t Pos);
 _Circular_Buffer read_memory(uint32_t Pos);
+
+
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -487,4 +495,28 @@ float ntc_temperature(uint16_t conversao,uint8_t sensor_number){
   return Tc;
 }
 
+
+//gnss
+
+int debug_print_fields(int numfields, char **fields)
+{
+	printf("Parsed %d fields\r\n",numfields);
+
+	for (int i = 0; i <= numfields; i++) {
+		printf("Field %02d: [%s]\r\n",i,fields[i]);
+	}
+}
+
+int parse_comma_delimited_str(char *string, char **fields, int max_fields)
+{
+	int i = 0;
+	fields[i++] = string;
+
+	while ((i < max_fields) && NULL != (string = strchr(string, ','))) {
+		*string = '\0';
+		fields[i++] = ++string;
+	}
+
+	return --i;
+}
 
