@@ -54,6 +54,10 @@ extern int16_t digital_value[8];//value for digital inputs
 extern struct k_mutex ad_ready;
 extern const struct adc_dt_spec adc_channels[];
 
+extern Gnss position;
+  
+
+
 //NVS
 extern struct flash_pages_info info;
 extern struct nvs_fs fs;
@@ -113,8 +117,8 @@ uint32_t time_stamp_function(void){
 
 Gnss values_of_gnss_module(void){
   Gnss gnss_return_value;
-  gnss_return_value.latitude=0;
-  gnss_return_value.longitude=0;
+  gnss_return_value.latitude=position.latitude;
+  gnss_return_value.longitude=position.longitude;
   gnss_return_value.timestamp=time_stamp_function();
   //implement here module routine to read value
   return gnss_return_value;
@@ -157,7 +161,7 @@ void print_current_position_cb(uint32_t pos){
  
     printf("\n\n####Position %d #####\n",pos);
 
-    printf("GNSS Position Lat=%d Long=%d TimeStamp=%d \n",
+    printf("GNSS Position Lat=%f Long=%f TimeStamp=%d \n",
       C_Buffer[pos].gnss_module.latitude,
       C_Buffer[pos].gnss_module.longitude,
       C_Buffer[pos].gnss_module.timestamp);

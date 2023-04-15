@@ -64,11 +64,7 @@
 
 #include "ubxlib.h"
 #include "u_cfg_app_platform_specific.h"
-int gnss_app_start();
-void gnss_read(void);
 
-int32_t latitudeX1e7;
-int32_t longitudeX1e7;
 
 // uGnssTransportHandle_t transportHandle;
 // uDeviceHandle_t gnssHandle = NULL;
@@ -236,6 +232,11 @@ int64_t time_stamp;
 int64_t time_stamp_begin;
 int64_t time_stamp_end;
 
+//gps
+Gnss position;
+             
+				  
+
 void turn_off_all_leds(void);
 
 // SEMAPHORES FOR THREADS
@@ -273,6 +274,9 @@ struct uart_data_t
 };
 
 struct uart_data_t *buf_extra;
+uint32_t buff_extra_index=0;
+uint32_t buff_marker=0;
+
 // static struct uart_data_t *last_buf2;
 // uint8_t reserved_memory=0;
 
@@ -299,7 +303,7 @@ static const struct device *const async_adapter_2;
 
 #endif
 
-// TIME MARKER
+
 
 // UART
 
@@ -331,6 +335,7 @@ void blink(struct gpio_dt_spec *led, uint8_t times)
 	}
 }
 
+
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data)
 {
 
@@ -344,8 +349,94 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	case UART_RX_RDY:
 		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf2->len += evt->data.rx.len;
-		// blink(LED3,2);
+		 //blink(LED3,2);
 
+
+
+        if(buf2->data[buf2->len - 1]==0x24  && buff_marker==0){
+			buf_extra = k_malloc(sizeof(*buf_extra));
+			buff_extra_index=0;
+			buff_marker=1;
+			blink(LED3,2);
+		}
+
+    
+
+        if(buff_marker==1 && (buff_extra_index<(sizeof(*buf2)-1)) ){
+		    buf_extra->data[buff_extra_index++]=buf2->data[buf2->len - 1];
+			if(buf2->data[buf2->len - 1]==0x0A){
+			   buf_extra->data[buff_extra_index++] = 0x00;
+			   buf_extra->len = buff_extra_index;
+			   if(buf_extra->len>0) {
+				 k_fifo_put(&fifo_uart2_rx_data, buf_extra);
+				 k_free(buf_extra);
+			   }
+			   buff_marker=0;
+			   blink(LED4,2);
+			}
+
+    
+		} 
+ 
+		
+		break;
+
+	case UART_RX_DISABLED:
+
+		// blink(LED4,4);
+		buf2 = k_malloc(sizeof(*buf2)); // THE SIZE IS 92 BYTES
+		if (buf2)
+		{
+			buf2->len = 0;
+		}
+		else
+		{
+			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
+			return;
+		}
+
+		buf2->len = 0;
+		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data), UART_WAIT_FOR_RX);
+
+		break;
+
+	case UART_RX_BUF_REQUEST:
+		buf2 = k_malloc(sizeof(*buf2));
+		buf2->len = 0;
+		uart_rx_buf_rsp(uart_2, buf2->data, sizeof(buf2->data));
+		break;
+
+	case UART_RX_BUF_RELEASED:
+
+		buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t, data);
+		if (buf2->len > 0)
+		{
+			//blink(LED3, 2);
+
+			//k_fifo_put(&fifo_uart2_rx_data, buf2);
+			k_free(buf2);
+		}
+
+		break;
+	}
+}
+
+
+static void uart_cb_2_ok(const struct device *dev, struct uart_event *evt, void *user_data)
+{
+
+	ARG_UNUSED(dev);
+	static bool disable_req;
+	struct uart_data_t *buf2;
+	uint8_t i = 0;
+	switch (evt->type)
+	{
+
+	case UART_RX_RDY:
+		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
+		buf2->len += evt->data.rx.len;
+		 //blink(LED3,2);
+       
 		// CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal)
 		if (evt->data.rx.buf[buf2->len - 1] == 0x0A)
 		{
@@ -393,7 +484,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t, data);
 		if (buf2->len > 0)
 		{
-			blink(LED3, 2);
+			//blink(LED3, 2);
 
 			k_fifo_put(&fifo_uart2_rx_data, buf2);
 			k_free(buf2);
@@ -421,8 +512,7 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 			return;
 		}
 
-		if (aborted_buf)
-		{
+		if (aborted_buf){
 			buf = CONTAINER_OF(aborted_buf, struct uart_data_t, data);
 			aborted_buf = NULL;
 			aborted_len = 0;
@@ -1304,13 +1394,13 @@ void main(void)
 		error();
 	}
 
-	buf_extra = k_malloc(sizeof(*buf_extra));
+	//buf_extra = k_malloc(sizeof(*buf_extra));
 
-	err = uart_2_init();
-	if (err)
-	{
-		error();
-	}
+	//err = uart_2_init();
+	//if (err)
+	//{
+	//	error();
+	//}
 
 	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED))
 	{
@@ -1365,6 +1455,14 @@ void main(void)
 
 	k_msleep(300);
 	flash_init();
+
+
+    err = uart_2_init();
+	if (err)
+	{
+		error();
+	}
+    
 
 	for (;;)
 	{
@@ -1532,16 +1630,18 @@ void adc_thread(void)
 
 void gnss_write_thread(void)
 {
-
     uint8_t debug = ON;
+	uint8_t value;
 	uint32_t i = 0, j = 1, k = 0, h = 0, g = 0, index = 0, bfcnt = 0;
-
 	uint64_t time = k_uptime_get();
 	uint8_t state = 0, pkt_init = 0;
-
 	static uint8_t buffer[BUFF_SIZE];
 
-    const char nmea_id[10] = "$GPGGA";
+    //http://aprs.gids.nl/nmea/     sentences descriptions
+    //const char nmea_id[10] = "$GPGGA"; //capture this sentence
+    const char nmea_id[10] = "$GPRMC"; //capture this sentence
+	
+
     char *field[20];
     char *ret;
     char *token;
@@ -1556,8 +1656,6 @@ void gnss_write_thread(void)
 	//
 	for (;;)
 	{
-		/* Wait indefinitely for data  */
-		
 		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
 		k_fifo_init(&fifo_uart2_rx_data);
 
@@ -1567,7 +1665,7 @@ void gnss_write_thread(void)
 
 			i = 0;
 			index = 0;
-			
+			blink(LED4,2);
            
 			while (i < k && pkt_init == 0)
 			{
@@ -1603,37 +1701,28 @@ void gnss_write_thread(void)
 				i++;
 			}
 
-            
-
 			if (state == 6 && pkt_init == 0)
 			{
 				printf("BEGIN:\n");
 				while (index < k)
 				{
-					//if(debug)printf("%c", buf2a->data[index]);
+					//printf("%c", buf2a->data[index]);
 					if (buf2a->data[index]!=0x0D) {
 						buffer[bfcnt] = buf2a->data[index];
 						bfcnt++;
 					}
 					index++;
 				}
-				
 				pkt_init=1;
 			}
-
 		}
 
 		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
-		//k_fifo_init(&fifo_uart2_rx_data);
-
 		if (buf2a->len > 0)
 		{
-
-
 			if ((pkt_init >= 1) && (bfcnt < BUFF_SIZE)  )
 			{
 				index = 0;
-				
 				while ((index < k)  && (bfcnt < BUFF_SIZE))
 				{
 					if (buf2a->data[index]!=0x0D) {
@@ -1648,22 +1737,34 @@ void gnss_write_thread(void)
 			if (bfcnt >= BUFF_SIZE - 1)
 			{
                 index = 0;
-				
                 while(index < bfcnt ){
 					//printf("%c",buffer[index]);
 				   	index++;
 				}
-
    				ret = strstr(buffer, nmea_id);
    				//printf("The substring is: %s\n", ret);
    				token = strtok(ret, marker);
    				//printf("%s\n", token );
    				i=parse_comma_delimited_str(token, field, 20);
-				//if (i==14)debug_print_fields(i,field);
-				if (i==14){
-				  printf("TimeStamp  :%s\r\n",field[1]);	
-                  printf("Latitude  N:%s\r\n",field[2]);
-                  printf("Longitude E:%s\r\n",field[4]);
+                //debug_print_fields(i,field);
+				
+				if (i==12){
+				  printf("GPS Fixed  :%s\r\n",field[2]); //(0=invalid; 1=GPS fix; 2=Diff. GPS fix)
+				  
+				  position.gps_fixed=*field[2]-0x40; //char A=0x41 - 0x40 = 1
+				  //printf("inteiro %d\n",position.gps_fixed);
+				  if (position.gps_fixed==1){  
+				   printf("TimeStamp  :%s\r\n",field[1]);
+				   printf("Date       :%s\r\n",field[9]);
+                   printf("Latitude  N:%s\r\n",field[3]);
+                   printf("Longitude E:%s\r\n",field[5]);
+                   
+
+				   position.latitude=atof(field[3]);
+				   position.longitude=atof(field[5]);
+				   position.timestamp=field[1];
+	
+				  }
 			    }
 				index = 0;
 				pkt_init = 0;
@@ -1672,7 +1773,6 @@ void gnss_write_thread(void)
 				while (index < BUFF_SIZE)buffer[index++] = 0x20;//space
 				index=0;
 			}
-
 			// printf("j:%d\n",j);
 			j++;
 		}

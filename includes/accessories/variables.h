@@ -99,8 +99,9 @@ typedef struct _UplinkMessage_ {
 
 typedef struct _Gnss_ { 
     int32_t timestamp; 
-    int32_t latitude; 
-    int32_t longitude; 
+    float latitude; 
+    float longitude;
+    uint8_t  gps_fixed;  
 } Gnss;
 
 typedef struct _Analog_ { 
