@@ -1675,7 +1675,7 @@ void gnss_write_thread(void)
 				  position.gps_fixed=*field[2]-0x40; //char A=0x41 - 0x40 = 1
 				  //printf("inteiro %d\n",position.gps_fixed);
 				  if (position.gps_fixed==1){  
-                   printf("GPS Fixed  :Yes\n");
+                   //printf("GPS Fixed  :Yes\n");
 				   //printf("Time       :%s\r\n",field[1]);
 				   //printf("Date       :%s\r\n",field[9]);
                    //printf("Latitude  N:%s\r\n",field[3]);
@@ -1683,7 +1683,7 @@ void gnss_write_thread(void)
 				   position.latitude=atof(field[3]);
 				   position.longitude=atof(field[5]);
 				   fill_date(field[1],field[9]);
-				  }else printf("GPS Fixed  :No\n");
+				  }
 			    }
 				index = 0;
 				pkt_init = 0;

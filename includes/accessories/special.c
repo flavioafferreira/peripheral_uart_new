@@ -146,7 +146,7 @@ uint64_t time_stamp_function(void) {
     //        position.t.tm_hour,position.t.tm_min,position.t.tm_sec );
     //printf("seconds since the Epoch: %ld\n", (long) t_of_day);
 
-    if (position.gps_fixed==0){t_of_day=k_uptime_get()/1000;}
+    if (position.gps_fixed !=1 ){t_of_day=k_uptime_get()/1000;}
 
     return t_of_day;
 }
@@ -215,7 +215,9 @@ void print_current_position_cb(uint32_t pos){
  
     printf("\n\n####Position %d #####\n",pos);
 
-    printf("GNSS Position Lat=%f Long=%f TimeStamp=%d \n",
+    if (position.gps_fixed==1) printf("GPS Fixed  :Yes\n");
+      else printf("GPS Fixed  :No\n");
+    printf("GNSS Position Lat=%f Long=%f UTC Epoch Unix Timestamp=%d \n",
       C_Buffer[pos].gnss_module.latitude,
       C_Buffer[pos].gnss_module.longitude,
       C_Buffer[pos].gnss_module.timestamp);
@@ -224,16 +226,14 @@ void print_current_position_cb(uint32_t pos){
     val_mv = C_Buffer[pos].analog.value;
     adc_raw_to_millivolts_dt(&adc_channels[ANALOG_SENSOR],&val_mv);
  
-    printf("Analog  TimeStamp=%d Value=%d  %"PRId32"mV \n",
-      C_Buffer[pos].analog.timestamp,
+    printf("Analog  Value=%d  %"PRId32"mV \n",
       C_Buffer[pos].analog.value,
       val_mv);
     
     int i=0;
     while (i<3){
-      printf("NTC %d TimeStamp=%d Value=%d %3.1f C\n",
-      i,
-      C_Buffer[pos].ntc[i].timestamp,
+      printf("NTC %d Value=%d %3.1f C\n",
+      i,      
       C_Buffer[pos].ntc[i].value,
       ntc_temperature(C_Buffer[pos].ntc[i].value,(i+1)));
       i++;
@@ -241,9 +241,8 @@ void print_current_position_cb(uint32_t pos){
 
     i=0;
     while (i<2){
-      printf("Digital%d  TimeStamp=%d Value=%d\n",
-      i,
-      C_Buffer[pos].digital[i].timestamp,
+      printf("Digital%d  Value=%d\n",
+      i,      
       C_Buffer[pos].digital[i].value);
       i++;
     }
