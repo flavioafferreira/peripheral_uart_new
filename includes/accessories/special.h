@@ -29,3 +29,5 @@ int parse_comma_delimited_str(char *string, char **fields, int max_fields);
 int debug_print_fields(int numfields, char **fields);
 int SetTime(char *date, char *time);
 void gps_main(uint8_t *buffer,uint32_t nbytes);
+void fill_date(uint8_t *field_time,uint8_t *field_date );
+void latitude_time_print(void);

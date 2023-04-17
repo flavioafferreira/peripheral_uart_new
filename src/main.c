@@ -349,36 +349,30 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	case UART_RX_RDY:
 		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
 		buf2->len += evt->data.rx.len;
-		 //blink(LED3,2);
-
-
-
+	
+	   //START WITH $ CHARACTER
         if(buf2->data[buf2->len - 1]==0x24  && buff_marker==0){
 			buf_extra = k_malloc(sizeof(*buf_extra));
 			buff_extra_index=0;
 			buff_marker=1;
 			blink(LED3,2);
 		}
-
-    
-
+   
+       //STOP WITH 0X0A
         if(buff_marker==1 && (buff_extra_index<(sizeof(*buf2)-1)) ){
 		    buf_extra->data[buff_extra_index++]=buf2->data[buf2->len - 1];
 			if(buf2->data[buf2->len - 1]==0x0A){
 			   buf_extra->data[buff_extra_index++] = 0x00;
 			   buf_extra->len = buff_extra_index;
 			   if(buf_extra->len>0) {
-				 k_fifo_put(&fifo_uart2_rx_data, buf_extra);
+				 k_fifo_put(&fifo_uart2_rx_data, buf_extra); // TRANSFER TO FIFO
 				 k_free(buf_extra);
 			   }
 			   buff_marker=0;
 			   blink(LED4,2);
 			}
-
-    
 		} 
- 
-		
+ 		
 		break;
 
 	case UART_RX_DISABLED:
@@ -411,9 +405,6 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t, data);
 		if (buf2->len > 0)
 		{
-			//blink(LED3, 2);
-
-			//k_fifo_put(&fifo_uart2_rx_data, buf2);
 			k_free(buf2);
 		}
 
@@ -421,78 +412,6 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 	}
 }
 
-
-static void uart_cb_2_ok(const struct device *dev, struct uart_event *evt, void *user_data)
-{
-
-	ARG_UNUSED(dev);
-	static bool disable_req;
-	struct uart_data_t *buf2;
-	uint8_t i = 0;
-	switch (evt->type)
-	{
-
-	case UART_RX_RDY:
-		buf2 = CONTAINER_OF(evt->data.rx.buf, struct uart_data_t, data);
-		buf2->len += evt->data.rx.len;
-		 //blink(LED3,2);
-       
-		// CR = Carriage Return ( \r , 0x0D in hexadecimal, 13 in decimal)
-		if (evt->data.rx.buf[buf2->len - 1] == 0x0A)
-		{
-
-			//i = 0;
-			//while (i < buf2->len - 1)
-			//{
-			//	buf_extra->data[i] = buf2->data[i];
-			//	i++;
-			//}
-			//buf_extra->len = buf2->len;
-
-			// uart_rx_disable(uart_2);
-			// blink(LED4,2);
-		}
-		break;
-
-	case UART_RX_DISABLED:
-
-		// blink(LED4,4);
-		buf2 = k_malloc(sizeof(*buf2)); // THE SIZE IS 92 BYTES
-		if (buf2)
-		{
-			buf2->len = 0;
-		}
-		else
-		{
-			k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
-			return;
-		}
-
-		buf2->len = 0;
-		uart_rx_enable(uart_2, buf2->data, sizeof(buf2->data), UART_WAIT_FOR_RX);
-
-		break;
-
-	case UART_RX_BUF_REQUEST:
-		buf2 = k_malloc(sizeof(*buf2));
-		buf2->len = 0;
-		uart_rx_buf_rsp(uart_2, buf2->data, sizeof(buf2->data));
-		break;
-
-	case UART_RX_BUF_RELEASED:
-
-		buf2 = CONTAINER_OF(evt->data.rx_buf.buf, struct uart_data_t, data);
-		if (buf2->len > 0)
-		{
-			//blink(LED3, 2);
-
-			k_fifo_put(&fifo_uart2_rx_data, buf2);
-			k_free(buf2);
-		}
-
-		break;
-	}
-}
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
 {
@@ -1642,11 +1561,13 @@ void gnss_write_thread(void)
     const char nmea_id[10] = "$GPRMC"; //capture this sentence
 	
 
-    char *field[20];
+    static char *field[20];
     char *ret;
     char *token;
     char marker[2]="\n";
     //marker[0]=0x0d;
+
+	uint8_t part[2];
 
 	while (i < BUFF_SIZE)buffer[i++] = 0x20;//space
 	i = 0;
@@ -1703,7 +1624,7 @@ void gnss_write_thread(void)
 
 			if (state == 6 && pkt_init == 0)
 			{
-				printf("BEGIN:\n");
+				//printf("BEGIN:\n");
 				while (index < k)
 				{
 					//printf("%c", buf2a->data[index]);
@@ -1749,22 +1670,20 @@ void gnss_write_thread(void)
                 //debug_print_fields(i,field);
 				
 				if (i==12){
-				  printf("GPS Fixed  :%s\r\n",field[2]); //(0=invalid; 1=GPS fix; 2=Diff. GPS fix)
+				  //printf("\nGPS Fixed  :%s\r\n",field[2]); //(0=invalid; 1=GPS fix; 2=Diff. GPS fix)
 				  
 				  position.gps_fixed=*field[2]-0x40; //char A=0x41 - 0x40 = 1
 				  //printf("inteiro %d\n",position.gps_fixed);
 				  if (position.gps_fixed==1){  
-				   printf("TimeStamp  :%s\r\n",field[1]);
-				   printf("Date       :%s\r\n",field[9]);
-                   printf("Latitude  N:%s\r\n",field[3]);
-                   printf("Longitude E:%s\r\n",field[5]);
-                   
-
+                   printf("GPS Fixed  :Yes\n");
+				   //printf("Time       :%s\r\n",field[1]);
+				   //printf("Date       :%s\r\n",field[9]);
+                   //printf("Latitude  N:%s\r\n",field[3]);
+                   //printf("Longitude E:%s\r\n",field[5]);
 				   position.latitude=atof(field[3]);
 				   position.longitude=atof(field[5]);
-				   position.timestamp=field[1];
-	
-				  }
+				   fill_date(field[1],field[9]);
+				  }else printf("GPS Fixed  :No\n");
 			    }
 				index = 0;
 				pkt_init = 0;

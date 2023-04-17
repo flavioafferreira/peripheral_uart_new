@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <time.h>
 
 
 #include "includes/Protobuf/pb.h"
@@ -97,11 +98,14 @@ typedef struct _UplinkMessage_ {
 // and send the Protobuf. The Protobuf requires different size of fields
 // Because of this, was created two different structures. 
 
+
+
 typedef struct _Gnss_ { 
     int32_t timestamp; 
     float latitude; 
     float longitude;
-    uint8_t  gps_fixed;  
+    uint8_t  gps_fixed; 
+    struct tm t;
 } Gnss;
 
 typedef struct _Analog_ { 

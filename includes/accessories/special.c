@@ -81,16 +81,83 @@ void flash_button2_counter(void){
 	}	
 }
 
+void fill_date(uint8_t *field_time,uint8_t *field_date ){
+
+	         uint8_t part[2];
+				   //day
+				   part[0]=field_date[0];
+           part[1]=field_date[1];
+           position.t.tm_mday=atoi(part);
+				   //month
+				   part[0]=field_date[2];
+           part[1]=field_date[3];
+				   position.t.tm_mon=(atoi(part)-1); 	// Month, where 0 = jan
+				   //year
+				   part[0]=field_date[4];
+           part[1]=field_date[5];
+				   position.t.tm_year=atoi(part);	
+                  
+				   //hour
+				   part[0]=field_time[0];
+           part[1]=field_time[1];
+				   position.t.tm_hour=atoi(part);	
+				   //min
+				   part[0]=field_time[2];
+           part[1]=field_time[3];
+				   position.t.tm_min=atoi(part);	
+				   //sec
+				   part[0]=field_time[4];
+           part[1]=field_time[5];
+				   position.t.tm_sec=atoi(part);	
+           //latitude_time_print();				   				   
+           
+}
+
+void latitude_time_print(void){
+    printf("TimeStamp  :%02d/%02d/%02d %02d:%02d:%02d \r\n",
+				  position.t.tm_mday,
+					(position.t.tm_mon+1),
+					position.t.tm_year,
+					position.t.tm_hour,
+					position.t.tm_min,
+					position.t.tm_sec );
+
+    printf("Latitude  N:%s\r\n",position.latitude);
+    printf("Longitude E:%s\r\n",position.longitude);
+
+}
+
+
+
+uint64_t time_stamp_function(void) {
+    struct tm t;
+    time_t t_of_day;
+  
+    t.tm_year = (2000+position.t.tm_year)-1900;  // Year - 1900
+    t.tm_mon = position.t.tm_mon;         // Month, where 0 = jan
+    t.tm_mday = position.t.tm_mday;       // Day of the month
+    t.tm_hour = position.t.tm_hour;
+    t.tm_min = position.t.tm_min;
+    t.tm_sec = position.t.tm_sec;
+    t.tm_isdst = -1;        // Is DST on? 1 = yes, 0 = no, -1 = unknown
+    t_of_day = mktime(&t);
+    //printf("TimeStamp UTC  :%02d/%02d/%02d %02d:%02d:%02d \r\n",
+	  //			  position.t.tm_mday,position.t.tm_mon,position.t.tm_year,
+    //        position.t.tm_hour,position.t.tm_min,position.t.tm_sec );
+    //printf("seconds since the Epoch: %ld\n", (long) t_of_day);
+
+    if (position.gps_fixed==0){t_of_day=k_uptime_get()/1000;}
+
+    return t_of_day;
+}
 
 void time_print (void){
  
     struct tm  *ts;
     char       buf[80];
-    
-    uint64_t actual_time_seconds = k_uptime_get()/1000;
-    
+        
     // Get current time
-    ts = gmtime(actual_time_seconds);
+    ts = gmtime(time_stamp_function());
 
    
 
@@ -101,19 +168,6 @@ void time_print (void){
 
 }
 
-
-
-uint32_t time_stamp_function(void){
-
-  // needs to configure the Zephyr date/time using some source
-  uint32_t time_st=0;
-  uint32_t base_january_2022 =1640995200;
-  uint64_t actual_time_seconds = k_uptime_get()/1000;
-
-  time_st = base_january_2022 + actual_time_seconds;
-  
-  return time_st;
-}
 
 Gnss values_of_gnss_module(void){
   Gnss gnss_return_value;
