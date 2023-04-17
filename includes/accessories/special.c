@@ -212,11 +212,36 @@ Digital values_of_digital_sensor(uint8_t sensor_number){
 // ACCESS THE CURRENT POSITION OF CIRCULAR BUFFER
 void print_current_position_cb(uint32_t pos){
    int32_t val_mv;
- 
+   char buf_lati[14];
+   char buf_long[14];
+
+
+   uint8_t i=0;
+
+
     printf("\n\n####Position %d #####\n",pos);
 
     if (position.gps_fixed==1) printf("GPS Fixed  :Yes\n");
       else printf("GPS Fixed  :No\n");
+
+    
+    sprintf(buf_lati, "%f", C_Buffer[pos].gnss_module.latitude);
+    sprintf(buf_long, "%f", C_Buffer[pos].gnss_module.longitude);
+
+    printf("https://www.google.com/maps/place/%c%c ",buf_lati[0],buf_lati[1]);
+    i=2;
+    while (buf_lati[i]){buf_lati[i-2]=buf_lati[i];i++;}
+    buf_lati[i]=0x00;
+    printf("%s,",buf_lati);
+    
+
+    printf("%c%c ",buf_long[0],buf_long[1]);    
+    i=2;
+    while (buf_long[i]){buf_long[i-2]=buf_long[i];i++;}
+    buf_long[i]=0x00;
+    printf("%s \n",buf_long);
+    
+
     printf("GNSS Position Lat=%f Long=%f UTC Epoch Unix Timestamp=%d \n",
       C_Buffer[pos].gnss_module.latitude,
       C_Buffer[pos].gnss_module.longitude,
@@ -230,7 +255,7 @@ void print_current_position_cb(uint32_t pos){
       C_Buffer[pos].analog.value,
       val_mv);
     
-    int i=0;
+    i=0;
     while (i<3){
       printf("NTC %d Value=%d %3.1f C\n",
       i,      

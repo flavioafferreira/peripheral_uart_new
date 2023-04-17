@@ -65,10 +65,6 @@
 #include "ubxlib.h"
 #include "u_cfg_app_platform_specific.h"
 
-
-// uGnssTransportHandle_t transportHandle;
-// uDeviceHandle_t gnssHandle = NULL;
-
 #define LOG_MODULE_NAME peripheral_uart
 LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 
@@ -168,9 +164,6 @@ static const struct gpio_dt_spec pin_test_led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpi
 #define CON_STATUS_LED LED1
 #define RUN_STATUS_LED LED2
 
-// #define ON  1
-// #define OFF 0
-
 // MUTEX DEFINE
 struct k_mutex ad_ready;
 
@@ -187,10 +180,6 @@ struct adc_sequence sequence = {
 	.buffer_size = sizeof(buf_adc),
 };
 
-//#if !DT_NODE_EXISTS(DT_PATH(zephyr_user)) || \
-//	!DT_NODE_HAS_PROP(DT_PATH(zephyr_user), io_channels)
-// #error "No suitable devicetree overlay specified"
-// #endif
 
 #define DT_SPEC_AND_COMMA(node_id, prop, idx) ADC_DT_SPEC_GET_BY_IDX(node_id, idx),
 
@@ -234,8 +223,6 @@ int64_t time_stamp_end;
 
 //gps
 Gnss position;
-             
-				  
 
 void turn_off_all_leds(void);
 
@@ -303,8 +290,6 @@ static const struct device *const async_adapter_2;
 
 #endif
 
-
-
 // UART
 
 void uart2_tx(uint8_t Name[])
@@ -334,7 +319,6 @@ void blink(struct gpio_dt_spec *led, uint8_t times)
 		i++;
 	}
 }
-
 
 static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *user_data)
 {
@@ -411,7 +395,6 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 		break;
 	}
 }
-
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
 {
@@ -1313,13 +1296,6 @@ void main(void)
 		error();
 	}
 
-	//buf_extra = k_malloc(sizeof(*buf_extra));
-
-	//err = uart_2_init();
-	//if (err)
-	//{
-	//	error();
-	//}
 
 	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED))
 	{
@@ -1426,13 +1402,11 @@ void shoot_minute_save_thread(void)
 				h = 0;
 			} // only up to 23:59:59h
 			  // START RUN THE MINUTE ROUTINE
-			printk("LOG Circular Buffer hh:mm:ss at %02d:%02d:%02d\n", h, m, s);
+			printk("LOG Circular Buffer\n");
 
 			feed_circular_buffer();
 			print_current_position_cb(C_Buffer_Current_Position);
 			printk(" \n");
-
-			//
 		}
 	}
 }
@@ -1683,7 +1657,7 @@ void gnss_write_thread(void)
 				   position.latitude=atof(field[3]);
 				   position.longitude=atof(field[5]);
 				   fill_date(field[1],field[9]);
-				  }
+				  }else printf("Not Fixed yet\n");
 			    }
 				index = 0;
 				pkt_init = 0;
@@ -1697,7 +1671,6 @@ void gnss_write_thread(void)
 		}
 	}
 }
-
 
 // THREADS START
 
