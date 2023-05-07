@@ -21,6 +21,7 @@
 		dg3 = &dig3;
 		dg4 = &dig4;
 		external-mx25 = &mx25r64;
+		lora = &lora0;
 	
 	};
 
@@ -213,3 +214,19 @@
 	
 };
 
+&spi4 {
+    cs-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+    lora0: sx1276@0 {
+		        compatible = "semtech,sx1276";
+		        reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+		        dio-gpios = 
+                 <&gpio1 11 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>, //DIO-0
+                 <&gpio1 12 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>; //DIO-1
+                 //<&gpio1 7  (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>;  //DIO-2
+		        power-amplifier-output = "pa-boost";
+		        reg = <0>;
+		        spi-max-frequency = <1000000>;
+		        label = "sx1276";
+          };
+
+};

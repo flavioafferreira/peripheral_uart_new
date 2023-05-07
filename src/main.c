@@ -54,6 +54,13 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/printk.h>
 
+
+#include <zephyr/lorawan/lorawan.h>
+#include <zephyr/drivers/lora.h>
+#include <zephyr/random/rand32.h>
+
+
+
 // ublox module gnss
 // https://github.com/u-blox/ubxlib
 // https://github.com/u-blox/ubxlib/tree/master/gnss  - examples
@@ -289,6 +296,63 @@ static const struct device *const async_adapter;
 static const struct device *const async_adapter_2;
 
 #endif
+
+
+//LORAWAN 
+#define DEFAULT_RADIO_NODE DT_NODELABEL(lora0)
+BUILD_ASSERT(DT_NODE_HAS_STATUS(DEFAULT_RADIO_NODE, okay), "No default LoRa radio specified in DT");
+#define DEFAULT_RADIO DT_LABEL(DEFAULT_RADIO_NODE)
+
+/* Customize based on network configuration */
+#define LORAWAN_DEV_EUI			{0x70, 0xB3, 0xD5, 0x7E, 0xD8, 0x00, 0x13, 0x44} //LITTLE ENDIAN  msb
+#define LORAWAN_JOIN_EUI        {0x60, 0x81, 0xF9, 0x62, 0x41, 0x65, 0x5D, 0x0B}
+#define LORAWAN_APP_KEY	        {0x10, 0xF4, 0xCD, 0x51, 0x20, 0x52, 0x7A, 0x9E, 0x14, 0x75, 0x0A, 0xA4, 0x7F, 0x54, 0x46, 0x0B}
+#define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
+#define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
+#define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
+#define DELAY K_MSEC(10000)
+#define MAX_DATA_LEN 10
+char data_test[] =  { 0X00 , 0X01 ,
+                      0X00 , 0X02 , 
+					  0X00 , 0X00 , 0X00 , 0X01 ,
+					  0X00 , 0X00 , 0X00 , 0X01 };
+
+
+const struct device *lora_dev;
+struct lorawan_join_config join_cfg;
+
+
+
+uint8_t dev_eui[] = LORAWAN_DEV_EUI_HELIUM;
+uint8_t join_eui[] = LORAWAN_JOIN_EUI_HELIUM;
+uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
+
+
+static void dl_callback(uint8_t port, bool data_pending,
+			int16_t rssi, int8_t snr,
+			uint8_t len, const uint8_t *data)
+{
+	LOG_INF("Port %d, Pending %d, RSSI %ddB, SNR %ddBm", port, data_pending, rssi, snr);
+	if (data) {
+		LOG_HEXDUMP_INF(data, len, "Payload: ");
+	}
+}
+
+struct lorawan_downlink_cb downlink_cb = {
+	.port = LW_RECV_PORT_ANY,
+	.cb = dl_callback
+};
+
+
+static void lorwan_datarate_changed(enum lorawan_datarate dr)
+{
+	uint8_t unused, max_size;
+
+	lorawan_get_payload_sizes(&unused, &max_size);
+	LOG_INF("New Datarate: DR_%d, Max Payload %d", dr, max_size);
+}
+
+
 
 // UART
 
@@ -1247,6 +1311,8 @@ void led_on_off(struct gpio_dt_spec led, uint8_t value)
 	gpio_pin_set_dt(&led, value);
 }
 
+
+
 // CONFIGURE ADC
 
 void configure_adc(void)
@@ -1369,6 +1435,118 @@ void main(void)
 }
 
 // THREADS
+
+void lorawan_thread(void)
+{
+
+    uint64_t i=0,j=0;
+	int ret;
+
+    lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
+
+	if (!device_is_ready(lora_dev)) {
+		printk("%s: device not ready.\n\n", lora_dev->name);
+		return;
+	}
+
+#if defined(CONFIG_LORAMAC_REGION_EU868)
+	ret = lorawan_set_region(LORAWAN_REGION_EU868);
+	if (ret < 0) {
+		printk("lorawan_set_region failed: %d\n\n", ret);
+		return;
+	}
+#endif
+  
+
+ret = lorawan_start();
+	if (ret < 0) {
+		printk("lorawan_start failed: %d\n\n", ret);
+		return;
+	}
+
+    k_sleep(K_MSEC(500));//500ms
+
+	lorawan_enable_adr( true );
+
+	lorawan_register_downlink_callback(&downlink_cb);
+	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
+
+
+    uint32_t random = sys_rand32_get();
+    uint16_t dev_nonce = random & 0x0000FFFF;
+
+	join_cfg.mode = LORAWAN_CLASS_A; //was A
+	join_cfg.dev_eui = dev_eui;
+	join_cfg.otaa.join_eui = join_eui;
+	join_cfg.otaa.app_key = app_key;
+	join_cfg.otaa.nwk_key = app_key;
+    join_cfg.otaa.dev_nonce = dev_nonce;
+
+	ret=-1;
+    while(ret<0){
+		 printk("Started\n\n");
+	
+ 
+   	printk("Joining network over OTAA\n\n");
+   
+
+   	do {
+    	ret = lorawan_join(&join_cfg);
+    	if (ret < 0) {
+	    	printk("lorawan_join_network failed: %d\n\n", ret);
+            printk("Sleeping for 10s to try again to join network.\n\n");
+            k_sleep(K_MSEC(10000));
+
+        if (ret == -116  || ret == -111  ){
+           lorawan_start();
+		   lorawan_enable_adr( true );
+            lorawan_register_downlink_callback(&downlink_cb);
+			lorawan_register_dr_changed_callback(lorwan_datarate_changed);
+     		random = sys_rand32_get();
+     		dev_nonce = random & 0x0000FFFF;
+			join_cfg.mode = LORAWAN_CLASS_A; //was A
+			join_cfg.dev_eui = dev_eui;
+			join_cfg.otaa.join_eui = join_eui;
+			join_cfg.otaa.app_key = app_key;
+			join_cfg.otaa.nwk_key = app_key;
+    		join_cfg.otaa.dev_nonce = dev_nonce;
+		    k_sleep(K_MSEC(10000));
+		}
+
+	    }
+    } while ( ret < 0 );
+
+	  k_sleep(K_MSEC(100));//500ms
+
+     }
+    
+	printk("Sending data...\n\n");
+	
+	while (1) {
+		ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_CONFIRMED);
+		if (ret == -EAGAIN) {
+			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
+			k_sleep(DELAY);
+			continue;
+		}
+
+		if (ret < 0) {
+			printk("lorawan_send confirm failed: %d\n\n", ret);
+			//return;
+		}else{
+
+		   printk("Data sent! %lld \n\n",i);
+		   i++;
+		}
+   
+		j=0;
+		while (j<10){
+		  k_sleep(DELAY);
+		  j++;
+		}
+		
+	}
+}
 
 void shoot_minute_save_thread(void)
 {
@@ -1682,3 +1860,4 @@ K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL,
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 8196, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);

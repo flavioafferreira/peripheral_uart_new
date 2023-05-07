@@ -1249,6 +1249,7 @@ zephyr_udc0: &usbd {
   dg3 = &dig3;
   dg4 = &dig4;
   external-mx25 = &mx25r64;
+  lora = &lora0;
 
  };
 
@@ -1287,7 +1288,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 71 "c:/Nordic/peripheral_uart/app.overlay"
+# 72 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1430,6 +1431,23 @@ zephyr_udc0: &usbd {
     pinctrl-1 = <&uart2_sleep>;
     pinctrl-names = "default", "sleep";
 
+
+};
+
+&spi4 {
+    cs-gpios = <&gpio0 28 (1 << 0)>;
+    lora0: sx1276@0 {
+          compatible = "semtech,sx1276";
+          reset-gpios = <&gpio1 10 (1 << 0)>;
+          dio-gpios =
+                 <&gpio1 11 ((1 << 5) | (0 << 0))>,
+                 <&gpio1 12 ((1 << 5) | (0 << 0))>;
+
+          power-amplifier-output = "pa-boost";
+          reg = <0>;
+          spi-max-frequency = <1000000>;
+          label = "sx1276";
+          };
 
 };
 # 0 "<command-line>" 2
