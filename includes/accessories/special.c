@@ -606,6 +606,9 @@ int parse_comma_delimited_str(char *string, char **fields, int max_fields)
 
 void lorawan_tx_data(void){
   #define DELAY K_MSEC(10000)
+  #define DELAY_RTY K_MSEC(3000)
+  #define RETRY 10
+
   char data_test[] =  { 0X00 , 0X00 , 0X00 , 0X00 ,
                         0X00 , 0X00 , 0X00 , 0X00 , 
 					              0X00 , 0X00 , 0X00 , 0X00 ,
@@ -616,7 +619,7 @@ void lorawan_tx_data(void){
                         0X00 , 0X00 ,
                         0X00 , 0X00 
                       };
-  int ret;
+  int ret=0,nt=0;
   uint64_t j=0;
 
   uint32_t pos=C_Buffer_Current_Position;
@@ -669,7 +672,7 @@ void lorawan_tx_data(void){
   printk("\n");
 
   
-
+  
 	ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
 		if (ret == -EAGAIN) {
 			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
@@ -679,14 +682,21 @@ void lorawan_tx_data(void){
 
 		if (ret < 0) {
 			printk("lorawan_send confirm failed -trying again : %d\n\n", ret);
-      ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
-      if (ret==0){printk("Data sent\n");}else{printk("Data send failed\n");}
+
+      while(ret<0 && nt<=RETRY){ 
+       ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
+       nt++;
+       if (ret==0){
+        printk("Data sent\n");
+        }else{printk("Data send failed-trying again\n");
+              k_sleep(DELAY_RTY);
+            }
+      }
+      nt=0;
 			//return;
 		}else{
-
-		   printk("Data sent! %lld \n\n",j);
-		   j++;
-		}
+		        printk("Data sent!\n\n");
+		     }
 
 
 }
