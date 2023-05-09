@@ -627,9 +627,9 @@ void lorawan_tx_data(void){
   float d=C_Buffer[pos].analog.value;          //4 bytes 12
   float e=C_Buffer[pos].digital[0].value;      //4 bytes 16
   float f=C_Buffer[pos].digital[1].value;      //4 bytes 20..23
-  float g=C_Buffer[pos].ntc[0].value;          //2 bytes 24..25
-  float h=C_Buffer[pos].ntc[1].value;          //2 bytes 26..27
-  float i=C_Buffer[pos].ntc[2].value;          //2 bytes 28..29
+  uint16_t g=C_Buffer[pos].ntc[0].value;          //2 bytes 24..25
+  uint16_t h=C_Buffer[pos].ntc[1].value;          //2 bytes 26..27
+  uint16_t i=C_Buffer[pos].ntc[2].value;          //2 bytes 28..29
                                              //total 30 bytes
 
   unsigned char *ptr_lati         = (unsigned char *) &a;
