@@ -600,6 +600,10 @@ int parse_comma_delimited_str(char *string, char **fields, int max_fields)
 
 //lorawan
 // https://www.youtube.com/watch?v=M5VGos3YTpI&t=150s
+// https://playcode.io/javascript
+//https://www.exploringbinary.com/displaying-the-raw-fields-of-a-floating-point-number/
+
+
 void lorawan_tx_data(void){
   #define DELAY K_MSEC(10000)
   char data_test[] =  { 0X00 , 0X00 , 0X00 , 0X00 ,
@@ -647,16 +651,22 @@ void lorawan_tx_data(void){
      data_test[i+16] =*(ptr_digi0     + i);
      data_test[i+20] =*(ptr_digi1     + i);
   }
- for (int k = 0; k < sizeof(int16_t); k++) {
-     data_test[k+24]    =*(ptr_ntc0 + k);
-     data_test[k+26]    =*(ptr_ntc1 + k);
-     data_test[k+28]    =*(ptr_ntc2 + k);
-  }
+
+     data_test[24]    =*(ptr_ntc0 + 0); //first LSB and after MSB - little endian
+     data_test[25]    =*(ptr_ntc0 + 1); //first LSB and after MSB - little endian
+     data_test[26]    =*(ptr_ntc1 + 0); //first LSB and after MSB - little endian
+     data_test[27]    =*(ptr_ntc1 + 1); //first LSB and after MSB - little endian
+     data_test[28]    =*(ptr_ntc2 + 0); //first LSB and after MSB - little endian
+     data_test[29]    =*(ptr_ntc2 + 1); //first LSB and after MSB - little endian
+
+
+
  
+ printk("HELIUM PAYLOAD: ");
  for (int h = 0; h < sizeof(data_test); h++) {
      printk("%02X ",data_test[h]);
   }
-     printk("\n");
+  printk("\n");
 
   
 

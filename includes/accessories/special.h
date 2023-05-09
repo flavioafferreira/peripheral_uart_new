@@ -37,6 +37,7 @@ void lorawan_tx_data(void);
 /*
 
 //JAVASCRIPT DECODER FUNCTION USED IN HELIUM PLATAFORM
+// https://console.helium.com
 //PAYLOAD 38 78 8D 45 F2 43 97 44 91 B4 C8 4E 00 E0 D1 45 00 00 00 00 00 00 00 00 00 80 00 D0 00 68
 //RESULTS:
 //"entry.1359999784=4127.02880859375&entry.1873862209=1310.1185302734375&entry.81100085=1683638400&entry.393908294=6716&entry.1609835373=0&entry.732934055=0&entry.378011195=10240&entry.219951820=0&entry.1303722275=0"
@@ -74,9 +75,10 @@ function Decoder(bytes,port){
   decoded.digi0     = littleEndianBytesToFloat([bytes[16],bytes[17],bytes[18],bytes[19]]);
   decoded.digi1     = littleEndianBytesToFloat([bytes[20],bytes[21],bytes[22],bytes[23]]);
   decoded.ntc0      = littleEndianBytesToUint16([bytes[24],bytes[25]]);
-  decoded.ntc1 = littleEndianBytesToUint16((bytes[27] | (bytes[28] << 8)));
-  decoded.ntc2 = littleEndianBytesToUint16((bytes[29] | (bytes[30] << 8)));
-  
+  decoded.ntc1      = littleEndianBytesToUint16([bytes[26],bytes[27]]);
+  decoded.ntc2      = littleEndianBytesToUint16([bytes[28],bytes[29]]);
+
+
 var decodedPayload = {
     "longitude"   : decoded.longitude,
     "latitude"    : decoded.latitude,
