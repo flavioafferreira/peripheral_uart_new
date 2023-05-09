@@ -34,6 +34,12 @@
 #include <date_time.h>
 #include <zephyr/fs/nvs.h>
 
+//Lorawan
+#include <zephyr/lorawan/lorawan.h>
+#include <zephyr/drivers/lora.h>
+#include <zephyr/random/rand32.h>
+
+
 //Circular Buffer
 uint32_t C_Buffer_Free_Position=0;
 uint32_t C_Buffer_Current_Position=0;
@@ -127,8 +133,6 @@ void latitude_time_print(void){
 
 }
 
-
-
 uint64_t time_stamp_function(void) {
     struct tm t;
     time_t t_of_day;
@@ -167,7 +171,6 @@ void time_print (void){
     printk("%s\n", buf);
 
 }
-
 
 Gnss values_of_gnss_module(void){
   Gnss gnss_return_value;
@@ -320,7 +323,6 @@ void print_current_position_cb_new(uint32_t pos){
  k_free(C_Buffer);
 }
 
-
 void init_circular_buffer(void){
    C_Buffer_Free_Position=0;
 }
@@ -353,7 +355,6 @@ void feed_circular_buffer(void){
       C_Buffer_Free_Position=0;
       }
 }
-
 
 _Circular_Buffer read_memory(uint32_t Pos){
     _Circular_Buffer *buf;
@@ -402,7 +403,6 @@ void feed_alarm_circular_buffer(void){
     C_Buffer_Alarm_Free_Position++;
 }
 
-
 History_st *fill_fields_to_test(){
    static History_st msg;
    char tag[30]="10203";
@@ -436,8 +436,6 @@ History_st *fill_fields_to_test(){
    }
   return &msg;
 }
-
-
 
 buf_data send_array_dd_v0(void){
  
@@ -509,7 +507,6 @@ buf_data send_array_dd_v0(void){
     return function_return;
 }
 
-
 void test_calendar(void){
 
    uint64_t actual_time = 0;
@@ -540,7 +537,6 @@ void test_calendar(void){
   }
 
 }
-
 
 float BetaTermistor(void) {
   //USE ONLY ONCE TO CALCULATE BETA
@@ -577,7 +573,6 @@ float ntc_temperature(uint16_t conversao,uint8_t sensor_number){
   return Tc;
 }
 
-
 //gnss
 
 int debug_print_fields(int numfields, char **fields)
@@ -602,3 +597,86 @@ int parse_comma_delimited_str(char *string, char **fields, int max_fields)
 	return --i;
 }
 
+
+//lorawan
+// https://www.youtube.com/watch?v=M5VGos3YTpI&t=150s
+void lorawan_tx_data(void){
+  #define DELAY K_MSEC(10000)
+  char data_test[] =  { 0X00 , 0X00 , 0X00 , 0X00 ,
+                        0X00 , 0X00 , 0X00 , 0X00 , 
+					              0X00 , 0X00 , 0X00 , 0X00 ,
+					              0X00 , 0X00 , 0X00 , 0X00 ,
+                        0X00 , 0X00 , 0X00 , 0X00 ,
+                        0X00 , 0X00 , 0X00 , 0X00 ,
+					              0X00 , 0X00 ,
+                        0X00 , 0X00 ,
+                        0X00 , 0X00 
+                      };
+  int ret;
+  uint64_t j=0;
+
+  uint32_t pos=C_Buffer_Current_Position;
+
+  float a=C_Buffer[pos].gnss_module.latitude;  //4 bytes 0..3
+  float b=C_Buffer[pos].gnss_module.longitude; //4 bytes 4..7
+  float c=C_Buffer[pos].gnss_module.timestamp; //4 bytes 8 
+  float d=C_Buffer[pos].analog.value;          //4 bytes 12
+  float e=C_Buffer[pos].digital[0].value;      //4 bytes 16
+  float f=C_Buffer[pos].digital[1].value;      //4 bytes 20..23
+  float g=C_Buffer[pos].ntc[0].value;          //2 bytes 24..25
+  float h=C_Buffer[pos].ntc[1].value;          //2 bytes 26..27
+  float i=C_Buffer[pos].ntc[2].value;          //2 bytes 28..29
+                                             //total 30 bytes
+
+  unsigned char *ptr_lati         = (unsigned char *) &a;
+  unsigned char *ptr_long         = (unsigned char *) &b;
+  unsigned char *ptr_timestamp    = (unsigned char *) &c;
+  unsigned char *ptr_analog       = (unsigned char *) &d;
+  unsigned char *ptr_digi0        = (unsigned char *) &e;
+  unsigned char *ptr_digi1        = (unsigned char *) &f;
+  unsigned char *ptr_ntc0         = (unsigned char *) &g;
+  unsigned char *ptr_ntc1         = (unsigned char *) &h;
+  unsigned char *ptr_ntc2         = (unsigned char *) &i;
+
+  
+  for (int i = 0; i < sizeof(float); i++) {
+     data_test[i]    =*(ptr_lati      + i);
+     data_test[i+4]  =*(ptr_long      + i);
+     data_test[i+8]  =*(ptr_timestamp + i);
+     data_test[i+12] =*(ptr_analog    + i);
+     data_test[i+16] =*(ptr_digi0     + i);
+     data_test[i+20] =*(ptr_digi1     + i);
+  }
+ for (int k = 0; k < sizeof(int16_t); k++) {
+     data_test[k+24]    =*(ptr_ntc0 + k);
+     data_test[k+26]    =*(ptr_ntc1 + k);
+     data_test[k+28]    =*(ptr_ntc2 + k);
+  }
+ 
+ for (int h = 0; h < sizeof(data_test); h++) {
+     printk("%02X ",data_test[h]);
+  }
+     printk("\n");
+
+  
+
+	ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
+		if (ret == -EAGAIN) {
+			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
+			k_sleep(DELAY);
+			
+		}
+
+		if (ret < 0) {
+			printk("lorawan_send confirm failed -trying again : %d\n\n", ret);
+      ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
+      if (ret==0){printk("Data sent\n");}else{printk("Data send failed\n");}
+			//return;
+		}else{
+
+		   printk("Data sent! %lld \n\n",j);
+		   j++;
+		}
+
+
+}

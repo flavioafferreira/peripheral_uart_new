@@ -239,6 +239,8 @@ static K_SEM_DEFINE(send_proto, 0, 1);
 static K_SEM_DEFINE(save_memory, 0, 1);
 static K_SEM_DEFINE(button_test, 0, 1);
 static K_SEM_DEFINE(button_3, 0, 1);
+static K_SEM_DEFINE(lorawan_tx, 0, 1);
+
 
 // MUTEX FOR AD CONVERSION
 // K_MUTEX_DEFINE(ad_ready)
@@ -1485,9 +1487,7 @@ ret = lorawan_start();
 	ret=-1;
     while(ret<0){
 		 printk("Started\n\n");
-	
- 
-   	printk("Joining network over OTAA\n\n");
+   	     printk("Joining network over OTAA\n\n");
    
 
    	do {
@@ -1519,32 +1519,10 @@ ret = lorawan_start();
 	  k_sleep(K_MSEC(100));//500ms
 
      }
-    
-	printk("Sending data...\n\n");
-	
-	while (1) {
-		ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_CONFIRMED);
-		if (ret == -EAGAIN) {
-			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
-			k_sleep(DELAY);
-			continue;
-		}
-
-		if (ret < 0) {
-			printk("lorawan_send confirm failed: %d\n\n", ret);
-			//return;
-		}else{
-
-		   printk("Data sent! %lld \n\n",i);
-		   i++;
-		}
-   
-		j=0;
-		while (j<10){
-		  k_sleep(DELAY);
-		  j++;
-		}
 		
+	while (1) {
+		k_sem_take(&lorawan_tx, K_FOREVER);
+		lorawan_tx_data();
 	}
 }
 
@@ -1584,6 +1562,7 @@ void shoot_minute_save_thread(void)
 
 			feed_circular_buffer();
 			print_current_position_cb(C_Buffer_Current_Position);
+			k_sem_give(&lorawan_tx);
 			printk(" \n");
 		}
 	}
