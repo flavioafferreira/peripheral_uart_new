@@ -71,7 +71,9 @@ extern uint32_t button2_counter;
 void save_memory(uint32_t Pos);
 _Circular_Buffer read_memory(uint32_t Pos);
 
-
+//SEMAPHORE
+extern uint8_t lorawan_reconnect;
+extern uint32_t lorawan_reconnect_cnt;
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -604,20 +606,18 @@ int parse_comma_delimited_str(char *string, char **fields, int max_fields)
 //https://www.exploringbinary.com/displaying-the-raw-fields-of-a-floating-point-number/
 
 
-void lorawan_tx_data(void){
-  #define DELAY K_MSEC(10000)
-  #define DELAY_RTY K_MSEC(3000)
-  #define RETRY 10
 
-  char data_test[] =  { 0X00 , 0X00 , 0X00 , 0X00 ,
-                        0X00 , 0X00 , 0X00 , 0X00 , 
-					              0X00 , 0X00 , 0X00 , 0X00 ,
-					              0X00 , 0X00 , 0X00 , 0X00 ,
-                        0X00 , 0X00 , 0X00 , 0X00 ,
-                        0X00 , 0X00 , 0X00 , 0X00 ,
-					              0X00 , 0X00 ,
-                        0X00 , 0X00 ,
-                        0X00 , 0X00 
+void lorawan_tx_data(void){
+
+  char data_test[] =  { 0X00 , 0X00 , 0X00 , 0X00 , //LATITUDE
+                        0X00 , 0X00 , 0X00 , 0X00 , //LONGITUDE
+					              0X00 , 0X00 , 0X00 , 0X00 , //TIMESTAMP
+					              0X00 , 0X00 , 0X00 , 0X00 , //ANALOG
+                        0X00 ,                      //DIGITAL
+                        0X00 ,                      //DIGITAL
+					              0X00 , 0X00 ,               //NTC0
+                        0X00 , 0X00 ,               //NTC1 
+                        0X00 , 0X00                 //NTC2 
                       };
   int ret=0,nt=0;
   uint64_t j=0;
@@ -627,15 +627,15 @@ void lorawan_tx_data(void){
   float a=C_Buffer[pos].gnss_module.latitude;  //4 bytes 0..3
   float b=C_Buffer[pos].gnss_module.longitude; //4 bytes 4..7
   float c=C_Buffer[pos].gnss_module.timestamp; //4 bytes 8 
-  float d=C_Buffer[pos].analog.value;          //4 bytes 12
-  float e=C_Buffer[pos].digital[0].value;      //4 bytes 16
-  float f=C_Buffer[pos].digital[1].value;      //4 bytes 20..23
-  uint16_t g=C_Buffer[pos].ntc[0].value;          //2 bytes 24..25
-  uint16_t h=C_Buffer[pos].ntc[1].value;          //2 bytes 26..27
-  uint16_t i=C_Buffer[pos].ntc[2].value;          //2 bytes 28..29
+  float d=C_Buffer[pos].analog.value;          //4 bytes 12..17
+  uint8_t e=C_Buffer[pos].digital[0].value;      //1 byte 16
+  uint8_t f=C_Buffer[pos].digital[1].value;      //1 byte 17
+  uint16_t g=C_Buffer[pos].ntc[0].value;          //2 bytes 18..19
+  uint16_t h=C_Buffer[pos].ntc[1].value;          //2 bytes 20..21
+  uint16_t i=C_Buffer[pos].ntc[2].value;          //2 bytes 22..23
                                              //total 30 bytes
 
-  unsigned char *ptr_lati         = (unsigned char *) &a;
+  unsigned char *ptr_lati         = (unsigned char *) &a; //TAKE THE ADDRESS OF VARIABLES
   unsigned char *ptr_long         = (unsigned char *) &b;
   unsigned char *ptr_timestamp    = (unsigned char *) &c;
   unsigned char *ptr_analog       = (unsigned char *) &d;
@@ -651,16 +651,18 @@ void lorawan_tx_data(void){
      data_test[i+4]  =*(ptr_long      + i);
      data_test[i+8]  =*(ptr_timestamp + i);
      data_test[i+12] =*(ptr_analog    + i);
-     data_test[i+16] =*(ptr_digi0     + i);
-     data_test[i+20] =*(ptr_digi1     + i);
   }
 
-     data_test[24]    =*(ptr_ntc0 + 0); //first LSB and after MSB - little endian
-     data_test[25]    =*(ptr_ntc0 + 1); //first LSB and after MSB - little endian
-     data_test[26]    =*(ptr_ntc1 + 0); //first LSB and after MSB - little endian
-     data_test[27]    =*(ptr_ntc1 + 1); //first LSB and after MSB - little endian
-     data_test[28]    =*(ptr_ntc2 + 0); //first LSB and after MSB - little endian
-     data_test[29]    =*(ptr_ntc2 + 1); //first LSB and after MSB - little endian
+     data_test[16] =*(ptr_digi0);
+     data_test[17] =*(ptr_digi1);
+
+
+     data_test[18]    =*(ptr_ntc0 + 0); //first LSB and after MSB - little endian
+     data_test[19]    =*(ptr_ntc0 + 1); //first LSB and after MSB - little endian
+     data_test[20]    =*(ptr_ntc1 + 0); //first LSB and after MSB - little endian
+     data_test[21]    =*(ptr_ntc1 + 1); //first LSB and after MSB - little endian
+     data_test[22]    =*(ptr_ntc2 + 0); //first LSB and after MSB - little endian
+     data_test[23]    =*(ptr_ntc2 + 1); //first LSB and after MSB - little endian
 
 
 
@@ -669,9 +671,10 @@ void lorawan_tx_data(void){
  for (int h = 0; h < sizeof(data_test); h++) {
      printk("%02X ",data_test[h]);
   }
-  printk("\n");
+  printk("\nSending payload...\n");
 
-  
+  //extern uint8_t lorawan_reconnect;
+  //extern uint32_t lorawan_reconnect_cnt;
   
 	ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
 		if (ret == -EAGAIN) {
@@ -686,8 +689,11 @@ void lorawan_tx_data(void){
       while(ret<0 && nt<=RETRY){ 
        ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
        nt++;
+       lorawan_reconnect_cnt++;
+       if(lorawan_reconnect_cnt==LIMIT_RECONNECT_CNT){lorawan_reconnect_cnt=0;lorawan_reconnect=1;}
        if (ret==0){
         printk("Data sent\n");
+        lorawan_reconnect_cnt=0;
         }else{printk("Data send failed-trying again\n");
               k_sleep(DELAY_RTY);
             }
@@ -696,7 +702,9 @@ void lorawan_tx_data(void){
 			//return;
 		}else{
 		        printk("Data sent!\n\n");
+            lorawan_reconnect_cnt=0;
 		     }
 
 
 }
+

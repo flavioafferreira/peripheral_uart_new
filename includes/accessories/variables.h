@@ -53,6 +53,13 @@
 
 #define BUFF_SIZE 480  //BUFFER TO JOIN UART BYTES RECEIVED
 
+//LORAWAN
+#define DELAY K_MSEC(10000)
+#define DELAY_RTY K_MSEC(3000)
+#define RETRY 10
+#define LIMIT_RECONNECT_CNT 50
+
+
 //STRUCTURE FOR HISTORY
 
 typedef struct _InputValue_ { 

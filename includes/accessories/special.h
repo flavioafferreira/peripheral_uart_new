@@ -38,9 +38,10 @@ float ntc_temperature(uint16_t conversao,uint8_t sensor_number);
 
 //JAVASCRIPT DECODER FUNCTION USED IN HELIUM PLATAFORM
 // https://console.helium.com
-//PAYLOAD 38 78 8D 45 F2 43 97 44 91 B4 C8 4E 00 E0 D1 45 00 00 00 00 00 00 00 00 00 80 00 D0 00 68
+//HELIUM PAYLOAD: 38 78 8D 45 E8 43 97 44 AF B6 C8 4E 00 C0 D1 45 00 00 56 1A 24 1A 9A 19
 //RESULTS:
-//"entry.1359999784=4127.02880859375&entry.1873862209=1310.1185302734375&entry.81100085=1683638400&entry.393908294=6716&entry.1609835373=0&entry.732934055=0&entry.378011195=10240&entry.219951820=0&entry.1303722275=0"
+//"entry.1359999784=45.4504557&entry.1873862209=12.1687012&entry.81100085=2023-05-10%2008%3A36%3A16%20UTC&entry.393908294=1.475&entry.1609835373=0&entry.732934055=0&entry.378011195=25.9&entry.219951820=25.9&entry.1303722275=27.0"
+
 
 const ADC_RESOLUTION = 16383;
 const ADC_VOLTAGE_REF = 3.6; // volts
@@ -136,16 +137,16 @@ function Decoder(bytes,port){
   const voltageUc = conversao * (ADC_VOLTAGE_REF / (ADC_RESOLUTION - 1));
   decoded.analog=voltageUc.toFixed(3)
   
-  decoded.digi0     = littleEndianBytesToFloat([bytes[16],bytes[17],bytes[18],bytes[19]]);
-  decoded.digi1     = littleEndianBytesToFloat([bytes[20],bytes[21],bytes[22],bytes[23]]);
+  decoded.digi0     = bytes[16];
+  decoded.digi1     = bytes[17];
   
-  const ntc0_vl           = littleEndianBytesToUint16([bytes[24],bytes[25]]);
+  const ntc0_vl           = littleEndianBytesToUint16([bytes[18],bytes[19]]);
   decoded.ntc0      = ntc_temperature(ntc0_vl,0).toFixed(1);
   
-  const ntc1_vl           = littleEndianBytesToUint16([bytes[26],bytes[27]]);
+  const ntc1_vl           = littleEndianBytesToUint16([bytes[20],bytes[21]]);
   decoded.ntc1      = ntc_temperature(ntc1_vl,1).toFixed(1);
   
-  const ntc2_vl      = littleEndianBytesToUint16([bytes[28],bytes[29]]);
+  const ntc2_vl      = littleEndianBytesToUint16([bytes[22],bytes[23]]);
   decoded.ntc2      = ntc_temperature(ntc2_vl,2).toFixed(1);
   
 var decodedPayload = {

@@ -240,7 +240,8 @@ static K_SEM_DEFINE(save_memory, 0, 1);
 static K_SEM_DEFINE(button_test, 0, 1);
 static K_SEM_DEFINE(button_3, 0, 1);
 static K_SEM_DEFINE(lorawan_tx, 0, 1);
-
+uint8_t lorawan_reconnect=0;
+uint32_t lorawan_reconnect_cnt=0;
 
 // MUTEX FOR AD CONVERSION
 // K_MUTEX_DEFINE(ad_ready)
@@ -1451,16 +1452,16 @@ void lorawan_thread(void)
 		return;
 	}
 
-#if defined(CONFIG_LORAMAC_REGION_EU868)
+  #if defined(CONFIG_LORAMAC_REGION_EU868)
 	ret = lorawan_set_region(LORAWAN_REGION_EU868);
 	if (ret < 0) {
 		printk("lorawan_set_region failed: %d\n\n", ret);
 		return;
 	}
-#endif
+  #endif
   
 
-ret = lorawan_start();
+    ret = lorawan_start();
 	if (ret < 0) {
 		printk("lorawan_start failed: %d\n\n", ret);
 		return;
@@ -1484,22 +1485,22 @@ ret = lorawan_start();
 	join_cfg.otaa.nwk_key = app_key;
     join_cfg.otaa.dev_nonce = dev_nonce;
 
-	ret=-1;
-    while(ret<0){
+	ret=0;
+    while(1){
 		 printk("Started\n\n");
    	     printk("Joining network over OTAA\n\n");
    
 
-   	do {
+   	 do {
     	ret = lorawan_join(&join_cfg);
     	if (ret < 0) {
 	    	printk("lorawan_join_network failed: %d\n\n", ret);
             printk("Sleeping for 10s to try again to join network.\n\n");
             k_sleep(K_MSEC(10000));
 
-        if (ret == -116  || ret == -111  ){
-           lorawan_start();
-		   lorawan_enable_adr( true );
+          if (ret == -116  || ret == -111  ){
+            lorawan_start();
+		    lorawan_enable_adr( true );
             lorawan_register_downlink_callback(&downlink_cb);
 			lorawan_register_dr_changed_callback(lorwan_datarate_changed);
      		random = sys_rand32_get();
@@ -1511,19 +1512,22 @@ ret = lorawan_start();
 			join_cfg.otaa.nwk_key = app_key;
     		join_cfg.otaa.dev_nonce = dev_nonce;
 		    k_sleep(K_MSEC(10000));
-		}
+		   }
 
 	    }
-    } while ( ret < 0 );
+      } while ( ret < 0 );
+	  printk("Joined OTAA\n\n");
+	  lorawan_reconnect=0;
+      while (!lorawan_reconnect) {
+		  k_sem_take(&lorawan_tx, K_FOREVER);
+		  lorawan_tx_data();
 
-	  k_sleep(K_MSEC(100));//500ms
+	    }
+	  //k_sleep(K_MSEC(100));//500ms
 
      }
 		
-	while (1) {
-		k_sem_take(&lorawan_tx, K_FOREVER);
-		lorawan_tx_data();
-	}
+	
 }
 
 void shoot_minute_save_thread(void)
