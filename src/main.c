@@ -239,7 +239,8 @@ static K_SEM_DEFINE(send_proto, 0, 1);
 static K_SEM_DEFINE(save_memory, 0, 1);
 static K_SEM_DEFINE(button_test, 0, 1);
 static K_SEM_DEFINE(button_3, 0, 1);
-static K_SEM_DEFINE(lorawan_tx, 0, 1);
+static K_SEM_DEFINE(lorawan_tx, 0, 1); //uplink
+static K_SEM_DEFINE(lorawan_rx, 0, 1); //downlink
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
 
@@ -274,8 +275,6 @@ struct uart_data_t *buf_extra;
 uint32_t buff_extra_index=0;
 uint32_t buff_marker=0;
 
-// static struct uart_data_t *last_buf2;
-// uint8_t reserved_memory=0;
 
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 static K_FIFO_DEFINE(fifo_uart_rx_data);
@@ -309,9 +308,6 @@ BUILD_ASSERT(DT_NODE_HAS_STATUS(DEFAULT_RADIO_NODE, okay), "No default LoRa radi
 #define DEFAULT_RADIO DT_LABEL(DEFAULT_RADIO_NODE)
 
 /* Customize based on network configuration */
-#define LORAWAN_DEV_EUI			{0x70, 0xB3, 0xD5, 0x7E, 0xD8, 0x00, 0x13, 0x44} //LITTLE ENDIAN  msb
-#define LORAWAN_JOIN_EUI        {0x60, 0x81, 0xF9, 0x62, 0x41, 0x65, 0x5D, 0x0B}
-#define LORAWAN_APP_KEY	        {0x10, 0xF4, 0xCD, 0x51, 0x20, 0x52, 0x7A, 0x9E, 0x14, 0x75, 0x0A, 0xA4, 0x7F, 0x54, 0x46, 0x0B}
 #define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
 #define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
 #define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
@@ -326,8 +322,6 @@ char data_test[] =  { 0X00 , 0X01 ,
 const struct device *lora_dev;
 struct lorawan_join_config join_cfg;
 
-
-
 uint8_t dev_eui[] = LORAWAN_DEV_EUI_HELIUM;
 uint8_t join_eui[] = LORAWAN_JOIN_EUI_HELIUM;
 uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
@@ -335,36 +329,34 @@ uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
 //LORAWAN DOWNLINK FIFO
 
 static K_FIFO_DEFINE(my_fifo_downlink);
-struct _Downlink_Fifo *downlink_cmd;
+struct _Downlink_Fifo downlink_cmd;
+struct _Downlink_Fifo downlink_cmd_new;
 
+// DOWNLINK CHOOSE FIRST AND PORT2
 
 static void dl_callback(uint8_t port, bool data_pending,
-			            int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data){
-	uint8_t i=0;
-	
-    //downlink_cmd = k_malloc(sizeof(*downlink_cmd));
+                        int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data) {
+    
+ 
+    printk("Port %d, Pending %d, RSSI %ddB, SNR %ddBm \n", port, data_pending, rssi, snr);
+    uint8_t i=0;
+    if (data) {
+        printk(data, len, "Payload: \n");
+        //downlink_cmd_new.port = port;
+        //downlink_cmd_new.rssi = rssi;
+        //downlink_cmd_new.snr = snr;
+        //downlink_cmd_new.len = len;
+        //while (i < len) {
+        //    downlink_cmd_new.data[i] = data[i];
+        //    i++;
+        //}
+		//k_sem_give(&lorawan_rx);//downlink
+    }
 
-
-	printk("Port %d, Pending %d, RSSI %ddB, SNR %ddBm \n", port, data_pending, rssi, snr);
-	if (data) {
-		printk(data, len, "Payload: \n");
-		downlink_cmd->port=port;
-		downlink_cmd->rssi=rssi;
-		downlink_cmd->snr=snr;
-    	downlink_cmd->len=len;
-        //while(i<len){
-		//	downlink_cmd->data[i]=*data+i;
-		//	i++;
-		//}
-        
-
-    	k_fifo_put(&my_fifo_downlink, &downlink_cmd);
-		
-	}
-	//k_free(downlink_cmd);
-	
+    
 }
-// DOWNLINK CHOOSE FIRST AND PORT2
+
+
 
 static void lorwan_datarate_changed(enum lorawan_datarate dr)
 {
@@ -1498,6 +1490,7 @@ void lorawan_thread(void)
 
 	lorawan_enable_adr( true );
 
+
 	lorawan_register_downlink_callback(&downlink_cb);
 	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
 
@@ -1523,7 +1516,7 @@ void lorawan_thread(void)
     	if (ret < 0) {
 	    	printk("lorawan_join_network failed: %d\n\n", ret);
             printk("Sleeping for 10s to try again to join network.\n\n");
-            k_sleep(K_MSEC(10000));
+            k_sleep(K_MSEC(55000));
 
           if (ret == -116  || ret == -111  ){
             lorawan_start();
@@ -1866,15 +1859,15 @@ void gnss_write_thread(void)
 
 void downlink_thread(void){
 
-    struct _Downlink_Fifo  *rx_data;
-	rx_data = k_malloc(sizeof(*rx_data));
 	while(1){
-      rx_data=k_fifo_get(&my_fifo_downlink, K_FOREVER);
-	  printk("CMD-Received\n");
-	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", rx_data->port, rx_data->rssi, rx_data->snr);
+	  k_sem_take(&lorawan_rx,K_FOREVER);
+      
+	  printk("\033[31mCMD-Received\n");
+	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
 	//printk(rx_data->data, rx_data->len, "Payload: \n");
+	  printk("\033[0m\n");
 	}
-    k_free(rx_data); //never will be called
+    
 }
 
 
@@ -1888,5 +1881,5 @@ K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL,
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 12000, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 10000, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(downlink_thread_id, 2048, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);

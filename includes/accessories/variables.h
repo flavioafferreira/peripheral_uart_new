@@ -158,7 +158,7 @@ typedef struct _Alarm_ {
 
 
 //LORAWAN DOWNLINK FIFO
-//Port 2, Pending 1, RSSI -128dB, SNR -9dBmflavioabcdData sent!
+//Port 2, Pending 1, RSSI -128dB, SNR -9dBm
 struct _Downlink_Fifo { 
     void *fifo_reserved;
     uint8_t port; 
