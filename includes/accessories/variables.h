@@ -58,6 +58,8 @@
 #define DELAY_RTY K_MSEC(3000)
 #define RETRY 10
 #define LIMIT_RECONNECT_CNT 50
+#define LORAWAN_INTERVAL 3 //INTERVAL IN MINUTES
+#define DOWNLINK_BUFF_SIZE 100
 
 
 //STRUCTURE FOR HISTORY
@@ -153,4 +155,19 @@ typedef struct _Alarm_ {
 
 //Alarm C_Buffer_Alarm[ALARM_EVENT_QTY_MAX];
 //next position 
+
+
+//LORAWAN DOWNLINK FIFO
+//Port 2, Pending 1, RSSI -128dB, SNR -9dBmflavioabcdData sent!
+struct _Downlink_Fifo { 
+    void *fifo_reserved;
+    uint8_t port; 
+    int16_t rssi;
+    int8_t snr;
+    uint8_t data[DOWNLINK_BUFF_SIZE];
+    uint8_t len;     
+};
+
+
+
 
