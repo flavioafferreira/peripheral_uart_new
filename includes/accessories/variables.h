@@ -168,6 +168,14 @@ struct _Downlink_Fifo {
     uint8_t len;     
 };
 
+struct _Downlink_ { 
+    uint8_t port; 
+    int16_t rssi;
+    int8_t snr;
+    uint8_t data[DOWNLINK_BUFF_SIZE];
+    uint8_t len;     
+};
+
 
 
 

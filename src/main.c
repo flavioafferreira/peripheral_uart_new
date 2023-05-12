@@ -330,7 +330,7 @@ uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
 
 static K_FIFO_DEFINE(my_fifo_downlink);
 struct _Downlink_Fifo downlink_cmd;
-struct _Downlink_Fifo downlink_cmd_new;
+struct _Downlink_ downlink_cmd_new;
 
 // DOWNLINK CHOOSE FIRST AND PORT2
 
@@ -342,15 +342,13 @@ static void dl_callback(uint8_t port, bool data_pending,
     uint8_t i=0;
     if (data) {
         printk(data, len, "Payload: \n");
-        //downlink_cmd_new.port = port;
-        //downlink_cmd_new.rssi = rssi;
-        //downlink_cmd_new.snr = snr;
-        //downlink_cmd_new.len = len;
-        //while (i < len) {
-        //    downlink_cmd_new.data[i] = data[i];
-        //    i++;
-        //}
-		//k_sem_give(&lorawan_rx);//downlink
+     
+        downlink_cmd_new.len = len;
+        while (i < len) {
+            downlink_cmd_new.data[i] = data[i];
+            i++;
+        }
+		k_sem_give(&lorawan_rx);//downlink
     }
 
     
@@ -1863,8 +1861,9 @@ void downlink_thread(void){
 	  k_sem_take(&lorawan_rx,K_FOREVER);
       
 	  printk("\033[31mCMD-Received\n");
-	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
-	//printk(rx_data->data, rx_data->len, "Payload: \n");
+	  printk("Len: %d\n",downlink_cmd_new.len);
+	//  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
+	  printk(downlink_cmd_new.data, downlink_cmd_new.len, "Payload: \n");
 	  printk("\033[0m\n");
 	}
     
