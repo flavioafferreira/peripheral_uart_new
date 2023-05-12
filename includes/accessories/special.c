@@ -704,7 +704,7 @@ void lorawan_tx_data(void){
 		        printk("Data sent!\n\n");
             lorawan_reconnect_cnt=0;
 		     }
-
+ 
 
 }
 

@@ -338,11 +338,13 @@ static void dl_callback(uint8_t port, bool data_pending,
                         int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data) {
     
  
-    printk("Port %d, Pending %d, RSSI %ddB, SNR %ddBm \n", port, data_pending, rssi, snr);
+    //printk("Port %d, Pending %d, RSSI %ddB, SNR %ddBm \n", port, data_pending, rssi, snr);
     uint8_t i=0;
     if (data) {
-        printk(data, len, "Payload: \n");
-     
+        //printk(data, len, "Payload: \n");
+	    downlink_cmd_new.port=port;
+        downlink_cmd_new.rssi=rssi;
+		downlink_cmd_new.snr=snr;
         downlink_cmd_new.len = len;
         while (i < len) {
             downlink_cmd_new.data[i] = data[i];
@@ -1862,7 +1864,7 @@ void downlink_thread(void){
       
 	  printk("\033[31mCMD-Received\n");
 	  printk("Len: %d\n",downlink_cmd_new.len);
-	//  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
+	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
 	  printk(downlink_cmd_new.data, downlink_cmd_new.len, "Payload: \n");
 	  printk("\033[0m\n");
 	}
@@ -1880,5 +1882,5 @@ K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL,
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 10000, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(downlink_thread_id, 2048, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
