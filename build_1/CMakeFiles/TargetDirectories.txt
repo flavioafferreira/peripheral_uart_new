@@ -1013,11 +1013,10 @@ C:/Nordic/peripheral_uart/build_1/modules/picolibc/CMakeFiles/edit_cache.dir
 C:/Nordic/peripheral_uart/build_1/modules/picolibc/CMakeFiles/rebuild_cache.dir
 C:/Nordic/peripheral_uart/build_1/modules/picolibc/CMakeFiles/list_install_components.dir
 C:/Nordic/peripheral_uart/build_1/modules/picolibc/CMakeFiles/install/strip.dir
-C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/rebuild_cache.dir
-C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/modules__segger.dir
 C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/install/local.dir
 C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/install.dir
 C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/edit_cache.dir
+C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/rebuild_cache.dir
 C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/list_install_components.dir
 C:/Nordic/peripheral_uart/build_1/modules/segger/CMakeFiles/install/strip.dir
 C:/Nordic/peripheral_uart/build_1/modules/tinycbor/CMakeFiles/install/local.dir
