@@ -204,6 +204,8 @@
 };
 
 &uart2 {
+	//CONNECT TO UBLOX NEO-6M
+	
     label="teste123";
 	status = "okay";
     current-speed = <9600>;
@@ -215,10 +217,14 @@
 };
 
 &spi4 {
-    cs-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+    //VDD - CONNECT TO 3V - USE A 220UF TO GND
+    //SCK  -->P1.15
+	//MISO -->P1.14
+    //MOSI -->P1.13
+    cs-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>; // PIN NSS
     lora0: sx1276@0 {
 		        compatible = "semtech,sx1276";
-		        reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+		        reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>; //RESET PIN
 		        dio-gpios = 
                  <&gpio1 11 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>, //DIO-0
                  <&gpio1 12 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>; //DIO-1

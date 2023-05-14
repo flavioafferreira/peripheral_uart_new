@@ -1424,6 +1424,8 @@ zephyr_udc0: &usbd {
 };
 
 &uart2 {
+
+
     label="teste123";
  status = "okay";
     current-speed = <9600>;
@@ -1435,6 +1437,10 @@ zephyr_udc0: &usbd {
 };
 
 &spi4 {
+
+
+
+
     cs-gpios = <&gpio0 28 (1 << 0)>;
     lora0: sx1276@0 {
           compatible = "semtech,sx1276";

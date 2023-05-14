@@ -74,6 +74,7 @@ _Circular_Buffer read_memory(uint32_t Pos);
 //SEMAPHORE
 extern uint8_t lorawan_reconnect;
 extern uint32_t lorawan_reconnect_cnt;
+extern uint8_t data_sent_cnt;
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -554,6 +555,10 @@ float BetaTermistor(void) {
 }
   
 float ntc_temperature(uint16_t conversao,uint8_t sensor_number){
+  // ELECTRIC WIRE DIAGRAM
+  //  +3V --- RESISTOR_SERIE_NTC ----AD--- NTC --- GND
+
+
   //sources:  https://blog.eletrogate.com/termistor-ntc-para-controle-de-temperatura/
   //          https://elcereza.com/termistor/
   float voltageUc = conversao*(ADC_VOLTAGE_REF/(ADC_RESOLUTION-1));
@@ -672,6 +677,7 @@ void lorawan_tx_data(void){
      printk("%02X ",data_test[h]);
   }
   printk("\nSending payload...\n");
+  data_sent_cnt++;
 
   //extern uint8_t lorawan_reconnect;
   //extern uint32_t lorawan_reconnect_cnt;
@@ -693,6 +699,7 @@ void lorawan_tx_data(void){
        if(lorawan_reconnect_cnt==LIMIT_RECONNECT_CNT){lorawan_reconnect_cnt=0;lorawan_reconnect=1;}
        if (ret==0){
         printk("Data sent\n");
+        
         lorawan_reconnect_cnt=0;
         }else{printk("Data send failed-trying again\n");
               k_sleep(DELAY_RTY);
@@ -702,9 +709,12 @@ void lorawan_tx_data(void){
 			//return;
 		}else{
 		        printk("Data sent!\n\n");
+            
             lorawan_reconnect_cnt=0;
 		     }
- 
+    if(data_sent_cnt>=DATA_SENT_JOIN_AGAIN){lorawan_reconnect=1;data_sent_cnt=0;}
+
+  
 
 }
 

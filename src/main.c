@@ -243,6 +243,7 @@ static K_SEM_DEFINE(lorawan_tx, 0, 1); //uplink
 static K_SEM_DEFINE(lorawan_rx, 0, 1); //downlink
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
+uint8_t data_sent_cnt=0;
 
 // MUTEX FOR AD CONVERSION
 // K_MUTEX_DEFINE(ad_ready)
@@ -417,7 +418,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 			buf_extra = k_malloc(sizeof(*buf_extra));
 			buff_extra_index=0;
 			buff_marker=1;
-			blink(LED3,2);
+			//blink(LED3,2);
 		}
    
        //STOP WITH 0X0A
@@ -431,7 +432,7 @@ static void uart_cb_2(const struct device *dev, struct uart_event *evt, void *us
 				 k_free(buf_extra);
 			   }
 			   buff_marker=0;
-			   blink(LED4,2);
+			   //blink(LED4,2);
 			}
 		} 
  		
@@ -1745,7 +1746,7 @@ void gnss_write_thread(void)
 
 			i = 0;
 			index = 0;
-			blink(LED4,2);
+			//blink(LED4,2);
            
 			while (i < k && pkt_init == 0)
 			{
@@ -1858,7 +1859,7 @@ void gnss_write_thread(void)
 }
 
 void downlink_thread(void){
-
+    uint8_t cmd=0;
 	while(1){
 	  k_sem_take(&lorawan_rx,K_FOREVER);
       
@@ -1866,7 +1867,24 @@ void downlink_thread(void){
 	  printk("Len: %d\n",downlink_cmd_new.len);
 	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
 	  printk(downlink_cmd_new.data, downlink_cmd_new.len, "Payload: \n");
+
+	  printk("%X:%X:%X",downlink_cmd_new.data[0],downlink_cmd_new.data[1],downlink_cmd_new.data[2]);
+	  cmd=downlink_cmd_new.data[0];
+
 	  printk("\033[0m\n");
+      
+		switch(cmd){
+			case 0x41:
+			   gpio_pin_set_dt(LED4, ON); //A
+			break;
+			case 0x42:
+			   gpio_pin_set_dt(LED4, OFF);//B
+			break;
+			
+		}
+
+	  
+
 	}
     
 }
@@ -1880,7 +1898,7 @@ K_THREAD_DEFINE(message_id, 10000, button4_thread, NULL, NULL, NULL, PRIORITY, 0
 K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(gnss_write_thread_id, STACKSIZE, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(shoot_minute_save_thread_id, STACKSIZE, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
+K_THREAD_DEFINE(gnss_write_thread_id, 2048, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(shoot_minute_save_thread_id, 2048, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
 K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(downlink_thread_id, 2048, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(downlink_thread_id, 4096, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
