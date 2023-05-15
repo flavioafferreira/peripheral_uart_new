@@ -1463,7 +1463,7 @@ void lorawan_thread(void)
 
     lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
 
-	LoRaMacTestSetDutyCycleOn(0);//disable dutyCycle for test
+	//LoRaMacTestSetDutyCycleOn(0);//disable dutyCycle for test
 
     k_sem_take(&lorawan_init, K_FOREVER);  // WAIT FOR INIT
     printk("LoraWan Thread Started\n\n");
@@ -1862,7 +1862,7 @@ K_THREAD_DEFINE(message_id, 10000, button4_thread, NULL, NULL, NULL, PRIORITY, 0
 K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(gnss_write_thread_id, 2048, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(gnss_write_thread_id, 4096, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, 4096, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 32768, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(downlink_thread_id, 4096, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
