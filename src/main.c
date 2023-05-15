@@ -241,6 +241,7 @@ static K_SEM_DEFINE(button_test, 0, 1);
 static K_SEM_DEFINE(button_3, 0, 1);
 static K_SEM_DEFINE(lorawan_tx, 0, 1); //uplink
 static K_SEM_DEFINE(lorawan_rx, 0, 1); //downlink
+static K_SEM_DEFINE(lorawan_init, 0, 1); //downlink
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
 uint8_t data_sent_cnt=0;
@@ -336,7 +337,7 @@ struct _Downlink_ downlink_cmd_new;
 // DOWNLINK CHOOSE FIRST AND PORT2
 
 static void dl_callback(uint8_t port, bool data_pending,
-                        int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data) {
+    int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data)	{
     
  
     //printk("Port %d, Pending %d, RSSI %ddB, SNR %ddBm \n", port, data_pending, rssi, snr);
@@ -358,16 +359,13 @@ static void dl_callback(uint8_t port, bool data_pending,
 }
 
 
-
 static void lorwan_datarate_changed(enum lorawan_datarate dr)
 {
 	uint8_t unused, max_size;
 
 	lorawan_get_payload_sizes(&unused, &max_size);
-	LOG_INF("New Datarate: DR_%d, Max Payload %d", dr, max_size);
+	printk("New Datarate: DR_%d, Max Payload %d", dr, max_size);
 }
-
-
 
 // UART
 
@@ -1326,8 +1324,6 @@ void led_on_off(struct gpio_dt_spec led, uint8_t value)
 	gpio_pin_set_dt(&led, value);
 }
 
-
-
 // CONFIGURE ADC
 
 void configure_adc(void)
@@ -1440,6 +1436,7 @@ void main(void)
 		error();
 	}
     
+    k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
 	for (;;)
 	{
@@ -1454,11 +1451,10 @@ void main(void)
 
 void lorawan_thread(void)
 {
-
     uint64_t i=0,j=0;
 	int ret;
-
-   
+    uint32_t random;
+    uint16_t dev_nonce;
 
     struct lorawan_downlink_cb downlink_cb = {
 	   .port = LW_RECV_PORT_ANY,
@@ -1467,60 +1463,24 @@ void lorawan_thread(void)
 
     lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
 
+    k_sem_take(&lorawan_init, K_FOREVER);  // WAIT FOR INIT
+    printk("Started\n\n");
+
 	if (!device_is_ready(lora_dev)) {
 		printk("%s: device not ready.\n\n", lora_dev->name);
 		return;
 	}
-
-  #if defined(CONFIG_LORAMAC_REGION_EU868)
-	ret = lorawan_set_region(LORAWAN_REGION_EU868);
-	if (ret < 0) {
-		printk("lorawan_set_region failed: %d\n\n", ret);
-		return;
-	}
-  #endif
   
-
-    ret = lorawan_start();
-	if (ret < 0) {
-		printk("lorawan_start failed: %d\n\n", ret);
-		return;
-	}
-
-    k_sleep(K_MSEC(500));//500ms
-
-	lorawan_enable_adr( true );
-
-
-	lorawan_register_downlink_callback(&downlink_cb);
-	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
-
-
-    uint32_t random = sys_rand32_get();
-    uint16_t dev_nonce = random & 0x0000FFFF;
-
-	join_cfg.mode = LORAWAN_CLASS_A; //was A
-	join_cfg.dev_eui = dev_eui;
-	join_cfg.otaa.join_eui = join_eui;
-	join_cfg.otaa.app_key = app_key;
-	join_cfg.otaa.nwk_key = app_key;
-    join_cfg.otaa.dev_nonce = dev_nonce;
-
-	ret=0;
+    lorawan_set_region(LORAWAN_REGION_EU868);
+	
+    
     while(1){
-		 printk("Started\n\n");
-   	     printk("Joining network over OTAA\n\n");
-   
-
    	 do {
-    	ret = lorawan_join(&join_cfg);
-    	if (ret < 0) {
-	    	printk("lorawan_join_network failed: %d\n\n", ret);
-            printk("Sleeping for 10s to try again to join network.\n\n");
-            k_sleep(K_MSEC(55000));
-
-          if (ret == -116  || ret == -111  ){
+    	    
+   	        printk("Joining network over OTAA\n\n");
+            k_sleep(K_MSEC(1000));
             lorawan_start();
+			k_sleep(K_MSEC(500));//500ms
 		    lorawan_enable_adr( true );
             lorawan_register_downlink_callback(&downlink_cb);
 			lorawan_register_dr_changed_callback(lorwan_datarate_changed);
@@ -1532,10 +1492,12 @@ void lorawan_thread(void)
 			join_cfg.otaa.app_key = app_key;
 			join_cfg.otaa.nwk_key = app_key;
     		join_cfg.otaa.dev_nonce = dev_nonce;
-		    k_sleep(K_MSEC(10000));
-		   }
-
-	    }
+		    ret = lorawan_join(&join_cfg);
+			if (ret<0){
+				 printk("Failed..Waiting some seconds to try again\n\n");
+			     k_sleep(K_MSEC(53000));
+	        }
+    
       } while ( ret < 0 );
 	  printk("Joined OTAA\n\n");
 	  lorawan_reconnect=0;
@@ -1544,8 +1506,8 @@ void lorawan_thread(void)
 		  lorawan_tx_data();
 
 	    }
-	  //k_sleep(K_MSEC(100));//500ms
-
+	   
+	 
      }
 		
 	
