@@ -138,17 +138,24 @@ static struct gpio_callback digital_cb_data_dig1;
 static const struct gpio_dt_spec digital_dig2 = GPIO_DT_SPEC_GET_OR(DIG_2_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig2;
 
+#define DIG_3_NODE DT_ALIAS(dg3)
+static const struct gpio_dt_spec digital_dig3 = GPIO_DT_SPEC_GET_OR(DIG_3_NODE, gpios, {0});
+static struct gpio_callback digital_cb_data_dig3;
+
 #define DIG_0_ADR &digital_dig0
 #define DIG_1_ADR &digital_dig1
 #define DIG_2_ADR &digital_dig2
+#define DIG_3_ADR &digital_dig3
 
 #define DIG_0 digital_dig0
 #define DIG_1 digital_dig1
 #define DIG_2 digital_dig2
+#define DIG_3 digital_dig3
 
 #define DIG_0_CB &digital_cb_data_dig0
 #define DIG_1_CB &digital_cb_data_dig1
 #define DIG_2_CB &digital_cb_data_dig2
+#define DIG_3_CB &digital_cb_data_dig3
 
 // LEDS
 #define LED0_NODE DT_ALIAS(led0)
@@ -180,6 +187,8 @@ int flag = 0; // used to print once the results
 int16_t buf_adc;
 volatile int16_t adc_value[8];
 volatile int16_t digital_value[8];
+
+uint8_t dig_probe=0;
 
 struct adc_sequence sequence = {
 	.buffer = &buf_adc,
@@ -1301,6 +1310,10 @@ void configure_digital_inputs(void)
 	gpio_init_callback(DIG_2_CB, digital_2_call_back, BIT(DIG_2.pin));
 	gpio_add_callback(DIG_2.port, DIG_2_CB);
 	printk("Set up Digital Input at %s pin %d\n", DIG_2.port->name, DIG_2.pin);
+
+    gpio_pin_configure_dt(DIG_3_ADR, GPIO_INPUT);
+	printk("\n(Led4_Status)GPIO 0 Pin 27 Value:%d \n", gpio_pin_get_dt(DIG_3_ADR));
+
 }
 
 void configure_led(void)
@@ -1548,7 +1561,7 @@ void shoot_minute_save_thread(void)
 			} // only up to 23:59:59h
 			  // START RUN THE MINUTE ROUTINE
 			printk("LOG Circular Buffer\n");
-
+            dig_probe=gpio_pin_get_dt(DIG_3_ADR);//READS A DIGITAL INPUT
 			feed_circular_buffer();
 			print_current_position_cb(C_Buffer_Current_Position);
 			if (lora_cycle_minute>=LORAWAN_INTERVAL){
@@ -1863,6 +1876,6 @@ K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL, NULL, PR
 K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, 4096, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(shoot_minute_save_thread_id, 4096, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 32768, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(downlink_thread_id, 4096, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(shoot_minute_save_thread_id, 10000, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);

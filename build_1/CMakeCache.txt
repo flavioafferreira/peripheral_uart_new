@@ -27,7 +27,7 @@ BOARD:STRING=nrf5340dk_nrf5340_cpuapp_ns
 BOARD_DIR:PATH=C:/ncs/v2.3.0-rc1/zephyr/boards/arm/nrf5340dk_nrf5340
 
 //No help, variable specified on the command line.
-BOARD_ROOT:STRING=c:/Nordic/peripheral_uart;c:/Nordic/rpc_host;c:/Nordic/spi_flash;c:/Nordic/nvs;c:/Nordic/flash_shell;c:/Nordic/fs;c:/Nordic/littlefs
+BOARD_ROOT:STRING=c:/Nordic/peripheral_uart;c:/Nordic/rpc_host;c:/Nordic/peripheral_uart_nrf52;c:/Nordic/spi_flash;c:/Nordic/nvs;c:/Nordic/flash_shell;c:/Nordic/fs;c:/Nordic/littlefs
 
 //Path to a program.
 BOSSAC:FILEPATH=BOSSAC-NOTFOUND

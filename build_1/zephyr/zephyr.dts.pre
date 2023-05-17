@@ -1247,7 +1247,7 @@ zephyr_udc0: &usbd {
   dg1 = &dig1;
   dg2 = &dig2;
   dg3 = &dig3;
-  dg4 = &dig4;
+
   external-mx25 = &mx25r64;
   lora = &lora0;
 
@@ -1268,14 +1268,16 @@ zephyr_udc0: &usbd {
    gpios = < &gpio1 0x06 ((1 << 4) | (0 << 0)) >;
    label = "Digital Input 2";
   };
+
   dig3: dig_3 {
-   gpios = < &gpio1 0x07 ((1 << 4) | (0 << 0)) >;
+   gpios = < &gpio0 27 ((1 << 4) | (0 << 0)) >;
    label = "Digital Input 3";
   };
-  dig4: dig_4 {
-   gpios = < &gpio1 0x08 ((1 << 4) | (0 << 0)) >;
-   label = "Digital Input 4";
-  };
+
+
+
+
+
 
  };
 
@@ -1288,7 +1290,7 @@ zephyr_udc0: &usbd {
 &adc {
  #address-cells = <1>;
  #size-cells = <0>;
-# 72 "c:/Nordic/peripheral_uart/app.overlay"
+# 74 "c:/Nordic/peripheral_uart/app.overlay"
  channel@0 {
   reg = <0>;
   zephyr,gain = "ADC_GAIN_1_6";
@@ -1337,21 +1339,13 @@ zephyr_udc0: &usbd {
   zephyr,resolution = <14>;
   zephyr,oversampling = <8>;
  };
-
- channel@7 {
-  reg = <7>;
-  zephyr,gain = "ADC_GAIN_1_5";
-  zephyr,reference = "ADC_REF_VDD_1_4";
-  zephyr,vref-mv = <750>;
-  zephyr,acquisition-time = <0>;
-  zephyr,input-positive = <7>;
-  zephyr,input-negative = <8>;
-  zephyr,resolution = <12>;
- };
- io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>,<&adc 7>;
+# 135 "c:/Nordic/peripheral_uart/app.overlay"
+ io-channels = <&adc 0>, <&adc 1>,<&adc 2>,<&adc 3>,<&adc 4>;
 };
 
-
+&pwm0{
+ status = "disabled";
+};
 
 
 
@@ -1441,7 +1435,7 @@ zephyr_udc0: &usbd {
 
 
 
-    cs-gpios = <&gpio0 28 (1 << 0)>;
+    cs-gpios = <&gpio0 26 (1 << 0)>;
     lora0: sx1276@0 {
           compatible = "semtech,sx1276";
           reset-gpios = <&gpio1 10 (1 << 0)>;

@@ -1289,7 +1289,7 @@ build list_install_components: phony
 # Custom command for CMakeFiles\boards
 
 build CMakeFiles/boards: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Nordic\peripheral_uart\build_1 && C:\ncs\toolchains\v2.3.0-rc1\opt\bin\python.exe C:/ncs/v2.3.0-rc1/zephyr/scripts/list_boards.py --board-root=c:/Nordic/peripheral_uart --board-root=c:/Nordic/rpc_host --board-root=c:/Nordic/spi_flash --board-root=c:/Nordic/nvs --board-root=c:/Nordic/flash_shell --board-root=c:/Nordic/fs --board-root=c:/Nordic/littlefs --board-root=C:/ncs/v2.3.0-rc1/nrf --board-root=C:/ncs/v2.3.0-rc1/zephyr --arch-root=C:/ncs/v2.3.0-rc1/zephyr"
+  COMMAND = cmd.exe /C "cd /D C:\Nordic\peripheral_uart\build_1 && C:\ncs\toolchains\v2.3.0-rc1\opt\bin\python.exe C:/ncs/v2.3.0-rc1/zephyr/scripts/list_boards.py --board-root=c:/Nordic/peripheral_uart --board-root=c:/Nordic/rpc_host --board-root=c:/Nordic/peripheral_uart_nrf52 --board-root=c:/Nordic/spi_flash --board-root=c:/Nordic/nvs --board-root=c:/Nordic/flash_shell --board-root=c:/Nordic/fs --board-root=c:/Nordic/littlefs --board-root=C:/ncs/v2.3.0-rc1/nrf --board-root=C:/ncs/v2.3.0-rc1/zephyr --arch-root=C:/ncs/v2.3.0-rc1/zephyr"
   pool = console
 
 

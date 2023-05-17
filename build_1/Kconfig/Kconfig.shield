@@ -1,5 +1,6 @@
 osource "c:/Nordic/peripheral_uart/boards/shields/*/Kconfig.shield"
 osource "c:/Nordic/rpc_host/boards/shields/*/Kconfig.shield"
+osource "c:/Nordic/peripheral_uart_nrf52/boards/shields/*/Kconfig.shield"
 osource "c:/Nordic/spi_flash/boards/shields/*/Kconfig.shield"
 osource "c:/Nordic/nvs/boards/shields/*/Kconfig.shield"
 osource "c:/Nordic/flash_shell/boards/shields/*/Kconfig.shield"
