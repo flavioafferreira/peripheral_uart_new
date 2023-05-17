@@ -1237,21 +1237,21 @@ void button_pressed_4(const struct device *dev, struct gpio_callback *cb, uint32
 // DIGITAL CALL BACK
 void digital_0_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	printk("Digital 0 activated at %" PRIu32 "\n", k_cycle_get_32());
+	//printk("Digital 0 activated at %" PRIu32 "\n", k_cycle_get_32());
 	if (digital_value[0] <= DIGITAL_0_LIMIT)
 		digital_value[0]++;
 }
 
 void digital_1_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	printk("Digital 1 activated at %" PRIu32 "\n", k_cycle_get_32());
+	//printk("Digital 1 activated at %" PRIu32 "\n", k_cycle_get_32());
 	if (digital_value[1] <= DIGITAL_0_LIMIT)
 		digital_value[1]++;
 }
 
 void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	printk("Digital 2 activated at %" PRIu32 "\n", k_cycle_get_32());
+	//printk("Digital 2 activated at %" PRIu32 "\n", k_cycle_get_32());
 	if (digital_value[2] <= DIGITAL_0_LIMIT)
 		digital_value[2]++;
 }
@@ -1310,9 +1310,8 @@ void configure_digital_inputs(void)
 	gpio_init_callback(DIG_2_CB, digital_2_call_back, BIT(DIG_2.pin));
 	gpio_add_callback(DIG_2.port, DIG_2_CB);
 	printk("Set up Digital Input at %s pin %d\n", DIG_2.port->name, DIG_2.pin);
-
     gpio_pin_configure_dt(DIG_3_ADR, GPIO_INPUT);
-	printk("\n(Led4_Status)GPIO 0 Pin 27 Value:%d \n", gpio_pin_get_dt(DIG_3_ADR));
+	printk("(Led4_Status)GPIO 0 Pin 27 Value:%d \n", gpio_pin_get_dt(DIG_3_ADR));
 
 }
 
