@@ -1903,6 +1903,6 @@ K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL,
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, 4096, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, 10000, shoot_minute_save_thread, NULL, NULL, NULL, 4, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, -3, 0, 0);
-K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, -9, 0, 0);
+K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, 8, 0, 0);
 K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
