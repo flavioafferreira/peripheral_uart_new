@@ -76,7 +76,7 @@
 LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 
 #define STACKSIZE CONFIG_BT_NUS_THREAD_STACK_SIZE
-#define PRIORITY 7
+#define PRIORITY -1
 
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
@@ -251,6 +251,11 @@ static K_SEM_DEFINE(button_3, 0, 1);
 static K_SEM_DEFINE(lorawan_tx, 0, 1); //uplink
 static K_SEM_DEFINE(lorawan_rx, 0, 1); //downlink
 static K_SEM_DEFINE(lorawan_init, 0, 1); //downlink
+static K_SEM_DEFINE(circular_buffer_sh,0,1);
+static K_SEM_DEFINE(timer_init,0,1);
+static K_SEM_DEFINE(gps_init,0,1);
+static K_SEM_DEFINE(adc_init,0,1);
+
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
 uint8_t data_sent_cnt=0;
@@ -1447,7 +1452,12 @@ void main(void)
 	{
 		error();
 	}
-    
+    k_sem_give(&adc_init);
+    k_msleep(200);
+    k_sem_give(&timer_init);
+	k_msleep(1000);
+	k_sem_give(&gps_init);
+	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
 	for (;;)
@@ -1539,6 +1549,7 @@ void shoot_minute_save_thread(void)
 	last_minute = m;
 
 	// time_print ();
+    k_sem_take(&timer_init,K_FOREVER); //wait init
 
 	while (1)
 	{
@@ -1559,18 +1570,30 @@ void shoot_minute_save_thread(void)
 				h = 0;
 			} // only up to 23:59:59h
 			  // START RUN THE MINUTE ROUTINE
-			printk("LOG Circular Buffer\n");
-            dig_probe=gpio_pin_get_dt(DIG_3_ADR);//READS A DIGITAL INPUT
-			feed_circular_buffer();
-			print_current_position_cb(C_Buffer_Current_Position);
+			
+            
+			k_sem_give(&circular_buffer_sh);
+			
 			if (lora_cycle_minute>=LORAWAN_INTERVAL){
 				k_sem_give(&lorawan_tx);
 				lora_cycle_minute=0;
 			}
 			lora_cycle_minute++;
-			printk(" \n");
+			printk("Minute Cycle thread \n");
 		}
+		k_sleep(K_MSEC(100));
 	}
+}
+
+void feed_circular_buffer_thread(void){
+   while(1){	
+     k_sem_take(&circular_buffer_sh,K_FOREVER);
+     printk("LOG Circular Buffer\n");
+     dig_probe=gpio_pin_get_dt(DIG_3_ADR);//READS A DIGITAL INPUT
+     feed_circular_buffer();
+     print_current_position_cb(C_Buffer_Current_Position);
+     k_sleep(K_MSEC(100));
+   }
 }
 
 void ble_write_thread(void)
@@ -1656,7 +1679,7 @@ void button4_thread(void)
 void adc_thread(void)
 {
 	int err;
-
+    k_sem_take(&adc_init,K_FOREVER);
 	while (1)
 	{
 		for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++)
@@ -1711,8 +1734,12 @@ void gnss_write_thread(void)
 	struct uart_data_t *buf2a;
 	buf2a = k_malloc(sizeof(*buf2a));
 	//
+
+	k_sem_take(&gps_init,K_FOREVER); 
+
 	for (;;)
 	{
+		
 		buf2a = k_fifo_get(&fifo_uart2_rx_data, K_FOREVER);
 		k_fifo_init(&fifo_uart2_rx_data);
 
@@ -1875,6 +1902,7 @@ K_THREAD_DEFINE(memory_save_id, 10000, write_memory_thread, NULL, NULL, NULL, PR
 K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, 4096, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
-K_THREAD_DEFINE(shoot_minute_save_thread_id, 10000, shoot_minute_save_thread, NULL, NULL, NULL, 9, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(shoot_minute_save_thread_id, 10000, shoot_minute_save_thread, NULL, NULL, NULL, 4, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, -3, 0, 0);
 K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);

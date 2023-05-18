@@ -76,6 +76,8 @@ _Circular_Buffer read_memory(uint32_t Pos);
 extern uint8_t lorawan_reconnect;
 extern uint32_t lorawan_reconnect_cnt;
 extern uint8_t data_sent_cnt;
+//MUTEX
+K_MUTEX_DEFINE(c_buffer_busy);
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -225,7 +227,7 @@ void print_current_position_cb(uint32_t pos){
 
    uint8_t i=0;
 
-
+    k_mutex_lock(&c_buffer_busy,K_FOREVER);
     printf("\n\n####Position %d #####\n",pos);
 
     if (position.gps_fixed==1) printf("GPS Fixed  :Yes\n");
@@ -278,7 +280,7 @@ void print_current_position_cb(uint32_t pos){
       C_Buffer[pos].digital[i].value);
       i++;
     }
-
+  k_mutex_unlock(&c_buffer_busy);
 }
 
 void print_current_position_cb_new(uint32_t pos){
@@ -289,6 +291,7 @@ void print_current_position_cb_new(uint32_t pos){
    C_Buffer = k_malloc(size);
    *C_Buffer=read_memory(pos);
 
+    k_mutex_lock(&c_buffer_busy,K_FOREVER);
     printf("\n\n####Position %d #####\n",pos);
 
     printf("GNSS Position Lat=%d Long=%d TimeStamp=%d \n",
@@ -325,6 +328,7 @@ void print_current_position_cb_new(uint32_t pos){
     }
 
  k_free(C_Buffer);
+ k_mutex_unlock(&c_buffer_busy);
 }
 
 void init_circular_buffer(void){
@@ -333,7 +337,7 @@ void init_circular_buffer(void){
 
 void feed_circular_buffer(void){
 
-    
+    k_mutex_lock(&c_buffer_busy,K_FOREVER);
     C_Buffer_Current_Position=C_Buffer_Free_Position;
     // This funcion must be called each 1 minute
     // FIRST FREE POSITION IS 0 AND THE LAST IS (CIRCULAR_BUFFER_ELEMENTS-1)     
@@ -358,9 +362,11 @@ void feed_circular_buffer(void){
     }else{
       C_Buffer_Free_Position=0;
       }
+    k_mutex_unlock(&c_buffer_busy);  
 }
 
 _Circular_Buffer read_memory(uint32_t Pos){
+    k_mutex_lock(&c_buffer_busy,K_FOREVER);
     _Circular_Buffer *buf;
     uint16_t size=sizeof(_Circular_Buffer),err=0;
     buf = k_malloc(size);
@@ -369,9 +375,11 @@ _Circular_Buffer read_memory(uint32_t Pos){
     printf("Result read=%d bytes\n",err);
     return *buf;
     k_free(buf);
+    k_mutex_unlock(&c_buffer_busy); 
 }
 
 void save_memory(uint32_t Pos){
+    k_mutex_lock(&c_buffer_busy,K_FOREVER);
     _Circular_Buffer *buf;
     uint16_t size=sizeof(_Circular_Buffer),err=0;
     printf("Size of structure=%d bytes\n",size);
@@ -385,6 +393,7 @@ void save_memory(uint32_t Pos){
     (void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position,sizeof(C_Buffer_Current_Position));
 
     k_free(buf);
+    k_mutex_unlock(&c_buffer_busy); 
 }
 
 void init_alarm_circular_buffer(void){
@@ -449,6 +458,7 @@ buf_data send_array_dd_v0(void){
    uint32_t sensor_data=0;
    uint32_t total_bytes_encoded = 0;
 
+   k_mutex_lock(&c_buffer_busy,K_FOREVER);
 
    History_st *data = fill_fields_to_test();
    pb_ostream_t ostream;
@@ -505,10 +515,10 @@ buf_data send_array_dd_v0(void){
    function_return.data[j]=buffer[j];
    j++;
    }
-
+   
    function_return.len=total_bytes_encoded;
-  
-    return function_return;
+   return function_return;
+   k_mutex_unlock(&c_buffer_busy);
 }
 
 void test_calendar(void){
@@ -628,8 +638,9 @@ void lorawan_tx_data(void){
   int ret=0,nt=0;
   uint64_t j=0;
 
-  uint32_t pos=C_Buffer_Current_Position;
+  k_mutex_lock(&c_buffer_busy, K_FOREVER);
 
+  uint32_t pos=C_Buffer_Current_Position;
   float a=C_Buffer[pos].gnss_module.latitude;  //4 bytes 0..3
   float b=C_Buffer[pos].gnss_module.longitude; //4 bytes 4..7
   float c=C_Buffer[pos].gnss_module.timestamp; //4 bytes 8 
@@ -640,7 +651,7 @@ void lorawan_tx_data(void){
   uint16_t h=C_Buffer[pos].ntc[1].value;          //2 bytes 20..21
   uint16_t i=C_Buffer[pos].ntc[2].value;          //2 bytes 22..23
                                              //total 30 bytes
-
+  k_mutex_unlock(&c_buffer_busy);
   unsigned char *ptr_lati         = (unsigned char *) &a; //TAKE THE ADDRESS OF VARIABLES
   unsigned char *ptr_long         = (unsigned char *) &b;
   unsigned char *ptr_timestamp    = (unsigned char *) &c;
@@ -681,9 +692,7 @@ void lorawan_tx_data(void){
   printk("\nSending payload...\n");
   data_sent_cnt++;
 
-  //extern uint8_t lorawan_reconnect;
-  //extern uint32_t lorawan_reconnect_cnt;
-  
+ 
 	ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
 		if (ret == -EAGAIN) {
 			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
@@ -700,7 +709,7 @@ void lorawan_tx_data(void){
        lorawan_reconnect_cnt++;
        if(lorawan_reconnect_cnt==LIMIT_RECONNECT_CNT){lorawan_reconnect_cnt=0;lorawan_reconnect=1;}
        if (ret==0){
-        printk("Data sent\n");
+        printk("Payload Data sent\n");
         
         lorawan_reconnect_cnt=0;
         }else{printk("Data send failed-trying again\n");
@@ -710,7 +719,7 @@ void lorawan_tx_data(void){
       nt=0;
 			//return;
 		}else{
-		        printk("Data sent!\n\n");
+		        printk("Payload Data sent!\n\n");
             
             lorawan_reconnect_cnt=0;
 		     }
