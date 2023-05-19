@@ -260,6 +260,9 @@ uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
 uint8_t data_sent_cnt=0;
 
+void lorawan_thread(void);
+
+
 // MUTEX FOR AD CONVERSION
 // K_MUTEX_DEFINE(ad_ready)
 
@@ -372,6 +375,10 @@ static void dl_callback(uint8_t port, bool data_pending,
     
 }
 
+struct lorawan_downlink_cb downlink_cb = {
+	   .port = LW_RECV_PORT_ANY,
+	   .cb = dl_callback
+    };
 
 static void lorwan_datarate_changed(enum lorawan_datarate dr)
 {
@@ -1367,13 +1374,10 @@ void configure_adc(void)
 
 void main(void)
 {
-	// int ret;
-	int blink_status = 0;
-	// int led1_status = 0;
-	// int led2_status = 0;
-	// int led3_status = 0;
-	// int led4_status = 0;
+
 	int err = 0;
+
+     
 
 	// init MUTEX
 	k_mutex_init(&ad_ready);
@@ -1383,6 +1387,9 @@ void main(void)
 	configure_all_buttons();
 	configure_digital_inputs();
 	configure_adc();
+
+
+
 
 	err = uart_init();
 	if (err)
@@ -1460,28 +1467,31 @@ void main(void)
 	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
-	for (;;)
-	{
 
-		// uart2_tx("ABC");
-		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
-		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+
+	for (;;){
+			k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
 	}
+
+
+
 }
 
 // THREADS
 
 void lorawan_thread(void)
 {
+	//THIS THREAD MUST HAVE MAXIMUM PRIORITY(-9) IN ORDER TO RECEIVE DOWNLINK CALL BACK
     uint64_t i=0,j=0;
 	int ret;
     uint32_t random;
     uint16_t dev_nonce;
+	
 
-    struct lorawan_downlink_cb downlink_cb = {
-	   .port = LW_RECV_PORT_ANY,
-	   .cb = dl_callback
-    };
+   // struct lorawan_downlink_cb downlink_cb = {
+	//   .port = LW_RECV_PORT_ANY,
+	//   .cb = dl_callback
+    //};
 
     lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
 
@@ -1494,9 +1504,10 @@ void lorawan_thread(void)
 		printk("%s: device not ready.\n\n", lora_dev->name);
 		return;
 	}
-  
     lorawan_set_region(LORAWAN_REGION_EU868);
 	
+	lorawan_register_downlink_callback(&downlink_cb);
+	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
     
     while(1){
    	 do {
@@ -1506,8 +1517,7 @@ void lorawan_thread(void)
             lorawan_start();
 			k_sleep(K_MSEC(500));//500ms
 		    lorawan_enable_adr( true );
-            lorawan_register_downlink_callback(&downlink_cb);
-			lorawan_register_dr_changed_callback(lorwan_datarate_changed);
+   
      		random = sys_rand32_get();
      		dev_nonce = random & 0x0000FFFF;
 			join_cfg.mode = LORAWAN_CLASS_A; //was A
@@ -1879,9 +1889,11 @@ void downlink_thread(void){
 		switch(cmd){
 			case 0x41:
 			   gpio_pin_set_dt(LED4, ON); //A
+			   printk("TURNED ON LED 4\n");
 			break;
 			case 0x42:
 			   gpio_pin_set_dt(LED4, OFF);//B
+			   printk("TURNED OFF LED 4\n");
 			break;
 			
 		}
@@ -1892,6 +1904,13 @@ void downlink_thread(void){
     
 }
 
+void activity(void){
+	int blink_status = 0;
+    for (;;){
+		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
+		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+	}
+}
 
 // THREADS START
 
@@ -1903,6 +1922,7 @@ K_THREAD_DEFINE(send_protobuf_id, 10000, send_protobuf_thread, NULL, NULL, NULL,
 K_THREAD_DEFINE(ble_write_thread_id, 10000, ble_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(gnss_write_thread_id, 4096, gnss_write_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(shoot_minute_save_thread_id, 10000, shoot_minute_save_thread, NULL, NULL, NULL, 4, 0, 0);
-K_THREAD_DEFINE(lorawan_thread_id, 16384, lorawan_thread, NULL, NULL, NULL, -9, 0, 0);
+K_THREAD_DEFINE(lorawan_thread_id, 32000, lorawan_thread, NULL, NULL, NULL, -9, 0, 0);
 K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, 8, 0, 0);
 K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
+K_THREAD_DEFINE(activity_id, 2048, activity, NULL, NULL, NULL, -9, 0, 0);

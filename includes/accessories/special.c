@@ -338,11 +338,14 @@ void init_circular_buffer(void){
 void feed_circular_buffer(void){
 
     k_mutex_lock(&c_buffer_busy,K_FOREVER);
-    C_Buffer_Current_Position=C_Buffer_Free_Position;
-    // This funcion must be called each 1 minute
-    // FIRST FREE POSITION IS 0 AND THE LAST IS (CIRCULAR_BUFFER_ELEMENTS-1)     
+      
      
     if (C_Buffer_Free_Position < CIRCULAR_BUFFER_ELEMENTS){
+
+     C_Buffer_Current_Position=C_Buffer_Free_Position;
+     // This funcion must be called each 1 minute
+     // FIRST FREE POSITION IS 0 AND THE LAST IS (CIRCULAR_BUFFER_ELEMENTS-1)   
+
      C_Buffer[C_Buffer_Free_Position].gnss_module=values_of_gnss_module();
      C_Buffer[C_Buffer_Free_Position].analog=values_of_analog_sensor(ANALOG_SENSOR);
 
