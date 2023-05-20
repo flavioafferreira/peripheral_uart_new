@@ -29,6 +29,14 @@
 #define DIGITAL_1_LIMIT 0xFFFF
 #define DIGITAL_2_LIMIT 0xFFFF
 
+//LEDS
+#define LED1 &pin_test_led0
+#define LED2 &pin_test_led1
+#define LED3 &pin_test_led2
+#define LED4 &pin_test_led3
+
+
+
 
 #define NUMBER_OF_TEMPERATURE_SENSORS 3
 #define NUMBER_OF_TIMER_SENSORS 2
@@ -65,6 +73,15 @@
 #define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
 #define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
 #define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
+
+//CALLBACK CMDS 0
+#define CMD_READ     0X50 //P
+#define CMD_WRITE    0X51 //Q
+#define CMD_RESET    0X52 //R
+#define CMD_DEV_EUI  0X53 //S
+#define CMD_JOIN_EUI 0X54 //T
+#define CMD_APP_EUI  0X55 //U
+
 
 
 //STRUCTURE FOR HISTORY
@@ -184,7 +201,7 @@ struct _Downlink_ {
 typedef struct _Setup_{ 
     uint16_t led_blink_time;   //milliseconds  
     uint16_t interval_uplink;  //seconds       2
-    uint8_t  output_port;   //ON-OFF        b7..b0 1    
+    uint8_t  output_port;      //ON-OFF        b7..b0 1    
     uint16_t turn_angle[4];    //degrees    -180 <--> +180 
     uint8_t  turn_speed[4];    //rpm = degrees/second   
     uint8_t  dev [8];

@@ -12,7 +12,7 @@
 #include <zephyr/types.h>
 #include <zephyr/kernel.h>
 #include <zephyr/timing/timing.h>
-
+#include <zephyr/drivers/gpio.h>
 #include <math.h>
 
 //Special Routines
@@ -81,6 +81,7 @@ K_MUTEX_DEFINE(c_buffer_busy);
 
 //SETUP
 _Setup Initial_Setup;
+
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -244,9 +245,9 @@ void print_current_position_cb(uint32_t pos){
     color(13);
     printf("\n\n####Position %d #####\n",pos);
 
-    if (position.gps_fixed==1) printf("GPS Fixed  :Yes\n");
-      else printf("GPS Fixed  :No\n");
-
+    if (position.gps_fixed==1) {color(2);printf("GPS Fixed  :Yes\n");}
+      else {color(2); printf("GPS Fixed  :No\n");}
+    color(13);
     
     sprintf(buf_lati, "%f", C_Buffer[pos].gnss_module.latitude);
     sprintf(buf_long, "%f", C_Buffer[pos].gnss_module.longitude);
@@ -778,6 +779,17 @@ void setup_initialize(void){
 void print_setup(void){
 	  printk("Led Blink Time      : %d\n",Initial_Setup.led_blink_time);
 	  printk("Interval UpLink Time: %d\n",Initial_Setup.interval_uplink);
+    printk("DEV : ");
+    for(int i=0;i<=7;i++){printk("%02X ",Initial_Setup.dev[i]);}
+    printk("\n");
+    printk("JOIN: ");
+    for(int i=0;i<=7;i++){printk("%02X ",Initial_Setup.join[i]);}
+    printk("\n");
+    printk("KEY : ");
+    for(int i=0;i<=15;i++){printk("%02X ",Initial_Setup.key[i]);}
+    printk("\n");
+
+
 }
 
 void color(uint8_t color) {
@@ -817,4 +829,45 @@ void color(uint8_t color) {
         case 255: printk("\033[0m");       // Padrão (branco)
                 break;
     }
+}
+
+void cmd_interpreter(uint8_t *data,uint8_t len){
+  color(4);
+  	switch(data[0]){
+			case 0x41:
+			   color(1);
+			   //gpio_pin_set_dt(LED4, ON); //A
+			   printk("TURNED ON LED 4\n");
+			break;
+			case 0x42:
+			   color(1);
+			   //gpio_pin_set_dt(LED4, OFF);//B
+			   printk("TURNED OFF LED 4\n");
+			break;
+			
+            case CMD_RESET: //R
+			    color(2);
+			    setup_initialize();
+				flash_write_setup();
+				print_setup();
+				printk("Setup Reset\n");
+			break;
+
+            case CMD_READ: //P
+			     color(3);
+			     flash_read_setup();
+			     print_setup();
+			break;
+            case CMD_WRITE: //Q
+			     color(3);
+			     
+			     print_setup();
+			break;
+			
+
+		}
+       color(0);
+      
+	 
+
 }

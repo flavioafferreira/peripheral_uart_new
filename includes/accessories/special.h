@@ -38,6 +38,7 @@ void print_setup(void);
 void flash_write_setup(void);
 void flash_read_setup(void);
 void color(uint8_t color);
+void cmd_interpreter(uint8_t *data,uint8_t len);
 
 /*
 

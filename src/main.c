@@ -170,11 +170,6 @@ static const struct gpio_dt_spec pin_test_led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpi
 #define LED3_NODE DT_ALIAS(led3)
 static const struct gpio_dt_spec pin_test_led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
 
-#define LED1 &pin_test_led0
-#define LED2 &pin_test_led1
-#define LED3 &pin_test_led2
-#define LED4 &pin_test_led3
-
 #define CON_STATUS_LED LED1
 #define RUN_STATUS_LED LED2
 
@@ -386,7 +381,9 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 	uint8_t unused, max_size;
 
 	lorawan_get_payload_sizes(&unused, &max_size);
+	color(10);
 	printk("New Datarate: DR_%d, Max Payload %d \n", dr, max_size);
+	color(255);
 }
 
 // UART
@@ -1049,12 +1046,8 @@ void button_changed(uint32_t button_state, uint32_t has_changed)
 void flash_init(void)
 {
 
-	// struct flash_pages_info info;
-
+    color(10);
 	int rc = 0;//, cnt = 0, cnt_his = 0;
-	//char buf[16];
-	//uint8_t key[8], longarray[128];
-	// uint32_t button2_counter = 0U, button2_counter_his;
 
 	/* define the nvs file system by settings with:
 	 *	sector_size equal to the pagesize,
@@ -1293,6 +1286,7 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uin
 
 void configure_all_buttons(void)
 {
+	color(14);
 	gpio_pin_configure_dt(BUTTON1_ADR, GPIO_INPUT);
 	gpio_pin_interrupt_configure_dt(BUTTON1_ADR, GPIO_INT_EDGE_TO_ACTIVE);
 	gpio_init_callback(BUTTON1_CB, button_pressed_1, BIT(BUTTON1.pin));
@@ -1322,7 +1316,7 @@ void configure_all_buttons(void)
 
 void configure_digital_inputs(void)
 {
-
+    color(14);
 	gpio_pin_configure_dt(DIG_0_ADR, GPIO_INPUT);
 	printk("GPIO 1 Pin 4 Value:%d \n", gpio_pin_get_dt(DIG_0_ADR));
 	gpio_pin_interrupt_configure_dt(DIG_0_ADR, GPIO_INT_EDGE_TO_ACTIVE);
@@ -1894,12 +1888,13 @@ void downlink_thread(void){
 	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
 	  printk(downlink_cmd_new.data, downlink_cmd_new.len, "Payload: \n");
 
-	  printk("%X:%X:%X",downlink_cmd_new.data[0],downlink_cmd_new.data[1],downlink_cmd_new.data[2]);
-	  cmd=downlink_cmd_new.data[0];
-
+	  printk("%X:%X:%X\n",downlink_cmd_new.data[0],downlink_cmd_new.data[1],downlink_cmd_new.data[2]);
+      static uint8_t *data=downlink_cmd_new.data;
 	  
-      
-		switch(cmd){
+
+	  cmd_interpreter(data,downlink_cmd_new.len);
+      /*
+		switch(downlink_cmd_new.data[0]){
 			case 0x41:
 			   color(1);
 			   gpio_pin_set_dt(LED4, ON); //A
@@ -1911,7 +1906,7 @@ void downlink_thread(void){
 			   printk("TURNED OFF LED 4\n");
 			break;
 			
-            case 0x43: //C
+            case CMD_RESET: //R
 			    color(2);
 			    setup_initialize();
 				flash_write_setup();
@@ -1919,15 +1914,18 @@ void downlink_thread(void){
 				printk("Setup Reset\n");
 			break;
 
-            case 0x44: //D
+            case CMD_READ: //P
 			     color(3);
 			     flash_read_setup();
 			     print_setup();
 			break;
-
-			
-
+            case CMD_WRITE: //Q
+			     color(3);
+			     
+			     print_setup();
+			break;
 		}
+       */
        color(0);
       
 	  
