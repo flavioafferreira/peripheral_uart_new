@@ -79,6 +79,9 @@ extern uint8_t data_sent_cnt;
 //MUTEX
 K_MUTEX_DEFINE(c_buffer_busy);
 
+//SETUP
+_Setup Initial_Setup;
+
 void flash_button2_counter(void){
 	int rc = 0;
     button2_counter++;
@@ -91,6 +94,16 @@ void flash_button2_counter(void){
 			BOOT_POSITION, button2_counter);
 
 	}	
+}
+
+void flash_write_setup(void){
+    uint8_t err=0;
+    uint16_t size_setup=sizeof(_Setup);
+    err=nvs_write(&fs, SETUP_POSITION, &Initial_Setup,size_setup);
+}
+
+void flash_read_setup(void){
+	(void)nvs_read(&fs, SETUP_POSITION, &Initial_Setup, sizeof(Initial_Setup));
 }
 
 void fill_date(uint8_t *field_time,uint8_t *field_date ){
@@ -226,8 +239,9 @@ void print_current_position_cb(uint32_t pos){
 
 
    uint8_t i=0;
-
+    
     k_mutex_lock(&c_buffer_busy,K_FOREVER);
+    color(13);
     printf("\n\n####Position %d #####\n",pos);
 
     if (position.gps_fixed==1) printf("GPS Fixed  :Yes\n");
@@ -280,6 +294,7 @@ void print_current_position_cb(uint32_t pos){
       C_Buffer[pos].digital[i].value);
       i++;
     }
+    color(255);
   k_mutex_unlock(&c_buffer_busy);
 }
 
@@ -290,8 +305,9 @@ void print_current_position_cb_new(uint32_t pos){
 
    C_Buffer = k_malloc(size);
    *C_Buffer=read_memory(pos);
-
+    
     k_mutex_lock(&c_buffer_busy,K_FOREVER);
+    color(13);
     printf("\n\n####Position %d #####\n",pos);
 
     printf("GNSS Position Lat=%d Long=%d TimeStamp=%d \n",
@@ -326,7 +342,7 @@ void print_current_position_cb_new(uint32_t pos){
       C_Buffer->digital[i].value);
       i++;
     }
-
+ color(255);
  k_free(C_Buffer);
  k_mutex_unlock(&c_buffer_busy);
 }
@@ -382,7 +398,7 @@ _Circular_Buffer read_memory(uint32_t Pos){
 }
 
 void save_memory(uint32_t Pos){
-    k_mutex_lock(&c_buffer_busy,K_FOREVER);
+    color(6);
     _Circular_Buffer *buf;
     uint16_t size=sizeof(_Circular_Buffer),err=0;
     printf("Size of structure=%d bytes\n",size);
@@ -394,9 +410,9 @@ void save_memory(uint32_t Pos){
     err=nvs_write(&fs, id, buf,size);
     printf("Result=%d bytes saved\n",err);
     (void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position,sizeof(C_Buffer_Current_Position));
-
+    color(255);
     k_free(buf);
-    k_mutex_unlock(&c_buffer_busy); 
+    
 }
 
 void init_alarm_circular_buffer(void){
@@ -687,12 +703,14 @@ void lorawan_tx_data(void){
 
 
 
- 
+ color(12);
  printk("HELIUM PAYLOAD: ");
  for (int h = 0; h < sizeof(data_test); h++) {
      printk("%02X ",data_test[h]);
   }
+  color(10);
   printk("\nSending payload...\n");
+  color(255);
   data_sent_cnt++;
 
  
@@ -721,9 +739,9 @@ void lorawan_tx_data(void){
       }
       nt=0;
 			//return;
-		}else{
+		}else{  color(10);
 		        printk("Payload Data sent!\n\n");
-            
+            color(255);
             lorawan_reconnect_cnt=0;
 		     }
     if(data_sent_cnt>=DATA_SENT_JOIN_AGAIN){lorawan_reconnect=1;data_sent_cnt=0;}
@@ -732,3 +750,71 @@ void lorawan_tx_data(void){
 
 }
 
+void setup_initialize(void){
+
+  uint8_t i;
+  uint8_t dev[8] = LORAWAN_DEV_EUI_HELIUM;
+  uint8_t join[8] = LORAWAN_JOIN_EUI_HELIUM;
+  uint8_t key[16] = LORAWAN_APP_KEY_HELIUM;
+  for(i=0;i<=7;i++){Initial_Setup.dev[i] = dev[i];} 
+  for(i=0;i<=7;i++){Initial_Setup.join[i] = join[i];} 
+  for(i=0;i<=15;i++){Initial_Setup.key[i] = key[i];} 
+  
+  Initial_Setup.led_blink_time=150;
+  Initial_Setup.interval_uplink=180;
+  Initial_Setup.output_port=0;
+  Initial_Setup.turn_angle[0]=0;
+  Initial_Setup.turn_angle[1]=0;
+  Initial_Setup.turn_angle[2]=0;
+  Initial_Setup.turn_angle[3]=0;
+  Initial_Setup.turn_speed[0]=0;
+  Initial_Setup.turn_speed[1]=0;
+  Initial_Setup.turn_speed[2]=0;
+  Initial_Setup.turn_speed[3]=0;
+  
+  
+}
+
+void print_setup(void){
+	  printk("Led Blink Time      : %d\n",Initial_Setup.led_blink_time);
+	  printk("Interval UpLink Time: %d\n",Initial_Setup.interval_uplink);
+}
+
+void color(uint8_t color) {
+    switch (color) {
+        case 0: printk("\033[0m");        // Preto
+                break;
+        case 1: printk("\033[31m");       // Vermelho
+                break;
+        case 2: printk("\033[32m");       // Verde
+                break;
+        case 3: printk("\033[33m");       // Amarelo
+                break;
+        case 4: printk("\033[34m");       // Azul
+                break;
+        case 5: printk("\033[35m");       // Magenta
+                break;
+        case 6: printk("\033[36m");       // Ciano
+                break;
+        case 7: printk("\033[37m");       // Branco
+                break;
+        case 8: printk("\033[90m");       // Cinza claro
+                break;
+        case 9: printk("\033[91m");       // Vermelho claro
+                break;
+        case 10: printk("\033[92m");      // Verde claro
+                break;
+        case 11: printk("\033[93m");      // Amarelo claro
+                break;
+        case 12: printk("\033[94m");      // Azul claro
+                break;
+        case 13: printk("\033[95m");      // Magenta claro
+                break;
+        case 14: printk("\033[96m");      // Ciano claro
+                break;
+        case 15: printk("\033[97m");      // Branco claro
+                break;
+        case 255: printk("\033[0m");       // Padrão (branco)
+                break;
+    }
+}

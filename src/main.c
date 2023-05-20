@@ -81,7 +81,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
 
-#define RUN_LED_BLINK_INTERVAL 1000
+#define RUN_LED_BLINK_INTERVAL 200 //milliseconcs
 
 #define KEY_PASSKEY_ACCEPT DK_BTN1_MSK
 #define KEY_PASSKEY_REJECT DK_BTN2_MSK
@@ -228,6 +228,7 @@ struct flash_pages_info info;
 #define LONG_ID 5
 */
 uint32_t button2_counter = 0U, button2_counter_his;
+extern _Setup Initial_Setup;
 
 int err = 0;
 uint8_t start_send = 0;
@@ -327,9 +328,9 @@ BUILD_ASSERT(DT_NODE_HAS_STATUS(DEFAULT_RADIO_NODE, okay), "No default LoRa radi
 #define DEFAULT_RADIO DT_LABEL(DEFAULT_RADIO_NODE)
 
 /* Customize based on network configuration */
-#define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
-#define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
-#define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
+//#define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
+//#define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
+//#define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
 #define DELAY K_MSEC(10000)
 #define MAX_DATA_LEN 10
 char data_test[] =  { 0X00 , 0X01 ,
@@ -1050,9 +1051,9 @@ void flash_init(void)
 
 	// struct flash_pages_info info;
 
-	int rc = 0, cnt = 0, cnt_his = 0;
-	char buf[16];
-	uint8_t key[8], longarray[128];
+	int rc = 0;//, cnt = 0, cnt_his = 0;
+	//char buf[16];
+	//uint8_t key[8], longarray[128];
 	// uint32_t button2_counter = 0U, button2_counter_his;
 
 	/* define the nvs file system by settings with:
@@ -1099,6 +1100,7 @@ void flash_init(void)
 						sizeof(button2_counter));
 	}
 
+	
 	// Creates C_Buffer_Current_Position if not exist or retrieve the value stored on memory
 	rc = nvs_read(&fs, LOG_POSITION, &C_Buffer_Current_Position, sizeof(C_Buffer_Current_Position));
 	if (rc > 0)
@@ -1116,6 +1118,25 @@ void flash_init(void)
 			   LOG_POSITION);
 		(void)nvs_write(&fs, LOG_POSITION, &C_Buffer_Current_Position, sizeof(C_Buffer_Current_Position));
 	}
+
+   
+	// Setup
+	rc = nvs_read(&fs, SETUP_POSITION, &Initial_Setup, sizeof(Initial_Setup));
+	if (rc > 0)
+	{ 
+		printk("Id: %d, Setup OK\n",SETUP_POSITION);
+	}
+	else
+	{ 
+		printk("No initial Setup found, adding it on position=%d\n",SETUP_POSITION);
+		setup_initialize();
+		flash_write_setup();
+		
+	}
+   
+
+
+
 }
 
 void flash_test_atom(void)
@@ -1374,30 +1395,21 @@ void configure_adc(void)
 
 void main(void)
 {
-
+    color(3);
 	int err = 0;
-
-     
-
 	// init MUTEX
 	k_mutex_init(&ad_ready);
-
 	configure_led();
 	turn_off_all_leds();
 	configure_all_buttons();
 	configure_digital_inputs();
 	configure_adc();
-
-
-
-
+	
 	err = uart_init();
 	if (err)
 	{
 		error();
 	}
-
-
     
 	if (IS_ENABLED(CONFIG_BT_NUS_SECURITY_ENABLED))
 	{
@@ -1421,11 +1433,11 @@ void main(void)
 	{
 		error();
 	}
-
+    color(6);
 	printf("Bluetooth initialized \n\r");
 	printf("Increase the Client MTU to 65 \n\r");
 	printf("Press any key to send the Protobuffer \n\r");
-
+    color(255);
 	k_sem_give(&ble_init_ok);
 
 	if (IS_ENABLED(CONFIG_SETTINGS))
@@ -1452,7 +1464,11 @@ void main(void)
 
 	k_msleep(300);
 	flash_init();
-
+	 
+	setup_initialize();
+	flash_write_setup();
+	flash_read_setup();
+	print_setup();
 
     err = uart_2_init();
 	if (err)
@@ -1486,20 +1502,14 @@ void lorawan_thread(void)
 	int ret;
     uint32_t random;
     uint16_t dev_nonce;
-	
-
-   // struct lorawan_downlink_cb downlink_cb = {
-	//   .port = LW_RECV_PORT_ANY,
-	//   .cb = dl_callback
-    //};
-
     lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
 
 	//LoRaMacTestSetDutyCycleOn(0);//disable dutyCycle for test
 
     k_sem_take(&lorawan_init, K_FOREVER);  // WAIT FOR INIT
+	color(10);
     printk("LoraWan Thread Started\n\n");
-
+    color(255);
 	if (!device_is_ready(lora_dev)) {
 		printk("%s: device not ready.\n\n", lora_dev->name);
 		return;
@@ -1511,8 +1521,9 @@ void lorawan_thread(void)
     
     while(1){
    	 do {
-    	    
+    	    color(10);
    	        printk("Joining network over OTAA\n\n");
+			color(255);
             k_sleep(K_MSEC(1000));
             lorawan_start();
 			k_sleep(K_MSEC(500));//500ms
@@ -1528,23 +1539,23 @@ void lorawan_thread(void)
     		join_cfg.otaa.dev_nonce = dev_nonce;
 		    ret = lorawan_join(&join_cfg);
 			if (ret<0){
-				 printk("Failed..Waiting some seconds to try again\n\n");
+				 color(10);
+				 printk("Failed..Waiting some seconds to try join again\n\n");
+				 color(255);
 			     k_sleep(K_MSEC(53000));
 	        }
     
       } while ( ret < 0 );
+	  color(10);
 	  printk("Joined OTAA\n\n");
+	  color(255);
+	
 	  lorawan_reconnect=0;
       while (!lorawan_reconnect) {
 		  k_sem_take(&lorawan_tx, K_FOREVER);
 		  lorawan_tx_data();
-
 	    }
-	   
-	 
      }
-		
-	
 }
 
 void shoot_minute_save_thread(void)
@@ -1598,7 +1609,9 @@ void shoot_minute_save_thread(void)
 void feed_circular_buffer_thread(void){
    while(1){	
      k_sem_take(&circular_buffer_sh,K_FOREVER);
+	 color(6);
      printk("LOG Circular Buffer\n");
+	 color(255);
      dig_probe=gpio_pin_get_dt(DIG_3_ADR);//READS A DIGITAL INPUT
      feed_circular_buffer();
      print_current_position_cb(C_Buffer_Current_Position);
@@ -1875,8 +1888,8 @@ void downlink_thread(void){
     uint8_t cmd=0;
 	while(1){
 	  k_sem_take(&lorawan_rx,K_FOREVER);
-      
-	  printk("\033[31mCMD-Received\n");
+      color(4);
+	  printk("CMD-Received\n");
 	  printk("Len: %d\n",downlink_cmd_new.len);
 	  printk("Port %d, RSSI %ddB, SNR %ddBm \n", downlink_cmd_new.port, downlink_cmd_new.rssi, downlink_cmd_new.snr);
 	  printk(downlink_cmd_new.data, downlink_cmd_new.len, "Payload: \n");
@@ -1884,20 +1897,39 @@ void downlink_thread(void){
 	  printk("%X:%X:%X",downlink_cmd_new.data[0],downlink_cmd_new.data[1],downlink_cmd_new.data[2]);
 	  cmd=downlink_cmd_new.data[0];
 
-	  printk("\033[0m\n");
+	  
       
 		switch(cmd){
 			case 0x41:
+			   color(1);
 			   gpio_pin_set_dt(LED4, ON); //A
 			   printk("TURNED ON LED 4\n");
 			break;
 			case 0x42:
+			   color(1);
 			   gpio_pin_set_dt(LED4, OFF);//B
 			   printk("TURNED OFF LED 4\n");
 			break;
 			
-		}
+            case 0x43: //C
+			    color(2);
+			    setup_initialize();
+				flash_write_setup();
+				print_setup();
+				printk("Setup Reset\n");
+			break;
 
+            case 0x44: //D
+			     color(3);
+			     flash_read_setup();
+			     print_setup();
+			break;
+
+			
+
+		}
+       color(0);
+      
 	  
 
 	}

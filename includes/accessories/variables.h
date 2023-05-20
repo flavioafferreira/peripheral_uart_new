@@ -49,6 +49,7 @@
 
 #define BOOT_POSITION    1     //THIS IS AN ID TO IDENTIFY THE POSITION ON NVS
 #define LOG_POSITION     2     //THIS IS AN ID TO IDENTIFY THE POSITION ON NVS
+#define SETUP_POSITION   3     //THIS IS AN ID TO IDENTIFY THE POSITION ON NVS
 #define BASE_DATA_BUFFER 1000  //THIS IS AN ID TO IDENTIFY THE POSITION ON NVS
 
 #define BUFF_SIZE 480  //BUFFER TO JOIN UART BYTES RECEIVED
@@ -60,7 +61,10 @@
 #define LIMIT_RECONNECT_CNT 50
 #define LORAWAN_INTERVAL 3 //INTERVAL IN MINUTES
 #define DOWNLINK_BUFF_SIZE 51
-#define DATA_SENT_JOIN_AGAIN 5
+#define DATA_SENT_JOIN_AGAIN 20
+#define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
+#define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
+#define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
 
 
 //STRUCTURE FOR HISTORY
@@ -177,6 +181,16 @@ struct _Downlink_ {
     uint8_t len;     
 };
 
+typedef struct _Setup_{ 
+    uint16_t led_blink_time;   //milliseconds  
+    uint16_t interval_uplink;  //seconds       2
+    uint8_t  output_port;   //ON-OFF        b7..b0 1    
+    uint16_t turn_angle[4];    //degrees    -180 <--> +180 
+    uint8_t  turn_speed[4];    //rpm = degrees/second   
+    uint8_t  dev [8];
+    uint8_t  join[8];
+    uint8_t  key [16];
+}_Setup;
 
 
 

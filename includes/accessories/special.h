@@ -33,6 +33,11 @@ void fill_date(uint8_t *field_time,uint8_t *field_date );
 void latitude_time_print(void);
 void lorawan_tx_data(void);
 float ntc_temperature(uint16_t conversao,uint8_t sensor_number);
+void setup_initialize(void);
+void print_setup(void);
+void flash_write_setup(void);
+void flash_read_setup(void);
+void color(uint8_t color);
 
 /*
 
