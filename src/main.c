@@ -263,6 +263,7 @@ static K_SEM_DEFINE(gps_init,0,1);
 static K_SEM_DEFINE(adc_init,0,1);
 static K_SEM_DEFINE(alarm_infra,0,1);
 static K_SEM_DEFINE(alarm_infra_init,0,1);
+static uint8_t alarm_busy=0;
 
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
@@ -1296,7 +1297,8 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uin
 
 void digital_4_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	k_sem_give(&alarm_infra);
+	if (alarm_busy==0)
+	  k_sem_give(&alarm_infra);
 	
 }
 
@@ -1364,7 +1366,7 @@ void configure_digital_inputs(void)
 
 	gpio_pin_configure_dt(DIG_4_ADR, GPIO_INPUT);
 	printk("GPIO 1 Pin 7 Value:%d \n", gpio_pin_get_dt(DIG_4_ADR));
-	gpio_pin_interrupt_configure_dt(DIG_4_ADR, GPIO_INT_LEVEL_ACTIVE);
+	gpio_pin_interrupt_configure_dt(DIG_4_ADR, GPIO_INT_EDGE_RISING);
 	gpio_init_callback(DIG_4_CB, digital_4_call_back, BIT(DIG_4.pin));
 	gpio_add_callback(DIG_4.port, DIG_4_CB);
 	printk("Set up Digital Input at %s pin %d\n", DIG_4.port->name, DIG_4.pin);
@@ -1508,7 +1510,7 @@ void main(void)
 	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
-    k_msleep(10000);
+    k_msleep(300000);
 	color(1);
     printk("Alarm Activated \n");
 	color(255);
@@ -1898,7 +1900,7 @@ void gnss_write_thread(void)
 				   position.latitude=atof(field[3]);
 				   position.longitude=atof(field[5]);
 				   fill_date(field[1],field[9]);
-				  }else printf("Not Fixed yet\n");
+				  }//else printf("Not Fixed yet\n");
 			    }
 				index = 0;
 				pkt_init = 0;
@@ -1953,13 +1955,16 @@ void alarm_infra_thread(void){
 	 while(1){
 	   
 	   k_sem_take(&alarm_infra,K_FOREVER);
+
+       alarm_busy=1;
 	   color(1);
        printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
-	   dig_probe=gpio_pin_get_dt(DIG_3_ADR); //READ LED 4 TO SEND TO LORAWAN
+	   dig_probe=2; //READ LED 4 TO SEND TO LORAWAN
 	   k_sem_give(&lorawan_tx);
 	   color(255);
-	   k_msleep(5000);
+	   k_msleep(60000);
+	   alarm_busy=0;
 	 }
 }
 

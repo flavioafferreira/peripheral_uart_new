@@ -1270,12 +1270,12 @@ zephyr_udc0: &usbd {
   };
 
   dig3: dig_3 {
-   gpios = < &gpio0 27 ((1 << 4) | (0 << 0)) >;
+   gpios = <&gpio0 27 ((1 << 0) | (1 << 4))>;
    label = "Digital Input 3";
   };
 
   dig4: dig_4 {
-   gpios = < &gpio1 0x07 ((1 << 4) | (0 << 0)) >;
+   gpios = <&gpio1 7 ((1 << 5))>;
    label = "Digital Input 4";
   };
 

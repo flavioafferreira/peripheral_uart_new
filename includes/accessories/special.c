@@ -691,7 +691,7 @@ void lorawan_tx_data(void){
   }
 
      //data_test[16] =*(ptr_digi0);
-     data_test[16] = (1-dig_probe);
+     data_test[16] = dig_probe;
      data_test[17] =*(ptr_digi1);
 
 

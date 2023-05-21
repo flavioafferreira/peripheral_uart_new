@@ -2578,7 +2578,7 @@
 #define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_PH DT_N_S_soc_S_peripheral_40000000_S_gpio_842500
 #define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_VAL_pin 27
 #define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_VAL_pin_EXISTS 1
-#define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_VAL_flags 16
+#define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_VAL_flags 17
 #define DT_N_S_digital_S_dig_3_P_gpios_IDX_0_VAL_flags_EXISTS 1
 #define DT_N_S_digital_S_dig_3_P_gpios_FOREACH_PROP_ELEM(fn) fn(DT_N_S_digital_S_dig_3, gpios, 0)
 #define DT_N_S_digital_S_dig_3_P_gpios_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_digital_S_dig_3, gpios, 0)
@@ -2713,7 +2713,7 @@
 #define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_PH DT_N_S_soc_S_peripheral_40000000_S_gpio_842800
 #define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_VAL_pin 7
 #define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_VAL_pin_EXISTS 1
-#define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_VAL_flags 16
+#define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_VAL_flags 32
 #define DT_N_S_digital_S_dig_4_P_gpios_IDX_0_VAL_flags_EXISTS 1
 #define DT_N_S_digital_S_dig_4_P_gpios_FOREACH_PROP_ELEM(fn) fn(DT_N_S_digital_S_dig_4, gpios, 0)
 #define DT_N_S_digital_S_dig_4_P_gpios_FOREACH_PROP_ELEM_SEP(fn, sep) fn(DT_N_S_digital_S_dig_4, gpios, 0)
