@@ -138,24 +138,34 @@ static struct gpio_callback digital_cb_data_dig1;
 static const struct gpio_dt_spec digital_dig2 = GPIO_DT_SPEC_GET_OR(DIG_2_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig2;
 
+//LED FEEDBACK
 #define DIG_3_NODE DT_ALIAS(dg3)
 static const struct gpio_dt_spec digital_dig3 = GPIO_DT_SPEC_GET_OR(DIG_3_NODE, gpios, {0});
 static struct gpio_callback digital_cb_data_dig3;
+
+//PRESENCE SENSOR
+#define DIG_4_NODE DT_ALIAS(dg4)
+static const struct gpio_dt_spec digital_dig4 = GPIO_DT_SPEC_GET_OR(DIG_4_NODE, gpios, {0});
+static struct gpio_callback digital_cb_data_dig4;
+
 
 #define DIG_0_ADR &digital_dig0
 #define DIG_1_ADR &digital_dig1
 #define DIG_2_ADR &digital_dig2
 #define DIG_3_ADR &digital_dig3
+#define DIG_4_ADR &digital_dig4
 
 #define DIG_0 digital_dig0
 #define DIG_1 digital_dig1
 #define DIG_2 digital_dig2
 #define DIG_3 digital_dig3
+#define DIG_4 digital_dig4
 
 #define DIG_0_CB &digital_cb_data_dig0
 #define DIG_1_CB &digital_cb_data_dig1
 #define DIG_2_CB &digital_cb_data_dig2
 #define DIG_3_CB &digital_cb_data_dig3
+#define DIG_4_CB &digital_cb_data_dig4
 
 // LEDS
 #define LED0_NODE DT_ALIAS(led0)
@@ -251,6 +261,8 @@ static K_SEM_DEFINE(circular_buffer_sh,0,1);
 static K_SEM_DEFINE(timer_init,0,1);
 static K_SEM_DEFINE(gps_init,0,1);
 static K_SEM_DEFINE(adc_init,0,1);
+static K_SEM_DEFINE(alarm_infra,0,1);
+static K_SEM_DEFINE(alarm_infra_init,0,1);
 
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
@@ -1282,6 +1294,14 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uin
 		digital_value[2]++;
 }
 
+void digital_4_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+	k_sem_give(&alarm_infra);
+	
+}
+
+
+
 // CONFIGURE BUTTONS
 
 void configure_all_buttons(void)
@@ -1337,8 +1357,19 @@ void configure_digital_inputs(void)
 	gpio_init_callback(DIG_2_CB, digital_2_call_back, BIT(DIG_2.pin));
 	gpio_add_callback(DIG_2.port, DIG_2_CB);
 	printk("Set up Digital Input at %s pin %d\n", DIG_2.port->name, DIG_2.pin);
+
+	//FEEDBACK OF LED -->> SENT TO LORAWAN AS DIGITAL0
     gpio_pin_configure_dt(DIG_3_ADR, GPIO_INPUT);
 	printk("(Led4_Status)GPIO 0 Pin 27 Value:%d \n", gpio_pin_get_dt(DIG_3_ADR));
+
+	gpio_pin_configure_dt(DIG_4_ADR, GPIO_INPUT);
+	printk("GPIO 1 Pin 7 Value:%d \n", gpio_pin_get_dt(DIG_4_ADR));
+	gpio_pin_interrupt_configure_dt(DIG_4_ADR, GPIO_INT_LEVEL_ACTIVE);
+	gpio_init_callback(DIG_4_CB, digital_4_call_back, BIT(DIG_4.pin));
+	gpio_add_callback(DIG_4.port, DIG_4_CB);
+	printk("Set up Digital Input at %s pin %d\n", DIG_4.port->name, DIG_4.pin);
+
+
 
 }
 
@@ -1477,7 +1508,11 @@ void main(void)
 	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
-
+    k_msleep(10000);
+	color(1);
+    printk("Alarm Activated \n");
+	color(255);
+    k_sem_give(&alarm_infra_init);
 
 	for (;;){
 			k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
@@ -1893,53 +1928,39 @@ void downlink_thread(void){
 	  
 
 	  cmd_interpreter(data,downlink_cmd_new.len);
-      /*
-		switch(downlink_cmd_new.data[0]){
-			case 0x41:
-			   color(1);
-			   gpio_pin_set_dt(LED4, ON); //A
-			   printk("TURNED ON LED 4\n");
-			break;
-			case 0x42:
-			   color(1);
-			   gpio_pin_set_dt(LED4, OFF);//B
-			   printk("TURNED OFF LED 4\n");
-			break;
-			
-            case CMD_RESET: //R
-			    color(2);
-			    setup_initialize();
-				flash_write_setup();
-				print_setup();
-				printk("Setup Reset\n");
-			break;
-
-            case CMD_READ: //P
-			     color(3);
-			     flash_read_setup();
-			     print_setup();
-			break;
-            case CMD_WRITE: //Q
-			     color(3);
-			     
-			     print_setup();
-			break;
-		}
-       */
-       color(0);
-      
-	  
-
+      color(0);
 	}
     
 }
 
 void activity(void){
 	int blink_status = 0;
+	int32_t delay;
+	
     for (;;){
+		delay=Initial_Setup.led_blink_time;
+		if (delay<10){delay=RUN_LED_BLINK_INTERVAL;}
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
-		k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
+		k_sleep(K_MSEC(delay));
+			
 	}
+}
+
+void alarm_infra_thread(void){
+
+	 k_sem_take(&alarm_infra_init,K_FOREVER);
+
+	 while(1){
+	   
+	   k_sem_take(&alarm_infra,K_FOREVER);
+	   color(1);
+       printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
+	   gpio_pin_set_dt(LED4, ON); //SET LED 4
+	   dig_probe=gpio_pin_get_dt(DIG_3_ADR); //READ LED 4 TO SEND TO LORAWAN
+	   k_sem_give(&lorawan_tx);
+	   color(255);
+	   k_msleep(5000);
+	 }
 }
 
 // THREADS START
@@ -1956,3 +1977,4 @@ K_THREAD_DEFINE(lorawan_thread_id, 32000, lorawan_thread, NULL, NULL, NULL, -9, 
 K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, 8, 0, 0);
 K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(activity_id, 2048, activity, NULL, NULL, NULL, -9, 0, 0);
+K_THREAD_DEFINE(alarm_infra_thread_id, 2048, alarm_infra_thread, NULL, NULL, NULL, 7, 0, 0);

@@ -761,7 +761,7 @@ void setup_initialize(void){
   for(i=0;i<=7;i++){Initial_Setup.join[i] = join[i];} 
   for(i=0;i<=15;i++){Initial_Setup.key[i] = key[i];} 
   
-  Initial_Setup.led_blink_time=150;
+  Initial_Setup.led_blink_time=RUN_LED_BLINK_INTERVAL;
   Initial_Setup.interval_uplink=180;
   Initial_Setup.output_port=0;
   Initial_Setup.turn_angle[0]=0;
@@ -834,12 +834,12 @@ void color(uint8_t color) {
 void cmd_interpreter(uint8_t *data,uint8_t len){
   color(4);
   	switch(data[0]){
-			case 0x41:
+			case 0x41: //ATIVA SINALIZADOR DE ALARME
 			   color(1);
 			   //gpio_pin_set_dt(LED4, ON); //A
 			   printk("TURNED ON LED 4\n");
 			break;
-			case 0x42:
+			case 0x42: //DESATIVA SINALIZADOR DE ALARME
 			   color(1);
 			   //gpio_pin_set_dt(LED4, OFF);//B
 			   printk("TURNED OFF LED 4\n");

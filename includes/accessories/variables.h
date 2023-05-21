@@ -82,8 +82,8 @@
 #define CMD_JOIN_EUI 0X54 //T
 #define CMD_APP_EUI  0X55 //U
 
-
-
+//SETUP DEFAULTS
+#define RUN_LED_BLINK_INTERVAL 200
 //STRUCTURE FOR HISTORY
 
 typedef struct _InputValue_ { 
