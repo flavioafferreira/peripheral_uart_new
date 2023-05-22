@@ -171,16 +171,16 @@ static struct gpio_callback digital_cb_data_dig4;
 
 // LEDS
 #define LED0_NODE DT_ALIAS(led0)
-static const struct gpio_dt_spec pin_test_led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+struct gpio_dt_spec pin_test_led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
 #define LED1_NODE DT_ALIAS(led1)
-static const struct gpio_dt_spec pin_test_led1 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
+struct gpio_dt_spec pin_test_led1 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
 
 #define LED2_NODE DT_ALIAS(led2)
-static const struct gpio_dt_spec pin_test_led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
+struct gpio_dt_spec pin_test_led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
 
 #define LED3_NODE DT_ALIAS(led3)
-static const struct gpio_dt_spec pin_test_led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
+struct gpio_dt_spec pin_test_led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
 
 #define CON_STATUS_LED LED1
 #define RUN_STATUS_LED LED2
@@ -1633,7 +1633,7 @@ void shoot_minute_save_thread(void)
             
 			k_sem_give(&circular_buffer_sh);
 			
-			if (lora_cycle_minute>=LORAWAN_INTERVAL){
+			if (lora_cycle_minute>=Initial_Setup.interval_uplink){
 				k_sem_give(&lorawan_tx);
 				lora_cycle_minute=0;
 			}
@@ -1969,7 +1969,7 @@ void alarm_infra_thread(void){
        printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
 	   if(sensor_status.number[SENSOR_DIG_4]<255)sensor_status.number[SENSOR_DIG_4]++;
-	   
+	   if(sensor_status.number[SENSOR_DIG_4]==1)Initial_Setup.interval_uplink=LORAWAN_INTERVAL_ALARM;
 	   k_sem_give(&lorawan_tx);
 	   color(255);
 	   k_msleep(reactivate);

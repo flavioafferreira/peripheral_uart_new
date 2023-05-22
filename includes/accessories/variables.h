@@ -66,8 +66,10 @@
 #define DELAY K_MSEC(10000)
 #define DELAY_RTY K_MSEC(3000)
 #define RETRY 10
-#define LIMIT_RECONNECT_CNT 50 // IF THIS LIMIT REACHED, FORCE A RE-JOIN
-#define LORAWAN_INTERVAL 3 //INTERVAL BETWEEN UPLOADS IN MINUTES - MINIMUM 3 MINUTES
+#define LIMIT_RECONNECT_CNT   50  // IF THIS LIMIT REACHED, FORCE A RE-JOIN
+#define LORAWAN_INTERVAL       6  //INTERVAL BETWEEN UPLOADS IN MINUTES             - MINIMUM 3 MINUTES
+#define LORAWAN_INTERVAL_ALARM 3  //INTERVAL BETWEEN UPLOADS IN MINUTES AFTER ALARM - MINIMUM 3 MINUTES
+
 #define DOWNLINK_BUFF_SIZE 51
 #define DATA_SENT_JOIN_AGAIN 50 //AFTER HOW MANY INTERACTS MAKES A RE-JOIN
 #define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
@@ -86,12 +88,16 @@
 #define SENSOR_DIG_4 4
 
 //CALLBACK CMDS 0
-#define CMD_READ     0X50 //P
-#define CMD_WRITE    0X51 //Q
-#define CMD_RESET    0X52 //R
-#define CMD_DEV_EUI  0X53 //S
-#define CMD_JOIN_EUI 0X54 //T
-#define CMD_APP_EUI  0X55 //U
+#define CMD_READ                0X50 //P
+#define CMD_WRITE               0X51 //Q
+#define CMD_RESET               0X52 //R
+#define CMD_DEV_EUI             0X53 //S
+#define CMD_JOIN_EUI            0X54 //T
+#define CMD_APP_EUI             0X55 //U
+#define CMD_RESET_ALARM_FLAG    0X56 //V
+#define CMD_LED4_ON             0X57 //W
+#define CMD_LED4_OFF            0X58 //X
+
 
 //SETUP DEFAULTS
 #define RUN_LED_BLINK_INTERVAL 200
@@ -211,7 +217,7 @@ struct _Downlink_ {
 
 typedef struct _Setup_{ 
     uint16_t led_blink_time;   //milliseconds  
-    uint16_t interval_uplink;  //seconds       2
+    uint16_t interval_uplink;  //minutes       2
     uint8_t  output_port;      //ON-OFF        b7..b0 1    
     uint16_t turn_angle[4];    //degrees    -180 <--> +180 
     uint8_t  turn_speed[4];    //rpm = degrees/second   

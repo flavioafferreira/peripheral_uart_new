@@ -82,6 +82,14 @@ K_MUTEX_DEFINE(c_buffer_busy);
 //SETUP
 _Setup Initial_Setup;
 
+
+//LEDS
+extern struct gpio_dt_spec pin_test_led0;
+extern struct gpio_dt_spec pin_test_led1;
+extern struct gpio_dt_spec pin_test_led2;
+extern struct gpio_dt_spec pin_test_led3;
+
+
 //
 extern Sensor_Status_ sensor_status;
 
@@ -764,7 +772,7 @@ void setup_initialize(void){
   for(i=0;i<=15;i++){Initial_Setup.key[i] = key[i];} 
   
   Initial_Setup.led_blink_time=RUN_LED_BLINK_INTERVAL;
-  Initial_Setup.interval_uplink=180;
+  Initial_Setup.interval_uplink=LORAWAN_INTERVAL;
   Initial_Setup.output_port=0;
   Initial_Setup.turn_angle[0]=0;
   Initial_Setup.turn_angle[1]=0;
@@ -779,8 +787,8 @@ void setup_initialize(void){
 }
 
 void print_setup(void){
-	  printk("Led Blink Time      : %d\n",Initial_Setup.led_blink_time);
-	  printk("Interval UpLink Time: %d\n",Initial_Setup.interval_uplink);
+	  printk("Led Blink Time      : %d ms\n",Initial_Setup.led_blink_time);
+	  printk("Interval UpLink Time: %d minutes\n",Initial_Setup.interval_uplink);
     printk("DEV : ");
     for(int i=0;i<=7;i++){printk("%02X ",Initial_Setup.dev[i]);}
     printk("\n");
@@ -836,18 +844,26 @@ void color(uint8_t color) {
 void cmd_interpreter(uint8_t *data,uint8_t len){
   color(4);
   	switch(data[0]){
-			case 0x41: //ATIVA SINALIZADOR DE ALARME
+			case CMD_RESET_ALARM_FLAG: //RESET ALARM SIGNAL
 			   color(1);
-			   //gpio_pin_set_dt(LED4, ON); //A
+         sensor_status.number[SENSOR_DIG_4]=0;
+         Initial_Setup.interval_uplink=LORAWAN_INTERVAL;
+			   printk("ALARM FLAG RESET 4\n");
+			break;
+			case CMD_LED4_ON: // TURN ON LED 4
+			   color(1);
+			   gpio_pin_set_dt(LED4, ON);
 			   printk("TURNED ON LED 4\n");
 			break;
-			case 0x42: //DESATIVA SINALIZADOR DE ALARME
+			
+			case CMD_LED4_OFF: //TURN OFF LED 4
 			   color(1);
-			   //gpio_pin_set_dt(LED4, OFF);//B
+			   gpio_pin_set_dt(LED4, OFF);
 			   printk("TURNED OFF LED 4\n");
 			break;
-			
-            case CMD_RESET: //R
+
+
+      case CMD_RESET: //R
 			    color(2);
 			    setup_initialize();
 				flash_write_setup();
@@ -855,12 +871,13 @@ void cmd_interpreter(uint8_t *data,uint8_t len){
 				printk("Setup Reset\n");
 			break;
 
-            case CMD_READ: //P
+      case CMD_READ: //P
 			     color(3);
 			     flash_read_setup();
 			     print_setup();
 			break;
-            case CMD_WRITE: //Q
+
+      case CMD_WRITE: //Q
 			     color(3);
 			     
 			     print_setup();
