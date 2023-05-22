@@ -167,6 +167,8 @@ static struct gpio_callback digital_cb_data_dig4;
 #define DIG_3_CB &digital_cb_data_dig3
 #define DIG_4_CB &digital_cb_data_dig4
 
+
+
 // LEDS
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec pin_test_led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
@@ -265,12 +267,15 @@ static K_SEM_DEFINE(alarm_infra,0,1);
 static K_SEM_DEFINE(alarm_infra_init,0,1);
 static uint8_t alarm_busy=0;
 
+
+//LORAWAN
 uint8_t lorawan_reconnect=0;
 uint32_t lorawan_reconnect_cnt=0;
 uint8_t data_sent_cnt=0;
-
 void lorawan_thread(void);
 
+//ALARM
+Sensor_Status_ sensor_status;
 
 // MUTEX FOR AD CONVERSION
 // K_MUTEX_DEFINE(ad_ready)
@@ -1366,7 +1371,7 @@ void configure_digital_inputs(void)
 
 	gpio_pin_configure_dt(DIG_4_ADR, GPIO_INPUT);
 	printk("GPIO 1 Pin 7 Value:%d \n", gpio_pin_get_dt(DIG_4_ADR));
-	gpio_pin_interrupt_configure_dt(DIG_4_ADR, GPIO_INT_EDGE_RISING);
+	gpio_pin_interrupt_configure_dt(DIG_4_ADR, GPIO_INT_LEVEL_ACTIVE);
 	gpio_init_callback(DIG_4_CB, digital_4_call_back, BIT(DIG_4.pin));
 	gpio_add_callback(DIG_4.port, DIG_4_CB);
 	printk("Set up Digital Input at %s pin %d\n", DIG_4.port->name, DIG_4.pin);
@@ -1422,6 +1427,7 @@ void configure_adc(void)
 
 void main(void)
 {
+	int32_t alarm_wait_time=INIT_TIME*1000;
     color(3);
 	int err = 0;
 	// init MUTEX
@@ -1510,11 +1516,12 @@ void main(void)
 	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
 
-    k_msleep(300000);
+    k_msleep(alarm_wait_time); //TIME TO INIT ALARM SYSTEM
+	k_sem_give(&alarm_infra_init);
 	color(1);
-    printk("Alarm Activated \n");
+    printk("Alarm Working \n");
 	color(255);
-    k_sem_give(&alarm_infra_init);
+ 
 
 	for (;;){
 			k_sleep(K_MSEC(RUN_LED_BLINK_INTERVAL));
@@ -1950,20 +1957,22 @@ void activity(void){
 
 void alarm_infra_thread(void){
 
+     //WAIT TO TURN ON THE ALARM
 	 k_sem_take(&alarm_infra_init,K_FOREVER);
 
 	 while(1){
-	   
+	   int32_t reactivate=SLIP_TIME_REACTIVATE*1000;
 	   k_sem_take(&alarm_infra,K_FOREVER);
 
        alarm_busy=1;
 	   color(1);
        printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
-	   dig_probe=2; //READ LED 4 TO SEND TO LORAWAN
+	   if(sensor_status.number[SENSOR_DIG_4]<255)sensor_status.number[SENSOR_DIG_4]++;
+	   
 	   k_sem_give(&lorawan_tx);
 	   color(255);
-	   k_msleep(60000);
+	   k_msleep(reactivate);
 	   alarm_busy=0;
 	 }
 }

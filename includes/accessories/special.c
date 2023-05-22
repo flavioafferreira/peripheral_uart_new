@@ -82,6 +82,8 @@ K_MUTEX_DEFINE(c_buffer_busy);
 //SETUP
 _Setup Initial_Setup;
 
+//
+extern Sensor_Status_ sensor_status;
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -691,7 +693,7 @@ void lorawan_tx_data(void){
   }
 
      //data_test[16] =*(ptr_digi0);
-     data_test[16] = dig_probe;
+     data_test[16] = sensor_status.number[SENSOR_DIG_4]; //ALARM COUNTER
      data_test[17] =*(ptr_digi1);
 
 
