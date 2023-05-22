@@ -227,13 +227,7 @@ struct flash_pages_info info;
 #define NVS_PARTITION storage_partition
 #define NVS_PARTITION_DEVICE FIXED_PARTITION_DEVICE(NVS_PARTITION)
 #define NVS_PARTITION_OFFSET FIXED_PARTITION_OFFSET(NVS_PARTITION)
-/*
-#define ADDRESS_ID 1
-#define KEY_ID 2
-#define BOOT_POSITION 3
-#define STRING_ID 4
-#define LONG_ID 5
-*/
+
 uint32_t button2_counter = 0U, button2_counter_his;
 extern _Setup Initial_Setup;
 
@@ -276,9 +270,6 @@ void lorawan_thread(void);
 
 //ALARM
 Sensor_Status_ sensor_status;
-
-// MUTEX FOR AD CONVERSION
-// K_MUTEX_DEFINE(ad_ready)
 
 // CIRCULAR BUFFER
 extern uint32_t C_Buffer_Free_Position;
@@ -340,10 +331,6 @@ uint8_t lora_cycle_minute=0;
 BUILD_ASSERT(DT_NODE_HAS_STATUS(DEFAULT_RADIO_NODE, okay), "No default LoRa radio specified in DT");
 #define DEFAULT_RADIO DT_LABEL(DEFAULT_RADIO_NODE)
 
-/* Customize based on network configuration */
-//#define LORAWAN_DEV_EUI_HELIUM  {0x60, 0x81, 0xF9, 0x07, 0x40, 0x35, 0x0D, 0x69} //msb
-//#define LORAWAN_JOIN_EUI_HELIUM {0x60, 0x81, 0xF9, 0x82, 0xBD, 0x7F, 0x80, 0xD5} //msb
-//#define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
 #define DELAY K_MSEC(10000)
 #define MAX_DATA_LEN 10
 char data_test[] =  { 0X00 , 0X01 ,
@@ -1180,7 +1167,6 @@ void flash_test_atom(void)
 }
 
 // PROTOBUFFER FUNCTIONS
-
 uint8_t send_bluetooth(buf_data buf)
 {
 	uint32_t comprimento = buf.len;
@@ -1249,7 +1235,6 @@ void send_protobuf(void)
 }
 
 // BUTTONS INTERRUPTS CALL BACK
-
 void button_pressed_1(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
 	// SEND MESSAGE
@@ -1307,10 +1292,7 @@ void digital_4_call_back(const struct device *dev, struct gpio_callback *cb, uin
 	
 }
 
-
-
 // CONFIGURE BUTTONS
-
 void configure_all_buttons(void)
 {
 	color(14);
@@ -1340,7 +1322,6 @@ void configure_all_buttons(void)
 }
 
 // CONFIGURE DIGITAL INPUTS
-
 void configure_digital_inputs(void)
 {
     color(14);
@@ -1498,8 +1479,8 @@ void main(void)
 	k_msleep(300);
 	flash_init();
 	 
-	setup_initialize();
-	flash_write_setup();
+	//setup_initialize();
+	//flash_write_setup();
 	flash_read_setup();
 	print_setup();
 
@@ -1558,7 +1539,8 @@ void lorawan_thread(void)
 	lorawan_register_dr_changed_callback(lorwan_datarate_changed);
     
     while(1){
-   	 do {
+	 ret=-1;
+   	 while ( ret < 0 ) {
     	    color(10);
    	        printk("Joining network over OTAA\n\n");
 			color(255);
@@ -1570,11 +1552,17 @@ void lorawan_thread(void)
      		random = sys_rand32_get();
      		dev_nonce = random & 0x0000FFFF;
 			join_cfg.mode = LORAWAN_CLASS_A; //was A
+
+            //uint8_t dev_eui[] = LORAWAN_DEV_EUI_HELIUM;
+            //uint8_t join_eui[] = LORAWAN_JOIN_EUI_HELIUM;
+            //uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
+
 			join_cfg.dev_eui = dev_eui;
 			join_cfg.otaa.join_eui = join_eui;
 			join_cfg.otaa.app_key = app_key;
 			join_cfg.otaa.nwk_key = app_key;
     		join_cfg.otaa.dev_nonce = dev_nonce;
+			
 		    ret = lorawan_join(&join_cfg);
 			if (ret<0){
 				 color(10);
@@ -1583,10 +1571,18 @@ void lorawan_thread(void)
 			     k_sleep(K_MSEC(53000));
 	        }
     
-      } while ( ret < 0 );
+      } 
 	  color(10);
 	  printk("Joined OTAA\n\n");
 	  color(255);
+	  Initial_Setup.joined=ON;
+      for(int i=0;i<=15;i++){Initial_Setup.nwk_key[i]=join_cfg.otaa.nwk_key[i];}
+      Initial_Setup.dev_nonce=join_cfg.otaa.dev_nonce;
+      flash_write_setup();
+	  flash_read_setup();
+	  print_setup();
+
+	  
 	
 	  lorawan_reconnect=0;
       while (!lorawan_reconnect) {
@@ -1970,6 +1966,7 @@ void alarm_infra_thread(void){
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
 	   if(sensor_status.number[SENSOR_DIG_4]<255)sensor_status.number[SENSOR_DIG_4]++;
 	   if(sensor_status.number[SENSOR_DIG_4]==1)Initial_Setup.interval_uplink=LORAWAN_INTERVAL_ALARM;
+	   printk("New Interval UpLink Time: %d minutes\n",Initial_Setup.interval_uplink);
 	   k_sem_give(&lorawan_tx);
 	   color(255);
 	   k_msleep(reactivate);

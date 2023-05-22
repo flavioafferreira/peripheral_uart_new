@@ -770,9 +770,12 @@ void setup_initialize(void){
   for(i=0;i<=7;i++){Initial_Setup.dev[i] = dev[i];} 
   for(i=0;i<=7;i++){Initial_Setup.join[i] = join[i];} 
   for(i=0;i<=15;i++){Initial_Setup.key[i] = key[i];} 
+  for(i=0;i<=15;i++){Initial_Setup.nwk_key[i] = 0;} 
+  Initial_Setup.joined=OFF;
+  Initial_Setup.dev_nonce=0;
   
   Initial_Setup.led_blink_time=RUN_LED_BLINK_INTERVAL;
-  Initial_Setup.interval_uplink=LORAWAN_INTERVAL;
+  Initial_Setup.interval_uplink=LORAWAN_INTERVAL_NORMAL;
   Initial_Setup.output_port=0;
   Initial_Setup.turn_angle[0]=0;
   Initial_Setup.turn_angle[1]=0;
@@ -787,16 +790,23 @@ void setup_initialize(void){
 }
 
 void print_setup(void){
+  
 	  printk("Led Blink Time      : %d ms\n",Initial_Setup.led_blink_time);
 	  printk("Interval UpLink Time: %d minutes\n",Initial_Setup.interval_uplink);
-    printk("DEV : ");
+    printk("DEV     : ");
     for(int i=0;i<=7;i++){printk("%02X ",Initial_Setup.dev[i]);}
     printk("\n");
-    printk("JOIN: ");
+    printk("JOIN    : ");
     for(int i=0;i<=7;i++){printk("%02X ",Initial_Setup.join[i]);}
     printk("\n");
-    printk("KEY : ");
+    printk("KEY     : ");
     for(int i=0;i<=15;i++){printk("%02X ",Initial_Setup.key[i]);}
+    printk("\n");
+    printk("NWK_KEY : ");
+    for(int i=0;i<=15;i++){printk("%02X ",Initial_Setup.nwk_key[i]);}
+    printk("\n");
+    printk("DEV_NOUNCE: %08d\n",Initial_Setup.dev_nonce);
+    if(Initial_Setup.joined==1){printk("JOIN = ON");}else{printk("JOIN = OFF");}
     printk("\n");
 
 
@@ -847,7 +857,7 @@ void cmd_interpreter(uint8_t *data,uint8_t len){
 			case CMD_RESET_ALARM_FLAG: //RESET ALARM SIGNAL
 			   color(1);
          sensor_status.number[SENSOR_DIG_4]=0;
-         Initial_Setup.interval_uplink=LORAWAN_INTERVAL;
+         Initial_Setup.interval_uplink=LORAWAN_INTERVAL_NORMAL;
 			   printk("ALARM FLAG RESET 4\n");
 			break;
 			case CMD_LED4_ON: // TURN ON LED 4
