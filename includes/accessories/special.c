@@ -40,6 +40,9 @@
 #include <zephyr/random/rand32.h>
 
 
+
+
+
 //Circular Buffer
 uint32_t C_Buffer_Free_Position=0;
 uint32_t C_Buffer_Current_Position=0;
@@ -665,7 +668,7 @@ void lorawan_tx_data(void){
                         0X00 , 0X00 ,               //NTC1 
                         0X00 , 0X00                 //NTC2 
                       };
-  int ret=0,nt=0;
+  int ret=0,nt=0,k=0;
   uint64_t j=0;
 
   k_mutex_lock(&c_buffer_busy, K_FOREVER);
@@ -724,13 +727,7 @@ void lorawan_tx_data(void){
   color(255);
   data_sent_cnt++;
 
- 
-	ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
-		if (ret == -EAGAIN) {
-			printk("lorawan_send failed: %d. Continuing...\n\n", ret);
-			k_sleep(DELAY);
-			
-		}
+  ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
 
 		if (ret < 0) {
 			printk("lorawan_send confirm failed -trying again : %d\n\n", ret);
@@ -744,7 +741,7 @@ void lorawan_tx_data(void){
         printk("Payload Data sent\n");
         
         lorawan_reconnect_cnt=0;
-        }else{printk("Data send failed-trying again\n");
+        }else{printk("Data send failed-trying again ret=%d \n ",ret);
               k_sleep(DELAY_RTY);
             }
       }
