@@ -259,6 +259,7 @@ static K_SEM_DEFINE(gps_init,0,1);
 static K_SEM_DEFINE(adc_init,0,1);
 static K_SEM_DEFINE(alarm_infra,0,1);
 static K_SEM_DEFINE(alarm_infra_init,0,1);
+static K_SEM_DEFINE(cmd_init_ok,0,1);
 static uint8_t alarm_busy=0;
 
 
@@ -302,6 +303,9 @@ uint32_t buff_marker=0;
 
 static K_FIFO_DEFINE(fifo_uart_tx_data);
 static K_FIFO_DEFINE(fifo_uart_rx_data);
+
+static K_FIFO_DEFINE(command_rx);
+static K_FIFO_DEFINE(command_tx);
 
 static K_FIFO_DEFINE(fifo_uart2_tx_data);
 static K_FIFO_DEFINE(fifo_uart2_rx_data);
@@ -954,6 +958,7 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data, uint1
 	for (uint16_t pos = 0; pos != len;)
 	{
 		struct uart_data_t *tx = k_malloc(sizeof(*tx));
+		struct uart_data_t *cmd_tx = k_malloc(sizeof(*cmd_tx));
 
 		if (!tx)
 		{
@@ -986,12 +991,19 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data, uint1
 			tx->len++;
 		}
 
+        cmd_tx=tx;
+		
 		err = uart_tx(uart, tx->data, tx->len, SYS_FOREVER_MS);
+ 
 		if (err)
 		{
+			//SEND DATA RECEIVED FROM BLUETOOTH TO UART
 			k_fifo_put(&fifo_uart_tx_data, tx);
+			
 		}
+		k_fifo_put(&command_tx,cmd_tx);
 	}
+	
 }
 
 static struct bt_nus_cb nus_cb = {
@@ -1496,7 +1508,7 @@ void main(void)
 	k_sem_give(&gps_init);
 	k_msleep(1000);
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
-
+    k_sem_give(&cmd_init_ok);
     k_msleep(alarm_wait_time); //TIME TO INIT ALARM SYSTEM
 	k_sem_give(&alarm_infra_init);
 	color(1);
@@ -1669,6 +1681,27 @@ void ble_write_thread(void)
 			printk("Falha aqui- Failed to send data over BLE connection");
 		}
 		k_free(buf);
+	}
+}
+
+void ble_cmd_received_thread(void)
+{
+	/* Don't go any further until BLE is initialized */
+	k_sem_take(&cmd_init_ok, K_FOREVER);
+	struct uart_data_t *buf;
+    printk("cmd interpreter init OK\n");
+	for (;;)
+	{
+		/* Wait indefinitely for data to be sent over bluetooth */
+		buf = k_fifo_get(&command_tx, K_FOREVER);
+
+		// DATA RECEIVED FROM BLUETOOTH
+		// buf->data, buf->len))
+		//CALL COMMAND INTERPRETER HERE
+
+		cmd_interpreter(buf->data,buf->len);
+		printk("cmd interpreter\n");
+		
 	}
 }
 
@@ -1989,3 +2022,4 @@ K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, 8,
 K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(activity_id, 2048, activity, NULL, NULL, NULL, -9, 0, 0);
 K_THREAD_DEFINE(alarm_infra_thread_id, 2048, alarm_infra_thread, NULL, NULL, NULL, 7, 0, 0);
+K_THREAD_DEFINE(ble_cmd_received_thread_id, 4096, ble_cmd_received_thread, NULL, NULL, NULL, 7, 0, 0);
