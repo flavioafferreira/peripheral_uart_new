@@ -80,8 +80,9 @@
 #define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
 
 //PRESENCE SENSOR - 
-#define INIT_TIME            300 //SECONDS
-#define SLIP_TIME_REACTIVATE 100 //SECONDS
+#define INIT_TIME            10 //SECONDS TO START AFTER RESET
+#define SLIP_TIME_REACTIVATE 100 //SECONDS TO RECEIVE THE SECOND PULSE
+#define NUMBER_OF_SENSORS      6  //
 
 //SENSOR NUMBER
 #define SENSOR_DIG_0 0
@@ -91,17 +92,18 @@
 #define SENSOR_DIG_4 4
 
 //CALLBACK CMDS 0
-#define CMD_READ                0X50 //P
-#define CMD_WRITE               0X51 //Q
-#define CMD_RESET               0X52 //R
-#define CMD_DEV_EUI             0X53 //S
-#define CMD_JOIN_EUI            0X54 //T
-#define CMD_APP_EUI             0X55 //U
-#define CMD_RESET_ALARM_FLAG    0X56 //V
-#define CMD_LED4_ON             0X57 //W
-#define CMD_LED4_OFF            0X58 //X
-
-
+#define CMD_READ                0X52 //R
+#define CMD_WRITE               0X57 //W
+#define CMD_RESET               0X30 //0
+#define CMD_DEV_EUI             0X31 //1
+#define CMD_JOIN_EUI            0X32 //2
+#define CMD_APP_EUI             0X33 //3
+#define CMD_RESET_ALARM_FLAG    0X34 //4
+#define CMD_LED4_ON             0X35 //5
+#define CMD_LED4_OFF            0X36 //6
+#define CMD_ALARM_OFF           0X37 //7
+#define CMD_ALARM_ON            0X38 //8
+#define CMD_TEST                0X39 //9
 //SETUP DEFAULTS
 #define RUN_LED_BLINK_INTERVAL 200
 //STRUCTURE FOR HISTORY
@@ -234,7 +236,9 @@ typedef struct _Setup_{
 
 
 typedef struct _Sensor_Status_{
-    uint8_t number[6];
+    uint8_t number[NUMBER_OF_SENSORS];
+    uint8_t active[NUMBER_OF_SENSORS];
+    uint8_t busy[NUMBER_OF_SENSORS];
 }Sensor_Status_;
 
 struct uart_data_t

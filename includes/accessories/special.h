@@ -5,6 +5,9 @@
 
 #define MaxBuf 164
 
+#define MAX_COMMANDS 10
+#define MAX_COMMAND_LENGTH 2
+#define MAX_PASSWORD_LENGTH 6
 
 typedef struct buf_data_t {
 	   void *fifo_reserved;
@@ -17,6 +20,13 @@ typedef struct _Data_Return_{
 	uint8_t data[UART_BUF_SIZE];
 	uint16_t len;
 }Data_Return;
+
+typedef struct {
+    char command[MAX_COMMAND_LENGTH];
+    void (*function)(uint16_t);
+} Command;
+
+
 
 buf_data send_array_dd_v0(void);
 Data_Return cmd_interpreter(uint8_t *data,uint8_t len);
@@ -44,7 +54,7 @@ void print_setup(void);
 void flash_write_setup(void);
 void flash_read_setup(void);
 void color(uint8_t color);
-
+void test_command(void); 
 
 
 

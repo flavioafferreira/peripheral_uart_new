@@ -105,6 +105,9 @@ extern struct gpio_dt_spec pin_test_led3;
 //
 extern Sensor_Status_ sensor_status;
 
+//Alarm ON/Off
+
+
 
 
 void flash_button2_counter(void){
@@ -859,11 +862,14 @@ void color(uint8_t color) {
     }
 }
 
+
+
 Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
   
   static Data_Return buf;
+  buf.len=0;
   
-
+  //printk("testing command \n");
   color(4);
   	switch(data[0]){
 			case CMD_RESET_ALARM_FLAG: //RESET ALARM SIGNAL
@@ -903,6 +909,21 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
               
 			break;
 
+      case CMD_ALARM_OFF:
+           color(1);
+           sensor_status.active[SENSOR_DIG_4]=0;
+           printk("ALARM OFF\n");
+           buf.len=sprintf(buf.data, "ALARM OFF");
+      break;
+
+      case CMD_ALARM_ON:
+           color(1);
+           sensor_status.active[SENSOR_DIG_4]=1;
+           printk("ALARM ON\n");
+           buf.len=sprintf(buf.data, "ALARM ON");
+      break;
+
+
       case CMD_READ: //P
 			    color(3);
 			    flash_read_setup();
@@ -917,6 +938,11 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
            buf.len=sprintf(buf.data, "COMMAND WRITE");             
 			break;
 			
+      case CMD_TEST: //Q
+			     color(3);
+			     test_command();
+			break;
+
 
 		}
        color(0);
@@ -924,3 +950,64 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
 	  return buf;
     
 }
+
+
+void commandFunc1(uint16_t param) {
+    printk("Command 1 ok: %u\n", param);
+}
+
+void commandFunc2(uint16_t param) {
+    printk("Command 2 ok: %u\n", param);
+}
+
+void commandFunc3(uint16_t param) {
+    printk("Command 3 ok: %u\n", param);
+}
+
+Command commands[MAX_COMMANDS] = {
+    {"1", commandFunc1},
+    {"2", commandFunc2},
+    {"3", commandFunc3}
+};
+
+void executeCommand(char *commandString, uint16_t param) {
+    int i;
+    for (i = 0; i < MAX_COMMANDS; i++) {
+        if (strncmp(commands[i].command, commandString, MAX_COMMAND_LENGTH) == 0) {
+            commands[i].function(param);
+            return;
+        }
+    }
+    
+    printf("Command invalid\n");
+}
+void cmd_interpreter_pwd(uint8_t *data, uint8_t len, uint8_t *password) {
+    char password_definition[] = {'1', '2', '3', '4', '5', '6'};
+
+    
+    if (memcmp(password, password_definition, sizeof(password_definition)) != 0) {
+        printk("Wrong Password\n");
+        return;
+    }
+
+    
+    char command[MAX_COMMAND_LENGTH];
+    strncpy(command, (char *)data, MAX_COMMAND_LENGTH - 1);
+    command[MAX_COMMAND_LENGTH - 1] = '\0';
+
+    uint16_t param = data[MAX_COMMAND_LENGTH];
+
+    executeCommand(command, param);
+}
+
+
+void test_command(void) {
+    uint8_t data[] = {'1', 0x00,0x0A};
+    uint8_t len = sizeof(data) / sizeof(data[0]);
+
+    uint8_t password_sent[] = {'1', '2', '3', '4', '5', '6'};
+    cmd_interpreter_pwd(data, len, password_sent);
+}
+
+
+

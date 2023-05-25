@@ -81,7 +81,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
 
-#define RUN_LED_BLINK_INTERVAL 200 //milliseconcs
+#define RUN_LED_BLINK_INTERVAL 600 //milliseconcs
 
 #define KEY_PASSKEY_ACCEPT DK_BTN1_MSK
 #define KEY_PASSKEY_REJECT DK_BTN2_MSK
@@ -260,7 +260,11 @@ static K_SEM_DEFINE(adc_init,0,1);
 static K_SEM_DEFINE(alarm_infra,0,1);
 static K_SEM_DEFINE(alarm_infra_init,0,1);
 static K_SEM_DEFINE(cmd_init_ok,0,1);
-static uint8_t alarm_busy=1;
+
+
+
+
+
 
 
 //LORAWAN
@@ -647,7 +651,7 @@ static void uart_work_handler(struct k_work *item)
 	}
 	else
 	{
-		LOG_WRN("Not able to allocate UART_1 receive buffer");
+		LOG_WRN("Not able to allocate UART_1 receive buffer -Terminal");
 		k_work_reschedule(&uart_work, UART_WAIT_FOR_BUF_DELAY);
 		return;
 	}
@@ -665,7 +669,7 @@ static void uart_2_work_handler(struct k_work *item)
 	}
 	else
 	{
-		LOG_WRN("Not able to allocate UART_2 receive buffer");
+		LOG_WRN("Not able to allocate UART_2 receive buffer - GPS");
 		k_work_reschedule(&uart_work_2, UART_WAIT_FOR_BUF_DELAY);
 		return;
 	}
@@ -1301,7 +1305,7 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uin
 
 void digital_4_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	if (alarm_busy==0)
+	if (sensor_status.busy[SENSOR_DIG_4]==0 && sensor_status.active[SENSOR_DIG_4]==1)
 	  k_sem_give(&alarm_infra);
 	
 }
@@ -1422,6 +1426,7 @@ void configure_adc(void)
 
 void main(void)
 {
+	sensor_status.busy[SENSOR_DIG_4]=1;
 	int32_t alarm_wait_time=INIT_TIME*1000;
     color(3);
 	int err = 0;
@@ -1699,16 +1704,11 @@ void ble_cmd_received_thread(void)
 	{
 		/* Wait indefinitely for data to be sent over bluetooth */
 		buf = k_fifo_get(&command_tx, K_FOREVER);
+		printk("cmd received from ble OK\n");
 		buf_cmd=cmd_interpreter(buf->data,buf->len);
-		//buf_cmd.len=2;
-        //buf_cmd.data[0]=0x30;
-        //buf_cmd.data[1]=0x31;
-        bt_nus_send(NULL, buf_cmd.data, buf_cmd.len);
-
-		//buf->len=sprintf(buf->data, "Hello  world");
-		//bt_nus_send(NULL, buf->data, buf->len);
-		
-		
+		if (buf_cmd.len>0){
+         if (current_conn) bt_nus_send(NULL, buf_cmd.data, buf_cmd.len);
+		}
 	}
 }
 
@@ -1768,7 +1768,7 @@ void button4_thread(void)
 	while (1)
 	{
 		k_sem_take(&button_test, K_FOREVER);
-		bt_nus_send(NULL, Name, size);
+		if (current_conn)bt_nus_send(NULL, Name, size);
 	}
 	// k_free(packet_data);
 }
@@ -1987,6 +1987,7 @@ void activity(void){
 		if (delay<10){delay=RUN_LED_BLINK_INTERVAL;}
 		led_on_off(*RUN_STATUS_LED, (++blink_status) % 2);
 		k_sleep(K_MSEC(delay));
+		
 			
 	}
 }
@@ -1995,12 +1996,12 @@ void alarm_infra_thread(void){
 
      //WAIT TO TURN ON THE ALARM
 	 k_sem_take(&alarm_infra_init,K_FOREVER);
-     alarm_busy=0;
+     sensor_status.busy[SENSOR_DIG_4]=0;
 	 while(1){
 	   int32_t reactivate=SLIP_TIME_REACTIVATE*1000;
 	   k_sem_take(&alarm_infra,K_FOREVER);
 
-       alarm_busy=1;
+       sensor_status.busy[SENSOR_DIG_4]=1;
 	   color(1);
        printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
@@ -2010,7 +2011,7 @@ void alarm_infra_thread(void){
 	   k_sem_give(&lorawan_tx);
 	   color(255);
 	   k_msleep(reactivate);
-	   alarm_busy=0;
+	   sensor_status.busy[SENSOR_DIG_4]=0;
 	 }
 }
 
@@ -2029,4 +2030,4 @@ K_THREAD_DEFINE(downlink_thread_id, 10000, downlink_thread, NULL, NULL, NULL, 8,
 K_THREAD_DEFINE(feed_circular_buffer_thread_id, 10000, feed_circular_buffer_thread, NULL, NULL, NULL, PRIORITY, 0, 0);
 K_THREAD_DEFINE(activity_id, 2048, activity, NULL, NULL, NULL, -9, 0, 0);
 K_THREAD_DEFINE(alarm_infra_thread_id, 2048, alarm_infra_thread, NULL, NULL, NULL, 7, 0, 0);
-K_THREAD_DEFINE(ble_cmd_received_thread_id, 4096, ble_cmd_received_thread, NULL, NULL, NULL, 7, 0, 0);
+K_THREAD_DEFINE(ble_cmd_received_thread_id, 4096, ble_cmd_received_thread, NULL, NULL, NULL, 5, 0, 0);
