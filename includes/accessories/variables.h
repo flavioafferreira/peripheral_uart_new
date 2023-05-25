@@ -8,7 +8,7 @@
 #include "includes/Protobuf/data_def_v0_pb.h"
 
 
-
+#define UART_BUF_SIZE CONFIG_BT_NUS_UART_BUFFER_SIZE
 
 #define ON  1
 #define OFF 0
@@ -69,8 +69,8 @@
 #define DELAY K_MSEC(10000)
 #define DELAY_RTY K_MSEC(3000)
 #define RETRY 10
-#define LIMIT_RECONNECT_CNT     50  // IF THIS LIMIT REACHED, FORCE A RE-JOIN
-#define LORAWAN_INTERVAL_NORMAL  5  //INTERVAL BETWEEN UPLOADS IN MINUTES             - MINIMUM 3 MINUTES
+#define LIMIT_RECONNECT_CNT    100  // IF THIS LIMIT REACHED, FORCE A RE-JOIN
+#define LORAWAN_INTERVAL_NORMAL 10  //INTERVAL BETWEEN UPLOADS IN MINUTES             - MINIMUM 3 MINUTES
 #define LORAWAN_INTERVAL_ALARM   3  //INTERVAL BETWEEN UPLOADS IN MINUTES AFTER ALARM - MINIMUM 3 MINUTES
 
 #define DOWNLINK_BUFF_SIZE 51
@@ -80,7 +80,7 @@
 #define LORAWAN_APP_KEY_HELIUM  {0xE0, 0x07, 0x38, 0x87, 0xAF, 0x4F, 0x16, 0x6E, 0x8E, 0x52, 0xD3, 0x27, 0x0F, 0x2E, 0x64, 0x6F}
 
 //PRESENCE SENSOR - 
-#define INIT_TIME            30 //SECONDS
+#define INIT_TIME            300 //SECONDS
 #define SLIP_TIME_REACTIVATE 100 //SECONDS
 
 //SENSOR NUMBER
@@ -236,4 +236,13 @@ typedef struct _Setup_{
 typedef struct _Sensor_Status_{
     uint8_t number[6];
 }Sensor_Status_;
+
+struct uart_data_t
+{
+	void *fifo_reserved;
+	uint8_t data[UART_BUF_SIZE];
+	uint16_t len;
+};
+
+
 

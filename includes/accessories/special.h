@@ -1,4 +1,5 @@
 #include "includes/Protobuf/data_def_v0_pb.h"
+//#include "includes/accessories/variables.h"
 
 //#define MaxBuf 164 para STACKSIZE 1024 'E O MAXIMO
 
@@ -11,9 +12,14 @@ typedef struct buf_data_t {
 	   uint16_t len;
 }buf_data;
 
-
+#define UART_BUF_SIZE CONFIG_BT_NUS_UART_BUFFER_SIZE
+typedef struct _Data_Return_{
+	uint8_t data[UART_BUF_SIZE];
+	uint16_t len;
+}Data_Return;
 
 buf_data send_array_dd_v0(void);
+Data_Return cmd_interpreter(uint8_t *data,uint8_t len);
 
 void feed_circular_buffer(void);
 void print_current_position_cb(uint32_t pos);
@@ -38,7 +44,12 @@ void print_setup(void);
 void flash_write_setup(void);
 void flash_read_setup(void);
 void color(uint8_t color);
-void cmd_interpreter(uint8_t *data,uint8_t len);
+
+
+
+
+
+
 
 /*
 

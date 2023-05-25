@@ -38,10 +38,19 @@
 #include <zephyr/lorawan/lorawan.h>
 #include <zephyr/drivers/lora.h>
 #include <zephyr/random/rand32.h>
+/*
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/conn.h>
+#include <bluetooth/services/nus.h>
 
-
-
-
+extern struct bt_conn *current_conn;
+extern struct bt_conn *auth_conn;
+extern const struct bt_data ad[];
+extern const struct bt_data sd[];
+*/
 
 //Circular Buffer
 uint32_t C_Buffer_Free_Position=0;
@@ -95,6 +104,8 @@ extern struct gpio_dt_spec pin_test_led3;
 
 //
 extern Sensor_Status_ sensor_status;
+
+
 
 void flash_button2_counter(void){
 	int rc = 0;
@@ -848,7 +859,11 @@ void color(uint8_t color) {
     }
 }
 
-void cmd_interpreter(uint8_t *data,uint8_t len){
+Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
+  
+  static Data_Return buf;
+  
+
   color(4);
   	switch(data[0]){
 			case CMD_RESET_ALARM_FLAG: //RESET ALARM SIGNAL
@@ -856,44 +871,56 @@ void cmd_interpreter(uint8_t *data,uint8_t len){
          sensor_status.number[SENSOR_DIG_4]=0;
          Initial_Setup.interval_uplink=LORAWAN_INTERVAL_NORMAL;
 			   printk("ALARM FLAG RESET 4\n");
+         buf.len=sprintf(buf.data, "ALARM FLAG RESET");
+         
+		     
 			break;
 			case CMD_LED4_ON: // TURN ON LED 4
 			   color(1);
 			   gpio_pin_set_dt(LED4, ON);
 			   printk("TURNED ON LED 4\n");
+         buf.len=sprintf(buf.data, "TURNED ON LED 4");
+         
+		     
 			break;
 			
 			case CMD_LED4_OFF: //TURN OFF LED 4
 			   color(1);
 			   gpio_pin_set_dt(LED4, OFF);
 			   printk("TURNED OFF LED 4\n");
+         buf.len=sprintf(buf.data, "TURNED OFF LED 4");
+         
 			break;
 
 
       case CMD_RESET: //R
 			    color(2);
 			    setup_initialize();
-				flash_write_setup();
-				print_setup();
-				printk("Setup Reset\n");
+				  flash_write_setup();
+				  print_setup();
+				  printk("Setup Reset\n");
+          buf.len=sprintf(buf.data, "SETUP RESET");
+              
 			break;
 
       case CMD_READ: //P
-			     color(3);
-			     flash_read_setup();
-			     print_setup();
+			    color(3);
+			    flash_read_setup();
+			    print_setup();
+          buf.len=sprintf(buf.data, "COMMAND READ"); 
 			break;
 
       case CMD_WRITE: //Q
 			     color(3);
 			     
 			     print_setup();
+           buf.len=sprintf(buf.data, "COMMAND WRITE");             
 			break;
 			
 
 		}
        color(0);
-      
-	 
-
+          
+	  return buf;
+    
 }

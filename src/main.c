@@ -86,7 +86,7 @@ LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 #define KEY_PASSKEY_ACCEPT DK_BTN1_MSK
 #define KEY_PASSKEY_REJECT DK_BTN2_MSK
 
-#define UART_BUF_SIZE CONFIG_BT_NUS_UART_BUFFER_SIZE
+//#define UART_BUF_SIZE CONFIG_BT_NUS_UART_BUFFER_SIZE
 #define UART_WAIT_FOR_BUF_DELAY K_MSEC(50)
 #define UART_WAIT_FOR_RX CONFIG_BT_NUS_UART_RX_WAIT_TIME
 
@@ -260,7 +260,7 @@ static K_SEM_DEFINE(adc_init,0,1);
 static K_SEM_DEFINE(alarm_infra,0,1);
 static K_SEM_DEFINE(alarm_infra_init,0,1);
 static K_SEM_DEFINE(cmd_init_ok,0,1);
-static uint8_t alarm_busy=0;
+static uint8_t alarm_busy=1;
 
 
 //LORAWAN
@@ -288,14 +288,14 @@ static const struct device *uart_2 = DEVICE_DT_GET(DT_NODELABEL(uart2));
 
 static struct k_work_delayable uart_work;
 static struct k_work_delayable uart_work_2;
-
+/*
 struct uart_data_t
 {
 	void *fifo_reserved;
 	uint8_t data[UART_BUF_SIZE];
 	uint16_t len;
 };
-
+*/
 struct uart_data_t *buf_extra;
 uint32_t buff_extra_index=0;
 uint32_t buff_marker=0;
@@ -357,6 +357,8 @@ struct _Downlink_Fifo downlink_cmd;
 struct _Downlink_ downlink_cmd_new;
 
 // DOWNLINK CHOOSE FIRST AND PORT2
+
+
 
 static void dl_callback(uint8_t port, bool data_pending,
     int16_t rssi, int8_t snr, uint8_t len, const uint8_t *data)	{
@@ -953,7 +955,7 @@ static void bt_receive_cb(struct bt_conn *conn, const uint8_t *const data, uint1
 
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, ARRAY_SIZE(addr));
 
-	printf("Received data from: %s", addr);
+	//printf("Received data from: %s", addr);
 
 	for (uint16_t pos = 0; pos != len;)
 	{
@@ -1510,6 +1512,7 @@ void main(void)
     k_sem_give(&lorawan_init);  //START HELIUM JOIN
     k_sem_give(&cmd_init_ok);
     k_msleep(alarm_wait_time); //TIME TO INIT ALARM SYSTEM
+
 	k_sem_give(&alarm_infra_init);
 	color(1);
     printk("Alarm Working \n");
@@ -1689,18 +1692,22 @@ void ble_cmd_received_thread(void)
 	/* Don't go any further until BLE is initialized */
 	k_sem_take(&cmd_init_ok, K_FOREVER);
 	struct uart_data_t *buf;
+	Data_Return buf_cmd;
+
     printk("cmd interpreter init OK\n");
 	for (;;)
 	{
 		/* Wait indefinitely for data to be sent over bluetooth */
 		buf = k_fifo_get(&command_tx, K_FOREVER);
+		buf_cmd=cmd_interpreter(buf->data,buf->len);
+		//buf_cmd.len=2;
+        //buf_cmd.data[0]=0x30;
+        //buf_cmd.data[1]=0x31;
+        bt_nus_send(NULL, buf_cmd.data, buf_cmd.len);
 
-		// DATA RECEIVED FROM BLUETOOTH
-		// buf->data, buf->len))
-		//CALL COMMAND INTERPRETER HERE
-
-		cmd_interpreter(buf->data,buf->len);
-		printk("cmd interpreter\n");
+		//buf->len=sprintf(buf->data, "Hello  world");
+		//bt_nus_send(NULL, buf->data, buf->len);
+		
 		
 	}
 }
@@ -1965,7 +1972,7 @@ void downlink_thread(void){
       static uint8_t *data=downlink_cmd_new.data;
 	  
 
-	  cmd_interpreter(data,downlink_cmd_new.len);
+	  (void)cmd_interpreter(data,downlink_cmd_new.len);
       color(0);
 	}
     
@@ -1988,7 +1995,7 @@ void alarm_infra_thread(void){
 
      //WAIT TO TURN ON THE ALARM
 	 k_sem_take(&alarm_infra_init,K_FOREVER);
-
+     alarm_busy=0;
 	 while(1){
 	   int32_t reactivate=SLIP_TIME_REACTIVATE*1000;
 	   k_sem_take(&alarm_infra,K_FOREVER);
