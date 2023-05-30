@@ -86,8 +86,9 @@ _Circular_Buffer read_memory(uint32_t Pos);
 
 //SEMAPHORE
 extern uint8_t lorawan_reconnect;
-extern uint32_t lorawan_reconnect_cnt;
-extern uint8_t data_sent_cnt;
+//extern uint32_t lorawan_reconnect_cnt;
+//extern struct k_sem lorawan_tx;
+extern uint32_t data_sent_cnt;
 //MUTEX
 K_MUTEX_DEFINE(c_buffer_busy);
 
@@ -749,12 +750,12 @@ void lorawan_tx_data(void){
       while(ret<0 && nt<=RETRY){ 
        ret = lorawan_send(2, data_test, sizeof(data_test),LORAWAN_MSG_UNCONFIRMED);
        nt++;
-       lorawan_reconnect_cnt++;
-       if(lorawan_reconnect_cnt==LIMIT_RECONNECT_CNT){lorawan_reconnect_cnt=0;lorawan_reconnect=1;}
+       //lorawan_reconnect_cnt++;
+       //if(lorawan_reconnect_cnt==LIMIT_RECONNECT_CNT){lorawan_reconnect_cnt=0;lorawan_reconnect=1;}
        if (ret==0){
-        printk("Payload Data sent\n");
+        printk("Payload Data sent %d\n",data_sent_cnt);
         
-        lorawan_reconnect_cnt=0;
+        //lorawan_reconnect_cnt=0;
         }else{printk("Data send failed-trying again ret=%d \n ",ret);
               k_sleep(DELAY_RTY);
             }
@@ -762,9 +763,9 @@ void lorawan_tx_data(void){
       nt=0;
 			//return;
 		}else{  color(10);
-		        printk("Payload Data sent!\n\n");
+		        printk("Payload Data sent %d\n\n",data_sent_cnt);
             color(255);
-            lorawan_reconnect_cnt=0;
+            //lorawan_reconnect_cnt=0;
 		     }
     if(data_sent_cnt>=DATA_SENT_JOIN_AGAIN){lorawan_reconnect=1;data_sent_cnt=0;}
 
@@ -816,7 +817,7 @@ void print_setup(void){
     printk("NWK_KEY : ");
     for(int i=0;i<=15;i++){printk("%02X ",Initial_Setup.nwk_key[i]);}
     printk("\n");
-    printk("DEV_NOUNCE: %08d\n",Initial_Setup.dev_nonce);
+    printk("DEV_NOUNCE: %08X\n",Initial_Setup.dev_nonce);
     if(Initial_Setup.joined==1){printk("JOIN = ON");}else{printk("JOIN = OFF");}
     printk("\n");
 
@@ -912,6 +913,7 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
       case CMD_ALARM_OFF:
            color(1);
            sensor_status.active[SENSOR_DIG_4]=0;
+           sensor_status.busy[SENSOR_DIG_4]=ON;
            printk("ALARM OFF\n");
            buf.len=sprintf(buf.data, "ALARM OFF");
       break;
@@ -919,6 +921,7 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
       case CMD_ALARM_ON:
            color(1);
            sensor_status.active[SENSOR_DIG_4]=1;
+           sensor_status.busy[SENSOR_DIG_4]=OFF;
            printk("ALARM ON\n");
            buf.len=sprintf(buf.data, "ALARM ON");
       break;
@@ -941,6 +944,7 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
       case CMD_TEST: //Q
 			     color(3);
 			     test_command();
+           //k_sem_give(&lorawan_tx);
 			break;
 
 
@@ -951,17 +955,19 @@ Data_Return cmd_interpreter(uint8_t *data,uint8_t len){
     
 }
 
+/*below CPI under test*/
+
 
 void commandFunc1(uint16_t param) {
-    printk("Command 1 ok: %u\n", param);
+    printk("Command 1 ok: Param:%u\n", param);
 }
 
 void commandFunc2(uint16_t param) {
-    printk("Command 2 ok: %u\n", param);
+    printk("Command 2 ok: Param:%u\n", param);
 }
 
 void commandFunc3(uint16_t param) {
-    printk("Command 3 ok: %u\n", param);
+    printk("Command 3 ok: Param:%u\n", param);
 }
 
 Command commands[MAX_COMMANDS] = {

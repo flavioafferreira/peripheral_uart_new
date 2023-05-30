@@ -269,12 +269,13 @@ static K_SEM_DEFINE(cmd_init_ok,0,1);
 
 //LORAWAN
 uint8_t lorawan_reconnect=0;
-uint32_t lorawan_reconnect_cnt=0;
-uint8_t data_sent_cnt=0;
+//uint32_t lorawan_reconnect_cnt=0;
+uint32_t data_sent_cnt=0;
 void lorawan_thread(void);
 
 //ALARM
 Sensor_Status_ sensor_status;
+
 
 // CIRCULAR BUFFER
 extern uint32_t C_Buffer_Free_Position;
@@ -1305,9 +1306,10 @@ void digital_2_call_back(const struct device *dev, struct gpio_callback *cb, uin
 
 void digital_4_call_back(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-	if (sensor_status.busy[SENSOR_DIG_4]==0 && sensor_status.active[SENSOR_DIG_4]==1)
-	  k_sem_give(&alarm_infra);
-	
+	if (sensor_status.busy[SENSOR_DIG_4]==0 && sensor_status.active[SENSOR_DIG_4]==1){
+	  sensor_status.busy[SENSOR_DIG_4]=1;
+	  k_sem_give(&alarm_infra);	
+    }
 }
 
 // CONFIGURE BUTTONS
@@ -1426,7 +1428,8 @@ void configure_adc(void)
 
 void main(void)
 {
-	sensor_status.busy[SENSOR_DIG_4]=1;
+	sensor_status.busy[SENSOR_DIG_4]=ON;
+	sensor_status.active[SENSOR_DIG_4]=OFF;
 	int32_t alarm_wait_time=INIT_TIME*1000;
     color(3);
 	int err = 0;
@@ -1540,7 +1543,7 @@ void lorawan_thread(void)
     uint64_t i=0,j=0;
 	int ret;
     uint32_t random;
-    uint16_t dev_nonce;
+    uint32_t dev_nonce;
     lora_dev = DEVICE_DT_GET(DT_NODELABEL(lora0));
 
 	//LoRaMacTestSetDutyCycleOn(0);//disable dutyCycle for test
@@ -1560,7 +1563,8 @@ void lorawan_thread(void)
 	lorawan_set_conf_msg_tries(10);
     
     while(1){
-	 ret=-1;
+     ret=-1;
+
    	 while ( ret < 0 ) {
     	    color(10);
    	        printk("Joining network over OTAA\n\n");
@@ -1570,27 +1574,25 @@ void lorawan_thread(void)
 			k_sleep(K_MSEC(500));//500ms
 		    lorawan_enable_adr( true );
    
-     		random = sys_rand32_get();
-     		dev_nonce = random & 0x0000FFFF;
 			join_cfg.mode = LORAWAN_CLASS_A; //was A
-
-            //uint8_t dev_eui[] = LORAWAN_DEV_EUI_HELIUM;
-            //uint8_t join_eui[] = LORAWAN_JOIN_EUI_HELIUM;
-            //uint8_t app_key[] = LORAWAN_APP_KEY_HELIUM;
-
 			join_cfg.dev_eui = dev_eui;
 			join_cfg.otaa.join_eui = join_eui;
 			join_cfg.otaa.app_key = app_key;
 			join_cfg.otaa.nwk_key = app_key;
-    		join_cfg.otaa.dev_nonce = dev_nonce;
-			
+            
+       
+       	    random = sys_rand32_get();
+     		dev_nonce = random & 0x0000FFFF;
+			join_cfg.otaa.dev_nonce = dev_nonce;
 		    ret = lorawan_join(&join_cfg);
-			if (ret<0){
+
+			 if (ret<0){
 				 color(10);
 				 printk("Failed..Waiting some seconds to try join again\n\n");
 				 color(255);
 			     k_sleep(K_MSEC(53000));
-	        }
+	         }
+			
     
       } 
 	  color(10);
@@ -1605,11 +1607,14 @@ void lorawan_thread(void)
 
 	  	  
 	  lorawan_reconnect=0;
+
       while (!lorawan_reconnect) {
+		//while (1) {
+	
 		  k_sem_take(&lorawan_tx, K_FOREVER);
 		  lorawan_tx_data();
 	    }
-     }
+    }
 }
 
 void shoot_minute_save_thread(void)
@@ -1993,15 +1998,13 @@ void activity(void){
 }
 
 void alarm_infra_thread(void){
-
+    int32_t reactivate=0;
      //WAIT TO TURN ON THE ALARM
 	 k_sem_take(&alarm_infra_init,K_FOREVER);
-     sensor_status.busy[SENSOR_DIG_4]=0;
+     sensor_status.busy[SENSOR_DIG_4]=ON;
 	 while(1){
-	   int32_t reactivate=SLIP_TIME_REACTIVATE*1000;
+	   reactivate=SLIP_TIME_REACTIVATE*1000;
 	   k_sem_take(&alarm_infra,K_FOREVER);
-
-       sensor_status.busy[SENSOR_DIG_4]=1;
 	   color(1);
        printk("EMERGENCY - Alarm 4 - at %" PRIu32 "\n", k_cycle_get_32());
 	   gpio_pin_set_dt(LED4, ON); //SET LED 4
