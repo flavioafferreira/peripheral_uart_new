@@ -1,5 +1,0 @@
-nvs_storage:
-  placement:
-    before: [tfm_storage, end]
-  region: external_flash
-  size: 0x800000
